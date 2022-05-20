@@ -45,7 +45,7 @@ export default function Home() {
                     aria-hidden="true"
                   />
                   <span className="text-beereign_yellow font-sans font-light text-2xl mr-2">
-                    Materias Primas
+                    Inventario de Materias Primas
                   </span>
                 </div>
               </a>
@@ -77,7 +77,7 @@ export default function Home() {
                     aria-hidden="true"
                   />
                   <span className="text-beereign_yellow font-sans font-light text-2xl mr-2">
-                    Lotes de MP
+                    Lotes de Materia Prima
                   </span>
                 </div>
               </a>
@@ -109,7 +109,7 @@ export default function Home() {
                     aria-hidden="true"
                   />
                   <span className="text-beereign_yellow font-sans font-light text-2xl mr-2">
-                    Productos
+                    Inventario de Productos
                   </span>
                 </div>
               </a>

@@ -1,4 +1,4 @@
-import Joi from "Joi";
+import Joi from "joi";
 
 const id = Joi.number().unsafe().min(1).max(9223372036854775807);
 const rawMaterialId = Joi.number().integer().positive().max(2147483647);

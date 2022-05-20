@@ -101,6 +101,7 @@ export default function Index() {
             defaultValue={orderOptions[0]}
             onChange={handleChangeOrder}
             options={orderOptions}
+            isSearchable={false}
           />
         </div>
         <div className="ml-1">
@@ -108,6 +109,7 @@ export default function Index() {
             defaultValue={typeOptions[0]}
             onChange={handleChangeType}
             options={typeOptions}
+            isSearchable={false}
           />
         </div>
       </section>

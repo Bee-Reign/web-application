@@ -54,7 +54,7 @@ export default function Index() {
           </Link>
           <Link className href="/raw-material">
             <a className="ml-2 font-sans font-normal text-2xl">
-              Materias Primas
+              Inventario de Materias Primas
             </a>
           </Link>
         </div>

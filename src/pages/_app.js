@@ -25,6 +25,7 @@ function MyApp({ Component, pageProps }) {
         });
       })
       .catch((error) => {
+        console.log(error);
         setAuth(null);
         if (logError(error) === 404) {
           logout();

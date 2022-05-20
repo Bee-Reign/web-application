@@ -48,6 +48,24 @@ export default function RawMaterialTable(props) {
               scope="col"
               className="text-sm font-medium text-gray-900 px-6 py-4 border-r"
             >
+              En Inventario
+            </th>
+            <th
+              scope="col"
+              className="text-sm font-medium text-gray-900 px-6 py-4 border-r"
+            >
+              Costo Promedio Unitario
+            </th>
+            <th
+              scope="col"
+              className="text-sm font-medium text-gray-900 px-6 py-4 border-r"
+            >
+              Monto Total Disponible
+            </th>
+            <th
+              scope="col"
+              className="text-sm font-medium text-gray-900 px-6 py-4 border-r"
+            >
               Registrado el
             </th>
             <th
@@ -69,6 +87,21 @@ export default function RawMaterialTable(props) {
               </td>
               <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap border-r">
                 {capitalize(rawMaterial.name)}
+              </td>
+              {rawMaterial.measurement === "UNIDADES" ? (
+                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap border-r">
+                  {Math.round(rawMaterial.stock)} {rawMaterial.measurement}
+                </td>
+              ) : (
+                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap border-r">
+                  {rawMaterial.stock} {rawMaterial.measurement}
+                </td>
+              )}
+              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap border-r">
+                ${rawMaterial.averageCost}
+              </td>
+              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap border-r">
+                ${rawMaterial.amount}
               </td>
               <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap border-r">
                 {rawMaterial.createdAt}
