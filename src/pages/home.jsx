@@ -1,10 +1,13 @@
-import MainLayout from "@layouts/MainLayout";
+import Head from "next/head";
 import Home from "@components/Home/Home";
 
 export default function dashboard() {
   return (
-    <MainLayout page="Home">
-      <Home/>
-    </MainLayout>
+    <>
+      <Head>
+        <title>Home - BeeReign</title>
+      </Head>
+      <Home />
+    </>
   );
 }

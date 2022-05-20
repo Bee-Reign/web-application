@@ -1,3 +1,4 @@
+import Image from "next/image"
 <div className="h-screen bg-slate-50 flex justify-center items-center w-full">
   <form onSubmit={submitHandler}>
     <div className="bg-white px-8 py-8 rounded-xl w-screen shadow-md max-w-sm">
