@@ -1,23 +1,16 @@
 import { PencilAltIcon, TrashIcon } from "@heroicons/react/outline";
 import Link from "next/link";
 
+import Loading from "@components/Animation/Loading";
 import capitalize from "@utils/capitalize";
 
-export default function RawMaterialTable(props) {
-  const { rawMaterials = [], loading } = props;
+export default function RawMaterialTable({ rawMaterials = [], loading }) {
   if (loading == true) {
-    return (
-      <div className="mt-8 flex items-center justify-center space-x-2 animate-pulse">
-        <div
-          style={{ borderTopColor: "transparent" }}
-          className="w-36 h-36 border-4 border-beereign_yellow border-solid rounded-full animate-spin"
-        />
-      </div>
-    );
+    return <Loading />;
   } else if (rawMaterials.length === 0) {
     return (
-      <h3 className="text-center font-mono font-medium text-lg">
-        No hay materias primas
+      <h3 className="text-center font-mono text-2xl">
+        no se encontró ningún registro
       </h3>
     );
   }
@@ -26,52 +19,28 @@ export default function RawMaterialTable(props) {
       <table className="min-w-full border text-center">
         <thead className="border-b">
           <tr>
-            <th
-              scope="col"
-              className="text-sm font-medium text-gray-900 px-6 py-4 border-r"
-            >
+            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
               ID
             </th>
-            <th
-              scope="col"
-              className="text-sm font-medium text-gray-900 px-6 py-4 border-r"
-            >
+            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
               Código
             </th>
-            <th
-              scope="col"
-              className="text-sm font-medium text-gray-900 px-6 py-4 border-r"
-            >
+            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
               Nombre
             </th>
-            <th
-              scope="col"
-              className="text-sm font-medium text-gray-900 px-6 py-4 border-r"
-            >
+            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
               En Inventario
             </th>
-            <th
-              scope="col"
-              className="text-sm font-medium text-gray-900 px-6 py-4 border-r"
-            >
+            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
               Costo Promedio Unitario
             </th>
-            <th
-              scope="col"
-              className="text-sm font-medium text-gray-900 px-6 py-4 border-r"
-            >
+            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
               Monto Total Disponible
             </th>
-            <th
-              scope="col"
-              className="text-sm font-medium text-gray-900 px-6 py-4 border-r"
-            >
+            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
               Registrado el
             </th>
-            <th
-              scope="col"
-              className="text-sm font-medium text-gray-900 px-6 py-4"
-            >
+            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
               Acciones
             </th>
           </tr>
@@ -82,31 +51,31 @@ export default function RawMaterialTable(props) {
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 border-r">
                 {rawMaterial.id}
               </td>
-              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap border-r">
+              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
                 {rawMaterial.code.toLocaleUpperCase()}
               </td>
-              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap border-r">
+              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
                 {capitalize(rawMaterial.name)}
               </td>
               {rawMaterial.measurement === "UNIDADES" ? (
-                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap border-r">
+                <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
                   {Math.round(rawMaterial.stock)} {rawMaterial.measurement}
                 </td>
               ) : (
-                <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap border-r">
+                <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
                   {rawMaterial.stock} {rawMaterial.measurement}
                 </td>
               )}
-              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap border-r">
+              <td className="font-mono text-gray-900 px-6 py-4 whitespace-nowrap border-r">
                 ${rawMaterial.averageCost}
               </td>
-              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap border-r">
+              <td className="font-mono text-gray-900 px-6 py-4 whitespace-nowrap border-r">
                 ${rawMaterial.amount}
               </td>
-              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap border-r">
+              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
                 {rawMaterial.createdAt}
               </td>
-              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
                 <div className="flex justify-center">
                   <Link href={`/raw-material/edit/${rawMaterial.id}`}>
                     <a>

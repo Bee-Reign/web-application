@@ -3,23 +3,16 @@ import Link from "next/link";
 import { toast } from "react-toastify";
 
 import { deleteEmployee } from "@service/api/employee";
+import Loading from "@components/Animation/Loading";
 import capitalize from "@utils/capitalize";
 
-export default function EmployeeTable(props) {
-  const { employees = [], loading } = props;
+export default function EmployeeTable({ employees = [], loading }) {
   if (loading == true) {
-    return (
-      <div className="mt-8 flex items-center justify-center space-x-2 animate-pulse">
-        <div
-          style={{ borderTopColor: "transparent" }}
-          className="w-36 h-36 border-4 border-beereign_yellow border-solid rounded-full animate-spin"
-        />
-      </div>
-    );
+    return <Loading />;
   } else if (employees.length === 0) {
     return (
-      <h3 className="text-center font-mono font-medium text-lg">
-        No hay empleados
+      <h3 className="text-center font-mono text-2xl">
+        no se encontró ningún registro
       </h3>
     );
   }
@@ -28,46 +21,22 @@ export default function EmployeeTable(props) {
       <table className="min-w-full border text-center">
         <thead className="border-b">
           <tr>
-            <th
-              scope="col"
-              className="text-sm font-medium text-gray-900 px-6 py-4 border-r"
-            >
+            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
               ID
             </th>
-            <th
-              scope="col"
-              className="text-sm font-medium text-gray-900 px-6 py-4 border-r"
-            >
+            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
               Nombre
             </th>
-            <th
-              scope="col"
-              className="text-sm font-medium text-gray-900 px-6 py-4 border-r"
-            >
-              Apellido
-            </th>
-            <th
-              scope="col"
-              className="text-sm font-medium text-gray-900 px-6 py-4 border-r"
-            >
+            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
               Celular
             </th>
-            <th
-              scope="col"
-              className="text-sm font-medium text-gray-900 px-6 py-4 border-r"
-            >
+            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
               Email
             </th>
-            <th
-              scope="col"
-              className="text-sm font-medium text-gray-900 px-6 py-4 border-r"
-            >
+            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
               Tipo de Empleado
             </th>
-            <th
-              scope="col"
-              className="text-sm font-medium text-gray-900 px-6 py-4 border-r"
-            >
+            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
               Acciones
             </th>
           </tr>
@@ -78,22 +47,17 @@ export default function EmployeeTable(props) {
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 border-r">
                 {employee.id}
               </td>
-              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap border-r">
-                {capitalize(employee.name)}
+              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
+                {capitalize(employee.name)} {capitalize(employee.lastName)}
               </td>
-              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap border-r">
-                {capitalize(employee.lastName)}
-              </td>
-              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap border-r">
+              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
                 {employee.cellPhone}
               </td>
-              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap border-r">
+              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
                 {employee.email}
               </td>
-              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap border-r">
-                {capitalize(employee.typeOfEmployee.name)}
-              </td>
-              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+              <td>{capitalize(employee.typeOfEmployee.name)}</td>
+              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
                 <div className="flex justify-center">
                   <Link href={`/employee/edit/${employee.id}`}>
                     <a>

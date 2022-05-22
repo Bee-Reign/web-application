@@ -9,17 +9,17 @@ export default function Add() {
         <div className="flex justify-start items-center">
           <Link href="/product">
             <a>
-              <ViewGridIcon className="w-12 text-beereign_silver" />
+              <ViewGridIcon className="w-9 text-beereign_grey" />
             </a>
           </Link>
-          <p className="ml-2 font-sans font-normal text-2xl">
+          <div className="ml-2 font-sans font-normal text-3xl">
             Registro de Producto
-          </p>
+          </div>
         </div>
       </section>
 
       <section className="mx-3 xl:mx-6 text-center">
-        <h2 className="mt-5 text-lg">Información del Prodcuto</h2>
+        <h2 className="mt-6 font-mono text-2xl">Información del Prodcuto</h2>
         <AddProduct />
       </section>
     </>

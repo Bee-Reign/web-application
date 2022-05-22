@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import Head from "next/head";
 import { HomeIcon, TrashIcon } from "@heroicons/react/outline";
@@ -8,13 +8,14 @@ import { toast } from "react-toastify";
 
 import { getAllProducts } from "@service/api/product";
 import { getBatch } from "@service/api/rawMaterialBatch";
+import { checkId } from "@schema/rawMaterialBatchSchema";
 import Button from "@components/Button";
 import { logError } from "@utils/errorHandler";
 import capitalize from "@utils/capitalize";
 
 const Packing = () => {
   const [batch, setBatch] = useState("");
-  const [unitCost, setUnitCost] = useState(0.0);
+  const [unitCost, setUnitCost] = useState(null);
   const [batches, setBatches] = useState([]);
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -24,17 +25,29 @@ const Packing = () => {
     const key = e.keyCode || e.which;
     if (key == 13) {
       e.preventDefault();
+      const { error } = await checkId.validate({ id: batch });
+      if (error) {
+        toast.error("El código de lote no es válido");
+        return;
+      }
       getBatch(batch)
         .then((result) => {
           result.quantityUsed = 0;
           const list = batches;
-          console.log(list);
+          list.map((item) => {
+            if (batch == item.id) {
+              toast.error("El lote introducido ya está en la lista");
+              throw false;
+            }
+          });
           list.push(result);
           setBatches(list);
         })
         .catch((error) => {
-          if (logError(error) === 404) {
-            toast.error("No existe un lote con ese código");
+          if (error != false) {
+            if (logError(error) === 404) {
+              toast.error("No existe un lote con ese código");
+            }
           }
         })
         .finally(() => {
@@ -42,6 +55,32 @@ const Packing = () => {
         });
     }
   }
+
+  useEffect(() => {
+    updateCost();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [batches]);
+
+  const handleDelete = async (index, e) => {
+    setBatches(batches.filter((item, i) => i !== index));
+    toast.info("Lote elimiando de la lista");
+  };
+
+  function updateCost() {
+    let cost = 0.0;
+    const list = batches;
+    list.map((item) => {
+      cost += item.unitCost * item.quantityUsed;
+    });
+    setUnitCost(cost.toFixed(2));
+  }
+
+  const changeQuantity = (value, index) => {
+    const list = batches;
+    list[index].quantityUsed = value;
+    setBatches(list);
+    updateCost();
+  };
 
   const getProducts = () => {
     return getAllProducts(query)
@@ -83,18 +122,18 @@ const Packing = () => {
         <div className="flex justify-start items-center">
           <Link href="/home">
             <a>
-              <HomeIcon className="w-12 text-beereign_silver" />
+              <HomeIcon className="w-9 text-beereign_grey" />
             </a>
           </Link>
-          <p className="ml-2 font-sans font-normal text-xl">
-            Registrar Envasado
-          </p>
+          <div className="ml-2 font-sans font-normal text-3xl">
+            Módulo de Envasado
+          </div>
         </div>
       </section>
 
       <section className="mx-3 xl:mx-6 text-center">
-        <h2 className="mt-5 text-lg">Detalle del envasado</h2>
-        <form className="mt-4" onSubmit={handleSubmit}>
+        <h2 className="mt-6 font-mono text-2xl">Detalle del envasado</h2>
+        <form className="mt-5" onSubmit={handleSubmit}>
           <div className="mb-5 mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
             <AsyncSelect
               className="form-control block w-full py-1 text-left font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none"
@@ -105,12 +144,15 @@ const Packing = () => {
               cacheOptions
               onInputChange={onInputChange}
               defaultOptions
-              placeholder={"Buscar Producto... *"}
+              placeholder={"Buscar Producto a Envasar... *"}
               onChange={handleChangeProduct}
             />
           </div>
 
-          <div className="mb-5 mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
+          <div className="mb-5 flex mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
+            <label className="font-serif" htmlFor="expirationDate">
+              Fecha de Expiración
+            </label>
             <input
               name="expirationDate"
               type="date"
@@ -119,23 +161,22 @@ const Packing = () => {
             />
           </div>
 
-          <div className="mb-5 flex mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
+          <div className="mb-5 mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
             <input
               name="amount"
               type="number"
               min="1"
               className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-              placeholder="Cantidad (*)"
+              placeholder="Cantidad a Envasar (*)"
             />
           </div>
 
           <div className="mb-5 flex mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
             <input
-              id="batch"
               value={batch}
               type="search"
               className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-              placeholder="# Lote"
+              placeholder="Lote de Mareria Prima #"
               onKeyPress={handleKeyPress}
               onChange={(e) => setBatch(e.target.value)}
             />
@@ -153,71 +194,75 @@ const Packing = () => {
                       <tr>
                         <th
                           scope="col"
-                          className="text-sm font-medium text-gray-900 px-2 py-2 border-r"
+                          className="font-mono text-black px-6 py-4 border-r"
                         ></th>
                         <th
                           scope="col"
-                          className="text-sm font-medium text-gray-900 px-6 py-4 border-r"
+                          className="font-mono text-black px-6 py-4 border-r"
                         >
-                          # Lote
+                          Lote #
                         </th>
                         <th
                           scope="col"
-                          className="text-sm font-medium text-gray-900 px-6 py-4 border-r"
+                          className="font-mono text-black px-6 py-4 border-r"
                         >
                           Materia Prima
                         </th>
                         <th
                           scope="col"
-                          className="text-sm font-medium text-gray-900 px-6 py-4 border-r"
+                          className="font-mono text-black px-6 py-4 border-r"
                         >
-                          Costo
+                          Costo Unitario
                         </th>
                         <th
                           scope="col"
-                          className="text-sm font-medium text-gray-900 px-6 py-4 border-r"
+                          className="font-mono text-black px-6 py-4 border-r"
                         >
                           Cantidad Disponible
                         </th>
                         <th
                           scope="col"
-                          className="text-sm font-medium text-gray-900 px-6 py-4 border-r"
+                          className="font-mono text-black px-6 py-4 border-r"
                         >
                           Cantidad Usada
                         </th>
                       </tr>
                     </thead>
                     <tbody>
-                      {batches.map((data) => (
-                        <tr
-                          key={`batches-item-${data.id}`}
-                          className="border-b"
-                        >
+                      {batches.map((data, index) => (
+                        <tr key={index} className="border-b">
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 border-r">
-                            <div>
+                            <div
+                              type="button"
+                              onClick={(e) => handleDelete(index, e)}
+                            >
                               <TrashIcon className="w-6 text-red-500" />
                             </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 border-r">
                             {data.id}
                           </td>
-                          <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap border-r">
+                          <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
                             {capitalize(data.rawMaterial.name)}
                           </td>
-                          <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap border-r">
+                          <td className="font-mono text-gray-900 px-6 py-4 whitespace-nowrap border-r">
                             ${data.unitCost}
                           </td>
-                          <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap border-r">
+                          <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
                             {data.stock} {data.measurement}
                           </td>
-                          <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap border-r">
+                          <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
                             <div className="mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
                               <input
                                 type="number"
                                 step="0.5"
                                 min="0"
+                                max={data.stock}
                                 className="form-control block w-full px-1 py-1 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                                 placeholder="Cantidad (*)"
+                                onChange={(e) =>
+                                  changeQuantity(e.target.value, index)
+                                }
                               />
                             </div>
                           </td>
@@ -228,21 +273,15 @@ const Packing = () => {
                 </div>
               </div>
             </div>
+            <div className="text-right">
+              <h3 className="text-lg font-mono">
+                Costo Unitario del Producto:{" "}
+                <span className="font-bold">${unitCost}</span>
+              </h3>
+            </div>
           </div>
-
           <Button loading={loading} />
         </form>
-      </section>
-
-      <section className="mt-5 mx-6 md:mx-12 xl:mx-20 2xl:mx-28 flex items-center justify-end">
-        <div className="text-right">
-          <h3 className="text-lg font-mono">
-            Costo Unitario: <span className="font-bold">${unitCost}</span>
-          </h3>
-          <h3 className="text-lg font-mono">
-            Total del envasado: <span className="font-bold">$0.00</span>
-          </h3>
-        </div>
       </section>
     </>
   );

@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 
 import { getWarehouse } from "@service/api/warehouse";
 import EditWarehouse from "@components/Warehouse/Form/EditWarehouse";
+import Head from "next/head";
 
 export default function Edit() {
   const [warehouse, setWarehouse] = useState(undefined);
@@ -23,19 +24,24 @@ export default function Edit() {
 
   return (
     <>
+      <Head>
+        <title>Editar Bodega - BeeReign</title>
+      </Head>
       <section className="mx-3 xl:mx-6 flex items-center justify-between">
         <div className="flex justify-start items-center">
           <Link href="/warehouse">
             <a>
-              <ViewGridIcon className="w-12 text-beereign_silver" />
+              <ViewGridIcon className="w-9 text-beereign_grey" />
             </a>
           </Link>
-          <p className="ml-2 font-sans font-normal text-2xl">Editar Bodega</p>
+          <div className="ml-2 font-sans font-normal text-3xl">
+            Editar Bodega
+          </div>
         </div>
       </section>
 
       <section className="mx-3 xl:mx-6 text-center">
-        <h2 className="mt-5 text-lg">Información de la Bodega</h2>
+        <h2 className="mt-6 font-mono text-2xl">Información de la Bodega</h2>
         <EditWarehouse warehouse={warehouse} />
       </section>
     </>

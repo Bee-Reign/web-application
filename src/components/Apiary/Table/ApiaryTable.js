@@ -1,23 +1,16 @@
 import { PencilAltIcon, TrashIcon } from "@heroicons/react/outline";
 import Link from "next/link";
 
+import Loading from "@components/Animation/Loading";
 import capitalize from "@utils/capitalize";
 
-export default function ApiaryTable(props) {
-  const { apiaries = [], loading } = props;
+export default function ApiaryTable({ apiaries = [], loading }) {
   if (loading == true) {
-    return (
-      <div className="mt-8 flex items-center justify-center space-x-2 animate-pulse">
-        <div
-          style={{ borderTopColor: "transparent" }}
-          className="w-36 h-36 border-4 border-beereign_yellow border-solid rounded-full animate-spin"
-        />
-      </div>
-    );
+    return <Loading />;
   } else if (apiaries.length === 0) {
     return (
-      <h3 className="text-center font-mono font-medium text-lg">
-        No hay Apiarios
+      <h3 className="text-center font-mono text-2xl">
+        no se encontró ningún registro
       </h3>
     );
   }
@@ -28,37 +21,37 @@ export default function ApiaryTable(props) {
           <tr>
             <th
               scope="col"
-              className="text-sm font-medium text-gray-900 px-6 py-4 border-r"
+              className="font-mono text-black px-6 py-4 border-r"
             >
               ID
             </th>
             <th
               scope="col"
-              className="text-sm font-medium text-gray-900 px-6 py-4 border-r"
+              className="font-mono text-black px-6 py-4 border-r"
             >
               Nombre
             </th>
             <th
               scope="col"
-              className="text-sm font-medium text-gray-900 px-6 py-4 border-r"
+              className="font-mono text-black px-6 py-4 border-r"
             >
               País
             </th>
             <th
               scope="col"
-              className="text-sm font-medium text-gray-900 px-6 py-4 border-r"
+              className="font-mono text-black px-6 py-4 border-r"
             >
               Provincia
             </th>
             <th
               scope="col"
-              className="text-sm font-medium text-gray-900 px-6 py-4 border-r"
+              className="font-mono text-black px-6 py-4 border-r"
             >
               Ciudad
             </th>
             <th
               scope="col"
-              className="text-sm font-medium text-gray-900 px-6 py-4"
+              className="font-mono text-black px-6 py-4 border-r"
             >
               Acciones
             </th>
@@ -70,16 +63,16 @@ export default function ApiaryTable(props) {
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 border-r">
                 {apiary.id}
               </td>
-              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap border-r">
+              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
                 {apiary.name.toUpperCase()}
               </td>
-              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap border-r">
+              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
                 {capitalize(apiary.country.name)}
               </td>
-              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap border-r">
+              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
                 {capitalize(apiary.province.name)}
               </td>
-              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap border-r">
+              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
                 {capitalize(apiary.city)}
               </td>
               <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">

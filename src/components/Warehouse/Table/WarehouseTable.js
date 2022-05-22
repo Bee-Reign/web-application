@@ -1,23 +1,16 @@
 import { PencilAltIcon, TrashIcon } from "@heroicons/react/outline";
 import Link from "next/link";
 
+import Loading from "@components/Animation/Loading";
 import capitalize from "@utils/capitalize";
 
-export default function WarehouseTable(props) {
-  const { warehouses = [], loading } = props;
+export default function WarehouseTable({ warehouses = [], loading }) {
   if (loading == true) {
-    return (
-      <div className="mt-8 flex items-center justify-center space-x-2 animate-pulse">
-        <div
-          style={{ borderTopColor: "transparent" }}
-          className="w-36 h-36 border-4 border-beereign_yellow border-solid rounded-full animate-spin"
-        />
-      </div>
-    );
+    return <Loading />;
   } else if (warehouses.length === 0) {
     return (
-      <h3 className="text-center font-mono font-medium text-lg">
-        No hay Bodegas
+      <h3 className="text-center font-mono text-2xl">
+        no se encontró ningún registro
       </h3>
     );
   }
@@ -26,28 +19,16 @@ export default function WarehouseTable(props) {
       <table className="min-w-full border text-center">
         <thead className="border-b">
           <tr>
-            <th
-              scope="col"
-              className="text-sm font-medium text-gray-900 px-6 py-4 border-r"
-            >
+            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
               ID
             </th>
-            <th
-              scope="col"
-              className="text-sm font-medium text-gray-900 px-6 py-4 border-r"
-            >
+            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
               Nombre
             </th>
-            <th
-              scope="col"
-              className="text-sm font-medium text-gray-900 px-6 py-4 border-r"
-            >
+            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
               Ciudad
             </th>
-            <th
-              scope="col"
-              className="text-sm font-medium text-gray-900 px-6 py-4"
-            >
+            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
               Acciones
             </th>
           </tr>
@@ -58,13 +39,13 @@ export default function WarehouseTable(props) {
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 border-r">
                 {warehouse.id}
               </td>
-              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap border-r">
+              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
                 {capitalize(warehouse.name)}
               </td>
-              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap border-r">
+              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
                 {capitalize(warehouse.city)}
               </td>
-              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
                 <div className="flex justify-center">
                   <Link href={`/warehouse/edit/${warehouse.id}`}>
                     <a>

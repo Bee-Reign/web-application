@@ -5,9 +5,7 @@ import {
   ChevronRightIcon,
 } from "@heroicons/react/outline";
 
-const Pagination = (props) => {
-  const { page, limit, totalPages, onPageChange } = props;
-
+const Pagination = ({ loading, page, limit, totalPages, onPageChange }) => {
   const firstPage = () => {
     if (page / limit + 1 > 1) {
       onPageChange(0);
@@ -32,6 +30,8 @@ const Pagination = (props) => {
     }
   };
 
+  if (loading === true || totalPages === 0) return;
+
   return (
     <section className="mt-5 flex justify-center xl:justify-start xl:ml-6">
       <a className="w-12 md:w-14 border flex items-center" onClick={firstPage}>
@@ -49,8 +49,8 @@ const Pagination = (props) => {
           aria-hidden="true"
         />
       </a>
-      <div className="w-40 md:w-44 h-12 border flex items-center">
-        <p className="mx-auto text-">
+      <div className="w-40 md:w-44 h-12 border flex items-center overflow-hidden">
+        <p className="mx-auto text-center font-light">
           Página {page / limit + 1} de {totalPages}
         </p>
       </div>

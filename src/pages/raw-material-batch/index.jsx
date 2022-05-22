@@ -1,7 +1,6 @@
 import Head from "next/head";
 import { useState, useEffect } from "react";
 import { HomeIcon } from "@heroicons/react/outline";
-import { PlusIcon } from "@heroicons/react/solid";
 import Link from "next/link";
 import Select from "react-select";
 
@@ -9,6 +8,7 @@ import { getRawMaterialBatches } from "@service/api/rawMaterialBatch";
 import Pagination from "@components/Pagination";
 import { logError } from "@utils/errorHandler";
 import BatchTable from "@components/RawMaterialBatch/Table/BatchTable";
+import NewButton from "@components/Button/NewButton";
 
 const RAW_MATERIAL_BATCH_LIMIT = 15;
 
@@ -66,29 +66,23 @@ export default function Index() {
         <div className="flex justify-start items-center">
           <Link href="/home">
             <a>
-              <HomeIcon className="w-12 text-beereign_silver" />
+              <HomeIcon className="w-9 text-beereign_grey" />
             </a>
           </Link>
-          <p className="ml-2 font-sans font-normal text-xl">
-            Lotes de Materia Prima
-          </p>
+          <div className="ml-2 font-sans font-normal text-3xl">
+            Lotes de MP
+          </div>
         </div>
-        <div className="">
-          <Link href="/raw-material-batch/add">
-            <a>
-              <PlusIcon className="w-12 bg-beereign_green rounded-3xl text-white xl:hidden" />
-              <button
-                type="button"
-                className="hidden xl:inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out"
-              >
-                Registrar Nuevo Lote
-              </button>
-            </a>
-          </Link>
+        <div>
+          <NewButton
+            label={"Registrar Nuevo Lote"}
+            path={"/raw-material-batch/add"}
+          />
         </div>
       </section>
 
       <Pagination
+        loading={loading}
         page={page}
         limit={RAW_MATERIAL_BATCH_LIMIT}
         totalPages={totalPages}
@@ -127,6 +121,18 @@ export default function Index() {
           </div>
         </div>
       </section>
+
+      {rawMaterialBatches?.rows?.length > 14 ? (
+        <Pagination
+          loading={loading}
+          page={page}
+          limit={APIARY_LIMIT}
+          totalPages={totalPages}
+          onPageChange={(page) => setPage(page)}
+        />
+      ) : (
+        <></>
+      )}
     </>
   );
 }

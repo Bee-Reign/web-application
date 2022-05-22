@@ -2,22 +2,16 @@ import { PencilAltIcon, TrashIcon } from "@heroicons/react/outline";
 import Link from "next/link";
 
 import capitalize from "@utils/capitalize";
+import Loading from "@components/Animation/Loading";
 
 export default function ProductTable(props) {
   const { products = [], loading } = props;
   if (loading == true) {
-    return (
-      <div className="mt-8 flex items-center justify-center space-x-2 animate-pulse">
-        <div
-          style={{ borderTopColor: "transparent" }}
-          className="w-36 h-36 border-4 border-beereign_yellow border-solid rounded-full animate-spin"
-        />
-      </div>
-    );
+    return <Loading />;
   } else if (products.length === 0) {
     return (
-      <h3 className="text-center font-mono font-medium text-lg">
-        No hay productos
+      <h3 className="text-center font-mono text-2xl">
+        no se encontró ningún registro
       </h3>
     );
   }
@@ -26,34 +20,19 @@ export default function ProductTable(props) {
       <table className="min-w-full border text-center">
         <thead className="border-b">
           <tr>
-            <th
-              scope="col"
-              className="text-sm font-medium text-gray-900 px-6 py-4 border-r"
-            >
+            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
               ID
             </th>
-            <th
-              scope="col"
-              className="text-sm font-medium text-gray-900 px-6 py-4 border-r"
-            >
+            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
               Código de Barra
             </th>
-            <th
-              scope="col"
-              className="text-sm font-medium text-gray-900 px-6 py-4 border-r"
-            >
+            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
               Nombre del producto
             </th>
-            <th
-              scope="col"
-              className="text-sm font-medium text-gray-900 px-6 py-4 border-r"
-            >
+            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
               Registrado el
             </th>
-            <th
-              scope="col"
-              className="text-sm font-medium text-gray-900 px-6 py-4"
-            >
+            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
               Acciones
             </th>
           </tr>
@@ -64,16 +43,16 @@ export default function ProductTable(props) {
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 border-r">
                 {product.id}
               </td>
-              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap border-r">
+              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
                 {product.barcode}
               </td>
-              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap border-r">
+              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
                 {capitalize(product.name)}
               </td>
-              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap border-r">
+              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
                 {product.createdAt}
               </td>
-              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
                 <div className="flex justify-center">
                   <Link href={`/product/edit/${product.id}`}>
                     <a>

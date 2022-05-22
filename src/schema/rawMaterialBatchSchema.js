@@ -17,6 +17,10 @@ const measurement = Joi.string()
 const quantity = Joi.number().positive();
 const unitCost = Joi.number().positive();
 
+const checkId = Joi.object({
+  id: id.required(),
+});
+
 const newSchema = Joi.object({
   rawMaterialId: rawMaterialId.required(),
   warehouseId: warehouseId.required(),
@@ -28,5 +32,6 @@ const newSchema = Joi.object({
 });
 
 module.exports = {
+  checkId,
   newSchema,
 };

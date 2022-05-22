@@ -7,15 +7,13 @@ export default function Home() {
   return (
     <>
       <section className="ml-3 flex items-center justify-start">
-        <Link href="/home">
-          <a>
-            <HomeIcon
-              className="h-11 w-11 text-beereign_ligth"
-              aria-hidden="true"
-            />
-          </a>
-        </Link>
-        <h2 className="ml-2 font-sans font-light text-2xl">Home</h2>
+        <div>
+          <HomeIcon
+            className="w-9 text-beereign_grey"
+            aria-hidden="true"
+          />
+        </div>
+        <h2 className="ml-2 font-sans font-normal text-3xl">Home</h2>
       </section>
       {/* ---------- Modules ---------- */}
       <section className=" mt-5">
@@ -28,7 +26,7 @@ export default function Home() {
                     className="w-20 text-beereign_ligth"
                     aria-hidden="true"
                   />
-                  <span className="text-beereign_yellow font-sans font-light text-2xl mr-2">
+                  <span className="text-beereign_yellow text-right font-light font-sans text-2xl mr-2">
                     Apiarios
                   </span>
                 </div>
@@ -44,8 +42,8 @@ export default function Home() {
                     className="w-20 text-beereign_ligth"
                     aria-hidden="true"
                   />
-                  <span className="text-beereign_yellow font-sans font-light text-2xl mr-2">
-                    Inventario de Materias Primas
+                  <span className="text-beereign_yellow text-right font-light font-sans text-2xl mr-2">
+                    Inventario de Materia Prima
                   </span>
                 </div>
               </a>
@@ -60,7 +58,7 @@ export default function Home() {
                     className="w-20 text-beereign_ligth"
                     aria-hidden="true"
                   />
-                  <span className="text-beereign_yellow font-sans font-light text-2xl mr-2">
+                  <span className="text-beereign_yellow text-right font-light font-sans text-2xl mr-2">
                     Bodegas
                   </span>
                 </div>
@@ -76,7 +74,7 @@ export default function Home() {
                     className="w-20 text-beereign_ligth"
                     aria-hidden="true"
                   />
-                  <span className="text-beereign_yellow font-sans font-light text-2xl mr-2">
+                  <span className="text-beereign_yellow text-right font-light font-sans text-2xl mr-2">
                     Lotes de Materia Prima
                   </span>
                 </div>
@@ -92,7 +90,7 @@ export default function Home() {
                     className="w-20 text-beereign_ligth"
                     aria-hidden="true"
                   />
-                  <span className="text-beereign_yellow font-sans font-light text-2xl mr-2">
+                  <span className="text-beereign_yellow text-right font-light font-sans text-2xl mr-2">
                     Envasado
                   </span>
                 </div>
@@ -108,7 +106,7 @@ export default function Home() {
                     className="w-20 text-beereign_ligth"
                     aria-hidden="true"
                   />
-                  <span className="text-beereign_yellow font-sans font-light text-2xl mr-2">
+                  <span className="text-beereign_yellow text-right font-light font-sans text-2xl mr-2">
                     Inventario de Productos
                   </span>
                 </div>
@@ -124,7 +122,7 @@ export default function Home() {
                     className="w-20 text-beereign_ligth"
                     aria-hidden="true"
                   />
-                  <span className="text-beereign_yellow font-sans font-light text-2xl mr-2">
+                  <span className="text-beereign_yellow text-right font-light font-sans text-2xl mr-2">
                     Empleados
                   </span>
                 </div>

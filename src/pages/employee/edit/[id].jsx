@@ -32,19 +32,17 @@ export default function Edit() {
         <div className="flex justify-start items-center">
           <Link href="/employee">
             <a>
-              <ViewGridIcon className="w-12 text-beereign_silver" />
+              <ViewGridIcon className="w-9 text-beereign_grey" />
             </a>
           </Link>
-          <Link className href="/employee/add">
-            <a className="ml-2 font-sans font-normal text-2xl">
-              Editar Empleado
-            </a>
-          </Link>
+          <div className="ml-2 font-sans font-normal text-2xl">
+            Editar Empleado
+          </div>
         </div>
       </section>
 
       <section className="mx-3 xl:mx-6 text-center">
-        <h2 className="mt-5 text-lg">Información del Empleado</h2>
+        <h2 className="mt-6 font-mono text-2xl">Información del Empleado</h2>
         <div className="mt-5 flex space-x-2 justify-center">
           <div>
             <TabButtons

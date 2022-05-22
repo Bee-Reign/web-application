@@ -124,7 +124,10 @@ export default function AddBatch() {
         />
       </div>
 
-      <div className="mb-5 mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
+      <div className="mb-5 flex mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
+        <label className="font-serif" htmlFor="entryDate">
+          Fecha de Envasado
+        </label>
         <input
           name="entryDate"
           type="date"
@@ -133,7 +136,10 @@ export default function AddBatch() {
         />
       </div>
 
-      <div className="mb-5 mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
+      <div className="mb-5 flex mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
+        <label className="font-serif" htmlFor="expirationDate">
+          Fecha de Expiración
+        </label>
         <input
           name="expirationDate"
           type="date"
