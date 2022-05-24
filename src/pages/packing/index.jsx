@@ -6,21 +6,28 @@ import { CameraIcon } from "@heroicons/react/solid";
 import AsyncSelect from "react-select/async";
 import { toast } from "react-toastify";
 
+import { newSchema } from "@schema/packingSchema";
+import { addProductBatch } from "@service/api/productBatch";
 import { getAllProducts } from "@service/api/product";
-import { getBatch } from "@service/api/rawMaterialBatch";
-import { checkId } from "@schema/rawMaterialBatchSchema";
+import { getAllWarehouses } from "@service/api/warehouse";
 import Button from "@components/Button";
 import { logError } from "@utils/errorHandler";
 import capitalize from "@utils/capitalize";
+import { getBatchForPacking } from "@service/api/rawMaterialBatch";
+import { checkId } from "@schema/rawMaterialBatchSchema";
 
 const Packing = () => {
+  const formRef = useRef(null);
   const [batch, setBatch] = useState("");
   const [unitCost, setUnitCost] = useState(null);
+  const [quantity, setQuantity] = useState(1);
   const [batches, setBatches] = useState([]);
   const [product, setProduct] = useState(null);
+  const [warehouse, setWarehouse] = useState(null);
   const [loading, setLoading] = useState(false);
   let query = "";
 
+  const toDay = new Date().toISOString().substring(0, 10);
   async function handleKeyPress(e) {
     const key = e.keyCode || e.which;
     if (key == 13) {
@@ -30,13 +37,13 @@ const Packing = () => {
         toast.error("El código de lote no es válido");
         return;
       }
-      getBatch(batch)
+      getBatchForPacking(batch)
         .then((result) => {
           result.quantityUsed = 0;
           const list = batches;
           list.map((item) => {
             if (batch == item.id) {
-              toast.error("El lote introducido ya está en la lista");
+              toast.error("Ese lote ya está en la lista");
               throw false;
             }
           });
@@ -46,7 +53,7 @@ const Packing = () => {
         .catch((error) => {
           if (error != false) {
             if (logError(error) === 404) {
-              toast.error("No existe un lote con ese código");
+              toast.error("No se encontro un lote con ese código");
             }
           }
         })
@@ -59,7 +66,7 @@ const Packing = () => {
   useEffect(() => {
     updateCost();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [batches]);
+  }, [batches, quantity]);
 
   const handleDelete = async (index, e) => {
     setBatches(batches.filter((item, i) => i !== index));
@@ -72,6 +79,7 @@ const Packing = () => {
     list.map((item) => {
       cost += item.unitCost * item.quantityUsed;
     });
+    cost /= quantity;
     setUnitCost(cost.toFixed(2));
   }
 
@@ -92,12 +100,26 @@ const Packing = () => {
       });
   };
 
+  const getWarehouses = () => {
+    return getAllWarehouses(query)
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        logError(err);
+      });
+  };
+
   const onInputChange = (value) => {
     query = value.toLocaleLowerCase();
   };
 
   const handleChangeProduct = (value) => {
     setProduct(value.id);
+    query = "";
+  };
+  const handleChangeWarehouse = (value) => {
+    setWarehouse(value.id);
     query = "";
   };
 
@@ -111,12 +133,43 @@ const Packing = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("OK");
+    setLoading(true);
+    const formData = new FormData(formRef.current);
+    const data = {
+      productId: product,
+      warehouseId: warehouse,
+      entryDate: formData.get("entryDate"),
+      expirationDate: formData.get("expirationDate")
+        ? new Date(formData.get("expirationDate")).toISOString()
+        : null,
+      quantity: quantity,
+      unitCost: unitCost,
+      batches: batches,
+    };
+    const { error } = await newSchema.validate(data);
+    if (error) {
+      toast.error("Los campos con ( * ) son necesarios");
+      setLoading(false);
+      return null;
+    }
+    addProductBatch(data)
+      .then((response) => {
+        formRef.current.reset();
+        setQuantity(1);
+        setBatches([]);
+        toast.success("Embalaje registrado");
+      })
+      .catch((err) => {
+        logError(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
   return (
     <>
       <Head>
-        <title>Envasado - BeeReign</title>
+        <title>Embalaje - BeeReign</title>
       </Head>
       <section className="mx-3 xl:mx-6 flex items-center justify-between">
         <div className="flex justify-start items-center">
@@ -126,14 +179,14 @@ const Packing = () => {
             </a>
           </Link>
           <div className="ml-2 font-sans font-normal text-3xl">
-            Módulo de Envasado
+            Módulo de Embalaje
           </div>
         </div>
       </section>
 
       <section className="mx-3 xl:mx-6 text-center">
-        <h2 className="mt-6 font-mono text-2xl">Detalle del envasado</h2>
-        <form className="mt-5" onSubmit={handleSubmit}>
+        <h2 className="mt-6 font-mono text-2xl">Detalle del Embalaje</h2>
+        <form className="mt-5" ref={formRef} onSubmit={handleSubmit}>
           <div className="mb-5 mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
             <AsyncSelect
               className="form-control block w-full py-1 text-left font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none"
@@ -149,9 +202,36 @@ const Packing = () => {
             />
           </div>
 
+          <div className="mb-5 mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
+            <AsyncSelect
+              className="form-control block w-full py-1 text-left font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none"
+              styles={customStyles}
+              getOptionLabel={(e) => capitalize(e.name)}
+              getOptionValue={(e) => e.id}
+              loadOptions={getWarehouses}
+              cacheOptions
+              onInputChange={onInputChange}
+              defaultOptions
+              placeholder={"Buscar Bodega... *"}
+              onChange={handleChangeWarehouse}
+            />
+          </div>
+
+          <div className="mb-5 flex mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
+            <label className="font-serif" htmlFor="entryDate">
+              Fecha del Embalaje *
+            </label>
+            <input
+              name="entryDate"
+              type="date"
+              defaultValue={toDay}
+              className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+            />
+          </div>
+
           <div className="mb-5 flex mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
             <label className="font-serif" htmlFor="expirationDate">
-              Fecha de Expiración
+              Expiración del Producto
             </label>
             <input
               name="expirationDate"
@@ -161,13 +241,16 @@ const Packing = () => {
             />
           </div>
 
-          <div className="mb-5 mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
+          <div className="mb-5 flex mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
+          <label className="font-serif" htmlFor="expirationDate">
+              Cantidad de Productos *
+            </label>
             <input
-              name="amount"
+              value={quantity}
               type="number"
               min="1"
               className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-              placeholder="Cantidad a Envasar (*)"
+              onChange={(e) => setQuantity(e.target.value)}
             />
           </div>
 

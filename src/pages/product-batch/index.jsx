@@ -4,15 +4,15 @@ import { HomeIcon } from "@heroicons/react/outline";
 import Link from "next/link";
 import Select from "react-select";
 
-import { getRawMaterialBatches } from "@service/api/rawMaterialBatch";
+import { getProductBatches } from "@service/api/productBatch";
 import Pagination from "@components/Pagination";
 import { logError } from "@utils/errorHandler";
-import BatchTable from "@components/RawMaterialBatch/Table/BatchTable";
+import ProductBatchTable from "@components/ProductBatch/Table/BatchTable";
 
-const RAW_MATERIAL_BATCH_LIMIT = 15;
+const PRODUCT_BATCH_LIMIT = 15;
 
 export default function Index() {
-  const [rawMaterialBatches, setBatches] = useState([]);
+  const [productBatches, setBatches] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState("ASC");
@@ -40,7 +40,7 @@ export default function Index() {
   useEffect(() => {
     const loadBatches = async () => {
       setLoading(true);
-      getRawMaterialBatches(RAW_MATERIAL_BATCH_LIMIT, page, order, type)
+      getProductBatches(PRODUCT_BATCH_LIMIT, page, order, type)
         .then((result) => {
           setBatches(result);
         })
@@ -53,13 +53,11 @@ export default function Index() {
     };
     loadBatches();
   }, [page, order, type]);
-  const totalPages = Math.ceil(
-    rawMaterialBatches?.count / RAW_MATERIAL_BATCH_LIMIT
-  );
+  const totalPages = Math.ceil(productBatches?.count / PRODUCT_BATCH_LIMIT);
   return (
     <>
       <Head>
-        <title>Lotes de Materia Prima - BeeReign</title>
+        <title>Lotes de Productos - BeeReign</title>
       </Head>
       <section className="mx-3 xl:mx-6 flex items-center justify-between">
         <div className="flex justify-start items-center">
@@ -68,14 +66,16 @@ export default function Index() {
               <HomeIcon className="w-9 text-beereign_grey" />
             </a>
           </Link>
-          <div className="ml-2 font-sans font-normal text-3xl">Lotes de MP</div>
+          <div className="ml-2 font-sans font-normal text-3xl">
+            Lotes de Productos
+          </div>
         </div>
       </section>
 
       <Pagination
         loading={loading}
         page={page}
-        limit={RAW_MATERIAL_BATCH_LIMIT}
+        limit={PRODUCT_BATCH_LIMIT}
         totalPages={totalPages}
         onPageChange={(page) => setPage(page)}
       />
@@ -103,8 +103,8 @@ export default function Index() {
           <div className="overflow-x-auto">
             <div className="py-2 inline-block min-w-full">
               <div className="overflow-hidden">
-                <BatchTable
-                  rawMaterialBatches={rawMaterialBatches?.rows}
+                <ProductBatchTable
+                  productBatches={productBatches?.rows}
                   loading={loading}
                 />
               </div>
@@ -113,7 +113,7 @@ export default function Index() {
         </div>
       </section>
 
-      {rawMaterialBatches?.rows?.length > 14 ? (
+      {productBatches?.rows?.length > 14 ? (
         <Pagination
           loading={loading}
           page={page}

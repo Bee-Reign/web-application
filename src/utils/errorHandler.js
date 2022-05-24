@@ -24,12 +24,13 @@ export function logError(error) {
         window.location.href = "/home";
         break;
       case 404:
+        toast.error(`No se encontró el recurso solicitado`);
+        break;
+      case 409:
         return status;
         break;
       case 500:
-        toast.error(
-          `El servicio no está funcionando en este momento`
-        );
+        toast.error(`El servicio no está funcionando en este momento`);
         break;
       default:
         break;

@@ -162,6 +162,7 @@ export default function EditProfile({ profile, employee }) {
             aria-label="Seleccionar Tipo de Empleado"
           >
             <option value={1}>Administrador</option>
+            <option value={2}>Apicultor</option>
           </select>
         </div>
 

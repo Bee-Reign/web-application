@@ -24,6 +24,16 @@ const endPoints = {
       `${API}/${VERSION}/employees/${id}?update=${update}`,
     deleteEmployee: (id) => `${API}/${VERSION}/employees/${id}`,
   },
+  typeOfEmployees: {
+    getTypesOfEmployee: (limit, offset, filter) =>
+      `${API}/${VERSION}/types-of-employee?limit=${limit}&offset=${offset}&filter=${filter}`,
+    getAllTypesOfEmployee: (query) =>
+      `${API}/${VERSION}/types-of-employee?filter=${query}`,
+    getTypeOfEmployee: (id) => `${API}/${VERSION}/apiaries/${id}`,
+    addTypeOfEmployee: `${API}/${VERSION}/types-of-employee`,
+    updateTypeOfEmployee: (id) => `${API}/${VERSION}/types-of-employee/${id}`,
+    disableTypeOfEmployee: (id) => `${API}/${VERSION}/types-of-employee/${id}`,
+  },
   rawMaterials: {
     getRawMaterials: (limit, offset, filter) =>
       `${API}/${VERSION}/raw-materials?limit=${limit}&offset=${offset}&filter=${filter}`,
@@ -38,7 +48,10 @@ const endPoints = {
     getAll: (limit, offset, order, type) =>
       `${API}/${VERSION}/raw-material-batches?limit=${limit}&offset=${offset}&order=${order}&type=${type}`,
     addRawMaterialBatch: `${API}/${VERSION}/raw-material-batches`,
-    getById: (id) => `${API}/${VERSION}/raw-material-batches/${id}`,
+    getById: (id) =>
+      `${API}/${VERSION}/raw-material-batches/${id}?isPacking=false`,
+    getByIdForPacking: (id) =>
+      `${API}/${VERSION}/raw-material-batches/${id}?isPacking=true`,
   },
   warehouses: {
     getWarehouses: (limit, offset, filter) =>
@@ -62,6 +75,14 @@ const endPoints = {
     addProduct: `${API}/${VERSION}/products`,
     updateProduct: (id) => `${API}/${VERSION}/products/${id}`,
     disableProduct: (id) => `${API}/${VERSION}/products/${id}`,
+  },
+  productBatch: {
+    getAll: (limit, offset, order, type) =>
+      `${API}/${VERSION}/product-batches?limit=${limit}&offset=${offset}&order=${order}&type=${type}`,
+    addProductBatch: `${API}/${VERSION}/product-batches`,
+    getById: (id) => `${API}/${VERSION}/product-batches/${id}?isOutput=false`,
+    getByIdForOutput: (id) =>
+      `${API}/${VERSION}/product-batches/${id}?isOutput=true`,
   },
 };
 

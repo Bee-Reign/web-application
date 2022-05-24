@@ -17,6 +17,7 @@ export default function AddBatch() {
   const [loading, setLoading] = useState(false);
   let query = "";
 
+  const toDay = new Date().toISOString().substring(0, 10);
   const getRawMaterials = () => {
     return getAllRawMaterials(query)
       .then((result) => {
@@ -126,11 +127,12 @@ export default function AddBatch() {
 
       <div className="mb-5 flex mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
         <label className="font-serif" htmlFor="entryDate">
-          Fecha de Envasado
+          Fecha de Entrada
         </label>
         <input
           name="entryDate"
           type="date"
+          defaultValue={toDay}
           className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
           placeholder="Fecha de Entrada *"
         />
@@ -152,8 +154,8 @@ export default function AddBatch() {
         <input
           name="quantity"
           type="number"
-          step={0.01}
-          min={0.01}
+          step={0.1}
+          min={0.1}
           className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
           placeholder="Cantidad *"
         />

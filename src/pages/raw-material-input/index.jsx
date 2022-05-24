@@ -1,23 +1,23 @@
 import Link from "next/link";
 import Head from "next/head";
-import { ViewGridIcon } from "@heroicons/react/outline";
+import { HomeIcon } from "@heroicons/react/outline";
 import AddBatch from "@components/RawMaterialBatch/Form/AddBatch";
 
-const Add = () => {
+export default function Index() {
   return (
     <>
       <Head>
-        <title>Registrar Lote de MP - BeeReign</title>
+        <title>Entrada de Materia Prima - BeeReign</title>
       </Head>
       <section className="mx-3 xl:mx-6 flex items-center justify-between">
         <div className="flex justify-start items-center">
-          <Link href="/raw-material-batch">
+          <Link href="/home">
             <a>
-              <ViewGridIcon className="w-9 text-beereign_grey" />
+              <HomeIcon className="w-9 text-beereign_grey" />
             </a>
           </Link>
           <div className="ml-2 font-sans font-normal text-3xl">
-            Registrar Lote de MP
+            Entrada de MP
           </div>
         </div>
       </section>
@@ -28,6 +28,4 @@ const Add = () => {
       </section>
     </>
   );
-};
-
-export default Add;
+}

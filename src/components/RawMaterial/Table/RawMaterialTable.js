@@ -35,7 +35,7 @@ export default function RawMaterialTable({ rawMaterials = [], loading }) {
               Costo Promedio Unitario
             </th>
             <th scope="col" className="font-mono text-black px-6 py-4 border-r">
-              Monto Total Disponible
+              Valor de Costo
             </th>
             <th scope="col" className="font-mono text-black px-6 py-4 border-r">
               Registrado el
@@ -47,8 +47,11 @@ export default function RawMaterialTable({ rawMaterials = [], loading }) {
         </thead>
         <tbody>
           {rawMaterials.map((rawMaterial) => (
-            <tr key={`RawMaterial-item-${rawMaterial.id}`} className="border-b">
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 border-r">
+            <tr
+              key={`RawMaterial-item-${rawMaterial.id}`}
+              className={`border-b ${rawMaterial.stock ? "" : "bg-red-50"}`}
+            >
+              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium border-r">
                 {rawMaterial.id}
               </td>
               <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
@@ -63,14 +66,15 @@ export default function RawMaterialTable({ rawMaterials = [], loading }) {
                 </td>
               ) : (
                 <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
-                  {rawMaterial.stock} {rawMaterial.measurement}
+                  {rawMaterial.stock ? rawMaterial.stock : "Sin Stock"}{" "}
+                  {rawMaterial.measurement}
                 </td>
               )}
               <td className="font-mono text-gray-900 px-6 py-4 whitespace-nowrap border-r">
-                ${rawMaterial.averageCost}
+                ${rawMaterial.averageCost ? rawMaterial.averageCost : 0.0}
               </td>
               <td className="font-mono text-gray-900 px-6 py-4 whitespace-nowrap border-r">
-                ${rawMaterial.amount}
+                ${rawMaterial.amount ? rawMaterial.amount : 0.0}
               </td>
               <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
                 {rawMaterial.createdAt}
@@ -79,7 +83,7 @@ export default function RawMaterialTable({ rawMaterials = [], loading }) {
                 <div className="flex justify-center">
                   <Link href={`/raw-material/edit/${rawMaterial.id}`}>
                     <a>
-                      <PencilAltIcon className="w-9 bg-gray-200 rounded-lg text-beereign_grey xl:hidden" />
+                      <PencilAltIcon className="w-9 bg-transparent rounded-lg text-beereign_grey xl:hidden" />
                       <button
                         type="button"
                         className="hidden xl:inline-block px-6 py-2.5 bg-gray-200 text-beereign_grey font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-600 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-700 active:shadow-lg transition duration-150 ease-in-out"
@@ -89,7 +93,7 @@ export default function RawMaterialTable({ rawMaterials = [], loading }) {
                     </a>
                   </Link>
                   <div className="ml-4">
-                    <TrashIcon className="w-9 bg-gray-200 text-red-500 xl:hidden" />
+                    <TrashIcon className="w-9 bg-transparent text-red-500 xl:hidden" />
                     <div className="hidden xl:inline-block px-6 py-2.5 bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-600 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-700 active:shadow-lg transition duration-150 ease-in-out">
                       Eliminar
                     </div>

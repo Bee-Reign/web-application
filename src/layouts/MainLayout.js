@@ -2,7 +2,6 @@ import { useState } from "react";
 
 import Header from "@components/Header/Header";
 import TabBar from "@components/TabBar/TabBar";
-import Head from "next/head";
 import useAuth from "@hooks/useAuth";
 
 export default function MainLayout(props) {

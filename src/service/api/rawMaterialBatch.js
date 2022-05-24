@@ -13,6 +13,13 @@ export async function getBatch(id) {
   return response.data;
 }
 
+export async function getBatchForPacking(id) {
+  const response = await getData(
+    endPoints.rawMaterialBatch.getByIdForPacking(id)
+  );
+  return response.data;
+}
+
 export async function addRawMaterialBatch(body) {
   const response = await postData(
     endPoints.rawMaterialBatch.addRawMaterialBatch,
