@@ -1,25 +1,19 @@
-import { useState } from "react";
-
 import Header from "@components/Header/Header";
 import TabBar from "@components/TabBar/TabBar";
 import useAuth from "@hooks/useAuth";
+import LoginForm from "@components/Auth/LoginForm";
+import Loading from "@components/Animation/Loading";
 
 export default function MainLayout(props) {
   const { auth } = useAuth();
   const { children } = props;
 
   if (auth === undefined) {
-    return null;
+    return <Loading />;
   }
 
   if (auth === null) {
-    return (
-      <>
-        <main className="bg-beereign_bg h-screen flex items-center justify-center">
-          {children}
-        </main>
-      </>
-    );
+    return <LoginForm />;
   }
   return (
     <>

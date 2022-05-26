@@ -25,6 +25,7 @@ export function logError(error) {
         break;
       case 404:
         toast.error(`No se encontró el recurso solicitado`);
+        return status;
         break;
       case 409:
         return status;

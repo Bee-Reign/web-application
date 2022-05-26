@@ -10,14 +10,13 @@ import Button from "@components/Button";
 import { logError } from "@utils/errorHandler";
 import capitalize from "@utils/capitalize";
 
-export default function AddBatch() {
+export default function EditBatch({ batch }) {
   const formRef = useRef(null);
   const [rawMaterial, setRawMaterial] = useState(null);
   const [warehouse, setWarehouse] = useState(null);
   const [loading, setLoading] = useState(false);
   let query = "";
 
-  const toDay = new Date().toISOString().substring(0, 10);
   const getRawMaterials = () => {
     return getAllRawMaterials(query)
       .then((result) => {
@@ -64,15 +63,14 @@ export default function AddBatch() {
     setLoading(true);
     const formData = new FormData(formRef.current);
     const data = {
-      rawMaterialId: rawMaterial,
-      warehouseId: warehouse,
+      rawMaterialId: rawMaterial ? rawMaterial : batch?.rawMaterial.id,
+      warehouseId: warehouse ? warehouse : batch?.warehouse.id,
       entryDate: formData.get("entryDate"),
       expirationDate: formData.get("expirationDate")
         ? new Date(formData.get("expirationDate")).toISOString()
         : null,
       measurement: formData.get("measurement"),
       quantity: Number(formData.get("quantity")),
-      stock: Number(formData.get("stock")),
       unitCost: Number(formData.get("unitCost")),
     };
     const { error } = await newSchema.validate(data);
@@ -96,6 +94,9 @@ export default function AddBatch() {
 
   return (
     <form className="mt-5" ref={formRef} onSubmit={handleSubmit}>
+      <label className="font-serif" htmlFor="quantity">
+        Materia Prima:
+      </label>
       <div className="mb-5 mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
         <AsyncSelect
           className="form-control block w-full py-1 text-left font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none"
@@ -106,12 +107,15 @@ export default function AddBatch() {
           cacheOptions
           onInputChange={onInputChange}
           defaultOptions
-          placeholder={"Buscar Materia Prima... *"}
+          placeholder={batch?.rawMaterial.name}
           onChange={handleChangeRawMaterial}
         />
       </div>
 
       <div className="mb-5 mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
+        <label className="font-serif" htmlFor="quantity">
+          Bodega:
+        </label>
         <AsyncSelect
           className="form-control block w-full py-1 text-left font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none"
           styles={customStyles}
@@ -121,25 +125,25 @@ export default function AddBatch() {
           cacheOptions
           onInputChange={onInputChange}
           defaultOptions
-          placeholder={"Buscar Bodega... *"}
+          placeholder={batch?.warehouse.name}
           onChange={handleChangeWarehouse}
         />
       </div>
 
-      <div className="mb-5 flex mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
+      <div className="mb-5 mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
         <label className="font-serif" htmlFor="entryDate">
           Fecha de Entrada
         </label>
         <input
           name="entryDate"
           type="date"
-          defaultValue={toDay}
+          defaultValue={batch?.entryDate}
           className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
           placeholder="Fecha de Entrada *"
         />
       </div>
 
-      <div className="mb-5 flex mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
+      <div className="mb-5 mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
         <label className="font-serif" htmlFor="expirationDate">
           Fecha de Expiración
         </label>
@@ -148,34 +152,64 @@ export default function AddBatch() {
           type="date"
           className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
           placeholder="Fecha de Expiración "
+          defaultValue={
+            batch?.expirationDate !== "does not expire"
+              ? batch?.expirationDate
+              : ""
+          }
         />
       </div>
 
-      <div className="flex mb-5 mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
+      <div className="mb-5 mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
+        <label className="font-serif" htmlFor="quantity">
+          Cantidad Ingresada:
+        </label>
+        <div className="flex">
+          <input
+            name="quantity"
+            type="number"
+            step={0.1}
+            min={0.1}
+            className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+            placeholder="Cantidad *"
+            defaultValue={batch?.quantity}
+          />
+          <select
+            name="measurement"
+            placeholder="Unidad de Medidad"
+            defaultValue={batch?.measurement}
+            className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+          >
+            <option value="GALONES">GALONES</option>
+            <option value="GRAMOS">GRAMOS</option>
+            <option value="KILOGRAMOS">KILOGRAMOS</option>
+            <option value="LIBRAS">LIBRAS</option>
+            <option value="LITROS">LITROS</option>
+            <option value="ONZAS">ONZAS</option>
+            <option value="UNIDADES">UNIDADES</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="mb-5 mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
+        <label className="font-serif" htmlFor="stock">
+          Cantidad Disponible:
+        </label>
         <input
-          name="quantity"
+          name="stock"
           type="number"
           step={0.1}
           min={0.1}
           className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
           placeholder="Cantidad *"
+          defaultValue={batch?.stock}
         />
-        <select
-          name="measurement"
-          placeholder="Unidad de Medidad"
-          className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-        >
-          <option value="GALONES">GALONES</option>
-          <option value="GRAMOS">GRAMOS</option>
-          <option value="KILOGRAMOS">KILOGRAMOS</option>
-          <option value="LIBRAS">LIBRAS</option>
-          <option value="LITROS">LITROS</option>
-          <option value="ONZAS">ONZAS</option>
-          <option value="UNIDADES">UNIDADES</option>
-        </select>
       </div>
 
-      <div className="mb-5 mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
+      <div className="mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
+        <label className="font-serif" htmlFor="unitCost">
+          Costo Unitario:
+        </label>
         <input
           name="unitCost"
           type="number"
@@ -183,6 +217,7 @@ export default function AddBatch() {
           min={0.01}
           className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
           placeholder="Costo Unitario *"
+          defaultValue={batch?.unitCost}
         />
       </div>
 

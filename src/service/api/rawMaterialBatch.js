@@ -27,3 +27,11 @@ export async function addRawMaterialBatch(body) {
   );
   return response.data;
 }
+
+export async function updateRawMaterialBatch(body) {
+  const response = await postData(
+    endPoints.rawMaterialBatch.updateRawMaterialBatch(),
+    body
+  );
+  return response.data;
+}

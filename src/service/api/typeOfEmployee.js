@@ -8,6 +8,16 @@ export async function getTypesOfEmployee(limit, offset, filter) {
   return response.data;
 }
 
+export async function getAllModules() {
+  const response = await getData(endPoints.modules.getAllModules);
+  return response.data;
+}
+
+export async function getAllModulesByTypeId(id) {
+  const response = await getData(endPoints.typeOfEmployees.getAllModules(id));
+  return response.data;
+}
+
 export async function getAllTypesOfEmployee(query) {
   const response = await getData(
     endPoints.typeOfEmployees.getAllTypesOfEmployee(query)

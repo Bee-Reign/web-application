@@ -1,5 +1,5 @@
 export default function Button(props) {
-  const { loading } = props;
+  const { loading, reset = true } = props;
   if (loading == true) {
     return (
       <button
@@ -21,7 +21,15 @@ export default function Button(props) {
       >
         Guardar
       </button>
-      <input className="mt-5 xl:ml-5 px-16 py-4 bg-beereign_clear text-beereign_grey font-medium text-xl leading-tight uppercase rounded shadow-md hover:bg-gray-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-700 active:shadow-lg transition duration-150 ease-in-out" value="limpiar" type="reset"></input>
+      {reset ? (
+        <input
+          className="mt-5 xl:ml-5 px-16 py-4 bg-beereign_clear text-beereign_grey font-medium text-xl leading-tight uppercase rounded shadow-md hover:bg-gray-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-700 active:shadow-lg transition duration-150 ease-in-out"
+          value="limpiar"
+          type="reset"
+        ></input>
+      ) : (
+        <></>
+      )}
     </>
   );
 }

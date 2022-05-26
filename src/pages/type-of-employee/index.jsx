@@ -10,7 +10,7 @@ import { logError } from "@utils/errorHandler";
 const TYPE_LIMIT = 15;
 
 import TypeOfEmployeeTable from "@components/TypeOfEmployee/Table";
-//import NewButton from "@components/Button/NewButton";
+import NewButton from "@components/Button/NewButton";
 
 export default function Index() {
   const [typesOfEmployee, setTypes] = useState([]);
@@ -56,7 +56,12 @@ export default function Index() {
             Tipos de Empleado
           </div>
         </div>
-        <div></div>
+        <div>
+          <NewButton
+            label={"Registrar Tipo de Empleado"}
+            path={"/type-of-employee/add"}
+          />
+        </div>
       </section>
 
       <section className="mx-3 xl:mx-6 mt-5">

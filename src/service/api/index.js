@@ -2,6 +2,9 @@ const API = process.env.NEXT_PUBLIC_API_URL;
 const VERSION = process.env.NEXT_PUBLIC_API_VERSION;
 
 const endPoints = {
+  modules: {
+    getAllModules: `${API}/${VERSION}/modules`,
+  },
   auth: {
     login: `${API}/${VERSION}/auth/login`,
     profile: `${API}/${VERSION}/auth/profile`,
@@ -29,7 +32,8 @@ const endPoints = {
       `${API}/${VERSION}/types-of-employee?limit=${limit}&offset=${offset}&filter=${filter}`,
     getAllTypesOfEmployee: (query) =>
       `${API}/${VERSION}/types-of-employee?filter=${query}`,
-    getTypeOfEmployee: (id) => `${API}/${VERSION}/apiaries/${id}`,
+    getTypeOfEmployee: (id) => `${API}/${VERSION}/types-of-employee/${id}`,
+    getAllModules: (id) => `${API}/${VERSION}/types-of-employee/${id}/modules`,
     addTypeOfEmployee: `${API}/${VERSION}/types-of-employee`,
     updateTypeOfEmployee: (id) => `${API}/${VERSION}/types-of-employee/${id}`,
     disableTypeOfEmployee: (id) => `${API}/${VERSION}/types-of-employee/${id}`,
@@ -47,6 +51,7 @@ const endPoints = {
   rawMaterialBatch: {
     getAll: (limit, offset, order, type) =>
       `${API}/${VERSION}/raw-material-batches?limit=${limit}&offset=${offset}&order=${order}&type=${type}`,
+    addRawMaterialBatch: `${API}/${VERSION}/raw-material-batches`,
     addRawMaterialBatch: `${API}/${VERSION}/raw-material-batches`,
     getById: (id) =>
       `${API}/${VERSION}/raw-material-batches/${id}?isPacking=false`,

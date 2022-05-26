@@ -13,7 +13,7 @@ const FourOhFour = () => {
           <p className="text-2xl font-light leading-normal text-gray-600 md:text-3xl">
             Not Found
           </p>
-          <Link href="/">
+          <Link href="/home">
             <a>
               <button className="px-4 py-2 mt-4 text-lg text-gray-600 transition-colors duration-300 transform border rounded-lg hover:bg-gray-100 focus:outline-none">
                 Regresar

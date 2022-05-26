@@ -131,18 +131,19 @@ export default function AddEmployee() {
           maxLength={60}
         />
       </div>
-
-      <AsyncSelect
-        className="form-control block w-full py-1 text-left font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none"
-        styles={customStyles}
-        getOptionLabel={(e) => capitalize(e.name)}
-        getOptionValue={(e) => e.id}
-        loadOptions={getTypesOfEmployee}
-        onInputChange={onInputChange}
-        defaultOptions
-        placeholder={"Seleccionar Tipo de Empleado.. *"}
-        onChange={handleChangeType}
-      />
+      <div className="mb-5 mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
+        <AsyncSelect
+          className="form-control block w-full py-1 text-left font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none"
+          styles={customStyles}
+          getOptionLabel={(e) => capitalize(e.name)}
+          getOptionValue={(e) => e.id}
+          loadOptions={getTypesOfEmployee}
+          onInputChange={onInputChange}
+          defaultOptions
+          placeholder={"Seleccionar Tipo de Empleado.. *"}
+          onChange={handleChangeType}
+        />
+      </div>
 
       <Button loading={loading} />
     </form>

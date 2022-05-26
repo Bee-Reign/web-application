@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { ToastContainer } from "react-toastify";
 import Cookie from "js-cookie";
-import { useRouter } from "next/router";
 import axios from "axios";
 
 import AuthContext from "context/AuthContext";
@@ -14,7 +13,6 @@ import MainLayout from "@layouts/MainLayout";
 function MyApp({ Component, pageProps }) {
   const [auth, setAuth] = useState(undefined);
   const [reloadUser, setReloadUser] = useState(false);
-  const router = useRouter();
 
   const reload = async (access_token) => {
     axios.defaults.headers.Authorization = `Bearer ${access_token}`;
@@ -25,7 +23,6 @@ function MyApp({ Component, pageProps }) {
         });
       })
       .catch((error) => {
-        console.log(error);
         setAuth(null);
         if (logError(error) === 404) {
           logout();
@@ -39,9 +36,6 @@ function MyApp({ Component, pageProps }) {
       reload(access_token);
     } else {
       setAuth(null);
-      if (router.asPath !== "/auth/login") {
-        router.push("/auth/login");
-      }
     }
     setReloadUser(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -62,9 +56,8 @@ function MyApp({ Component, pageProps }) {
 
   const logout = () => {
     Cookie.remove("access_token");
-    setAuth(null);
     delete axios.defaults.headers.Authorization;
-    window.location.href = "/auth/login";
+    setAuth(null);
   };
 
   const authData = useMemo(
