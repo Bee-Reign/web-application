@@ -72,7 +72,6 @@ export default function AddBatch() {
         : null,
       measurement: formData.get("measurement"),
       quantity: Number(formData.get("quantity")),
-      stock: Number(formData.get("stock")),
       unitCost: Number(formData.get("unitCost")),
     };
     const { error } = await newSchema.validate(data);

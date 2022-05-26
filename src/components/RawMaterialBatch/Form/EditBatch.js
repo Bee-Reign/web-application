@@ -1,9 +1,10 @@
 import { useRef, useState } from "react";
 import { toast } from "react-toastify";
 import AsyncSelect from "react-select/async";
+import { useRouter } from "next/router";
 
-import { newSchema } from "@schema/rawMaterialBatchSchema";
-import { addRawMaterialBatch } from "@service/api/rawMaterialBatch";
+import { updateSchema } from "@schema/rawMaterialBatchSchema";
+import { updateRawMaterialBatch } from "@service/api/rawMaterialBatch";
 import { getAllRawMaterials } from "@service/api/rawMaterial";
 import { getAllWarehouses } from "@service/api/warehouse";
 import Button from "@components/Button";
@@ -11,6 +12,7 @@ import { logError } from "@utils/errorHandler";
 import capitalize from "@utils/capitalize";
 
 export default function EditBatch({ batch }) {
+  const router = useRouter();
   const formRef = useRef(null);
   const [rawMaterial, setRawMaterial] = useState(null);
   const [warehouse, setWarehouse] = useState(null);
@@ -71,20 +73,23 @@ export default function EditBatch({ batch }) {
         : null,
       measurement: formData.get("measurement"),
       quantity: Number(formData.get("quantity")),
+      stock: Number(formData.get("stock")),
       unitCost: Number(formData.get("unitCost")),
     };
-    const { error } = await newSchema.validate(data);
+    const { error } = await updateSchema.validate(data);
     if (error) {
       toast.error("Los campos con ( * ) son necesarios");
       setLoading(false);
       return null;
     }
-    addRawMaterialBatch(data)
+    updateRawMaterialBatch(batch?.id, data)
       .then((response) => {
         formRef.current.reset();
-        toast.success("Lote Registrado");
+        toast.success("Lote Actualizado");
+        router.push("/raw-material-batch");
       })
       .catch((err) => {
+        console.log(err);
         logError(err);
       })
       .finally(() => {

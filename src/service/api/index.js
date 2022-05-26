@@ -52,7 +52,8 @@ const endPoints = {
     getAll: (limit, offset, order, type) =>
       `${API}/${VERSION}/raw-material-batches?limit=${limit}&offset=${offset}&order=${order}&type=${type}`,
     addRawMaterialBatch: `${API}/${VERSION}/raw-material-batches`,
-    addRawMaterialBatch: `${API}/${VERSION}/raw-material-batches`,
+    updateRawMaterialBatch: (id) =>
+      `${API}/${VERSION}/raw-material-batches/${id}`,
     getById: (id) =>
       `${API}/${VERSION}/raw-material-batches/${id}?isPacking=false`,
     getByIdForPacking: (id) =>

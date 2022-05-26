@@ -15,6 +15,7 @@ const measurement = Joi.string()
   .valid("ONZAS")
   .valid("UNIDADES");
 const quantity = Joi.number().positive();
+const stock = Joi.number().positive();
 const unitCost = Joi.number().positive();
 
 const checkId = Joi.object({
@@ -31,7 +32,19 @@ const newSchema = Joi.object({
   unitCost: unitCost.required(),
 });
 
+const updateSchema = Joi.object({
+  rawMaterialId: rawMaterialId.required(),
+  warehouseId: warehouseId.required(),
+  entryDate: entryDate.required(),
+  expirationDate,
+  measurement: measurement.required(),
+  quantity: quantity.required(),
+  stock: stock.required(),
+  unitCost: unitCost.required(),
+});
+
 module.exports = {
   checkId,
   newSchema,
+  updateSchema,
 };

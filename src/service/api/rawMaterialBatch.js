@@ -1,5 +1,5 @@
 import endPoints from "@service/api";
-import { postData, getData } from "@libs/fetchService";
+import { postData, getData, patchData } from "@libs/fetchService";
 
 export async function getRawMaterialBatches(limit, offset, order, type) {
   const response = await getData(
@@ -28,9 +28,9 @@ export async function addRawMaterialBatch(body) {
   return response.data;
 }
 
-export async function updateRawMaterialBatch(body) {
-  const response = await postData(
-    endPoints.rawMaterialBatch.updateRawMaterialBatch(),
+export async function updateRawMaterialBatch(id, body) {
+  const response = await patchData(
+    endPoints.rawMaterialBatch.updateRawMaterialBatch(id),
     body
   );
   return response.data;
