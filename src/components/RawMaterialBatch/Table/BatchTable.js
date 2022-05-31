@@ -43,6 +43,9 @@ export default function BatchTable({ rawMaterialBatches = [], loading }) {
               Costo Unitario
             </th>
             <th scope="col" className="font-mono text-black px-6 py-4 border-r">
+              Valor de Costo
+            </th>
+            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
               Disponible
             </th>
             <th scope="col" className="font-mono text-black px-6 py-4 border-r">
@@ -80,6 +83,9 @@ export default function BatchTable({ rawMaterialBatches = [], loading }) {
               </td>
               <td className="font-mono text-gray-900 px-6 py-4 whitespace-nowrap border-r">
                 ${rawMaterialBatch.unitCost}
+              </td>
+              <td className="font-mono text-gray-900 px-6 py-4 whitespace-nowrap border-r">
+                ${rawMaterialBatch.totalCost}
               </td>
               <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
                 {rawMaterialBatch.stock} {rawMaterialBatch.measurement}

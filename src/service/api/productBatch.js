@@ -1,5 +1,5 @@
 import endPoints from "@service/api";
-import { postData, getData } from "@libs/fetchService";
+import { postData, getData, patchData } from "@libs/fetchService";
 
 export async function getProductBatches(limit, offset, order, type) {
   const response = await getData(
@@ -8,7 +8,7 @@ export async function getProductBatches(limit, offset, order, type) {
   return response.data;
 }
 
-export async function getProduct(id) {
+export async function getProductBatch(id) {
   const response = await getData(endPoints.productBatch.getById(id));
   return response.data;
 }
@@ -20,5 +20,13 @@ export async function getProductForOutput(id) {
 
 export async function addProductBatch(body) {
   const response = await postData(endPoints.productBatch.addProductBatch, body);
+  return response.data;
+}
+
+export async function updateProductBatch(id, body) {
+  const response = await patchData(
+    endPoints.productBatch.updateProductBatch(id),
+    body
+  );
   return response.data;
 }

@@ -4,10 +4,10 @@ import { PencilIcon, TrashIcon } from "@heroicons/react/outline";
 import Loading from "@components/Animation/Loading";
 import capitalize from "@utils/capitalize";
 
-export default function BatchTable({ productBatches = [], loading }) {
+export default function PackingTable({ batches = [], loading }) {
   if (loading == true) {
     return <Loading />;
-  } else if (productBatches.length === 0) {
+  } else if (batches.length === 0) {
     return (
       <h3 className="text-center font-mono text-2xl">
         no se encontró ningún registro
@@ -44,21 +44,12 @@ export default function BatchTable({ productBatches = [], loading }) {
               Cantidad Ingresada
             </th>
             <th scope="col" className="font-mono text-black px-6 py-4 border-r">
-              Costo Unitario
-            </th>
-            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
-              Valor de Costo
-            </th>
-            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
-              Disponible
-            </th>
-            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
               Acciones
             </th>
           </tr>
         </thead>
         <tbody>
-          {productBatches.map((productBatch) => (
+          {batches.map((productBatch) => (
             <tr
               key={`Product-Batch-item-${productBatch.id}`}
               className="border-b"
@@ -88,34 +79,19 @@ export default function BatchTable({ productBatches = [], loading }) {
               <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
                 {productBatch.quantity} UNIDADES
               </td>
-              <td className="font-mono text-gray-900 px-6 py-4 whitespace-nowrap border-r">
-                ${productBatch.unitCost}
-              </td>
-              <td className="font-mono text-gray-900 px-6 py-4 whitespace-nowrap border-r">
-                ${productBatch.totalCost}
-              </td>
-              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
-                {productBatch.stock} UNIDADES
-              </td>
               <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                 <div className="flex justify-center">
-                  <Link href={`/product-batch/edit/${productBatch.id}`}>
+                  <Link href={`/packing/${productBatch.id}`}>
                     <a>
                       <PencilIcon className="w-9 bg-gray-200 rounded-lg text-beereign_grey xl:hidden" />
                       <button
                         type="button"
                         className="hidden xl:inline-block px-6 py-2.5 bg-gray-200 text-beereign_grey font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-600 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-700 active:shadow-lg transition duration-150 ease-in-out"
                       >
-                        Editar
+                        Continuar
                       </button>
                     </a>
                   </Link>
-                  <div className="ml-4">
-                    <TrashIcon className="w-9 bg-gray-200 text-red-500 xl:hidden" />
-                    <div className="hidden xl:inline-block px-6 py-2.5 bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-600 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-700 active:shadow-lg transition duration-150 ease-in-out">
-                      Eliminar
-                    </div>
-                  </div>
                 </div>
               </td>
             </tr>

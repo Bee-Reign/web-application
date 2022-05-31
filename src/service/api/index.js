@@ -86,9 +86,16 @@ const endPoints = {
     getAll: (limit, offset, order, type) =>
       `${API}/${VERSION}/product-batches?limit=${limit}&offset=${offset}&order=${order}&type=${type}`,
     addProductBatch: `${API}/${VERSION}/product-batches`,
+    updateProductBatch: (id) => `${API}/${VERSION}/product-batches/${id}`,
     getById: (id) => `${API}/${VERSION}/product-batches/${id}?isOutput=false`,
     getByIdForOutput: (id) =>
       `${API}/${VERSION}/product-batches/${id}?isOutput=true`,
+  },
+  packing: {
+    getAll: (limit, offset) =>
+      `${API}/${VERSION}/packing?limit=${limit}&offset=${offset}`,
+    getById: (id) => `${API}/${VERSION}/packing/${id}`,
+    updateBatchSaved: (id) => `${API}/${VERSION}/packing/${id}`,
   },
 };
 

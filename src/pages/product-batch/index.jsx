@@ -26,6 +26,7 @@ export default function Index() {
   const typeOptions = [
     { value: "inStock", label: "En Stock" },
     { value: "empty", label: "Sin Stock" },
+    { value: "inProcess", label: "En Proceso" },
     { value: "all", label: "Todas" },
   ];
 
