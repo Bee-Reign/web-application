@@ -14,7 +14,7 @@ export default function Header(props) {
               <a>
                 <Image
                   src="/logo.png"
-                  width="125"
+                  width="165"
                   height="45"
                   alt="BeeReign logo"
                 />

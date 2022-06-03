@@ -7,7 +7,7 @@ import { updateSchema } from "@schema/apiarySchema";
 import { updateApiary } from "@service/api/apiary";
 import { getAllCountries, getAllProvincesById } from "@service/api/country";
 import Button from "@components/Button";
-import { logError } from "@utils/errorHandler";
+import { logError } from "@utils/logError";
 import capitalize from "@utils/capitalize";
 
 export default function EditApiary({ apiary }) {

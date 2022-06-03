@@ -7,7 +7,7 @@ import { addRawMaterialBatch } from "@service/api/rawMaterialBatch";
 import { getAllRawMaterials } from "@service/api/rawMaterial";
 import { getAllWarehouses } from "@service/api/warehouse";
 import Button from "@components/Button";
-import { logError } from "@utils/errorHandler";
+import { logError } from "@utils/logError";
 import capitalize from "@utils/capitalize";
 
 export default function AddBatch() {

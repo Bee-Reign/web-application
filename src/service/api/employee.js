@@ -36,6 +36,16 @@ export async function updateEmployee(id, update, body) {
   return response.data;
 }
 
+export async function sendRecoveryEmail(body) {
+  const response = await postData(endPoints.auth.recovery, body);
+  return response.data;
+}
+
+export async function resetPassword(body) {
+  const response = await postData(endPoints.auth.resetPassword, body);
+  return response.data;
+}
+
 export async function deleteEmployee(id) {
   await deleteData(endPoints.employees.deleteEmployee(id));
 }

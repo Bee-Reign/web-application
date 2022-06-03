@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 
 import { getBatch } from "@service/api/rawMaterialBatch";
 import EditBatch from "@components/RawMaterialBatch/Form/EditBatch";
-import { logError } from "@utils/errorHandler";
+import { logError } from "@utils/logError";
 import Head from "next/head";
 
 export default function Edit() {

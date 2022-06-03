@@ -4,15 +4,17 @@ import Link from "next/link";
 
 import { getProducts } from "@service/api/product";
 import Pagination from "@components/Pagination";
-import { logError } from "@utils/errorHandler";
+import { logError } from "@utils/logError";
 
 const PRODUCT_LIMIT = 15;
 
 import ProductTable from "@components/Product/Table";
 import Head from "next/head";
 import NewButton from "@components/Button/NewButton";
+import CheckPermission from "@utils/checkPermission";
 
 export default function Index() {
+  CheckPermission("/product");
   const [products, setProducts] = useState([]);
   const [filter, setFilter] = useState("");
   const [loading, setLoading] = useState(false);

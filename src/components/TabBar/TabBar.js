@@ -28,7 +28,7 @@ export default function TabBar() {
       </div>
 
       <div className="hidden xl:inline text-center">
-        <h3 className="font-mono" >© 2022, <a href="https://github.com/Bee-Reign" target="_blank" rel="noreferrer"><span className="font-semibold">BeeReign.</span></a> Version Alpha.1.0</h3>
+        <h3 className="font-mono" >© 2022 · <a href="https://github.com/Bee-Reign" target="_blank" rel="noreferrer"><span className="font-semibold">BeeReign · </span></a>0.1.0</h3>
       </div>
 
       <div className="xl:hidden items-center flex">

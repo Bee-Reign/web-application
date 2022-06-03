@@ -9,7 +9,7 @@ import {
   getAllModulesByTypeId,
 } from "@service/api/typeOfEmployee";
 import Button from "@components/Button";
-import { logError } from "@utils/errorHandler";
+import { logError } from "@utils/logError";
 
 export default function EditType({ typeOfEmployee }) {
   const formRef = useRef(null);

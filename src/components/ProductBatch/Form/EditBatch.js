@@ -8,7 +8,7 @@ import { updateProductBatch } from "@service/api/productBatch";
 import { getAllProducts } from "@service/api/product";
 import { getAllWarehouses } from "@service/api/warehouse";
 import Button from "@components/Button";
-import { logError } from "@utils/errorHandler";
+import { logError } from "@utils/logError";
 import capitalize from "@utils/capitalize";
 
 export default function EditBatch({ batch }) {
@@ -74,9 +74,6 @@ export default function EditBatch({ batch }) {
       quantity: Number(formData.get("quantity")),
       stock: Number(formData.get("stock")),
       unitCost: Number(formData.get("unitCost")),
-      isFinished: formData.get("isFinished")
-        ? formData.get("isFinished")
-        : batch?.isFinished,
     };
     const { error } = await updateSchema.validate(data);
     if (error) {
@@ -212,17 +209,6 @@ export default function EditBatch({ batch }) {
           placeholder="Costo Unitario *"
           defaultValue={batch?.unitCost}
         />
-      </div>
-
-      <div className="mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
-        <label className="font-serif" htmlFor="unitCost">
-          Esta Terminado:
-        </label>
-        <select name="isFinished">
-          <option></option>
-          <option value={true}>Sí</option>
-          <option value={false}>No</option>
-        </select>
       </div>
 
       <Button loading={loading} />

@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { ViewGridIcon } from "@heroicons/react/outline";
 import AddProduct from "@components/Product/Form/AddProduct";
+import CheckPermission from "@utils/checkPermission";
 
 export default function Add() {
+  CheckPermission("/product");
   return (
     <>
       <section className="mx-3 xl:mx-6 flex items-center justify-between">

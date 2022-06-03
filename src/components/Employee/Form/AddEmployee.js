@@ -6,7 +6,7 @@ import { newEmployeeSchema } from "@schema/employeeSchema";
 import { getAllTypesOfEmployee } from "@service/api/typeOfEmployee";
 import { addEmployee } from "@service/api/employee";
 import Button from "@components/Button";
-import { logError } from "@utils/errorHandler";
+import { logError } from "@utils/logError";
 import capitalize from "@utils/capitalize";
 
 export default function AddEmployee() {

@@ -8,11 +8,21 @@ const email = Joi.string()
   .max(256)
   .email({ tlds: { allow: false } });
 const password = Joi.string().max(60).min(8);
+const repeat_password = Joi.equal(Joi.ref("password"));
 const typeOfEmployeeId = Joi.number().integer().positive().max(32767);
 
 const loginEmployeeSchema = Joi.object({
   email: email.required(),
   password: password.required(),
+});
+
+const emailSchema = Joi.object({
+  email: email.required(),
+});
+
+const passwordResetSchema = Joi.object({
+  password: password.required(),
+  repeat_password: repeat_password.required(),
 });
 
 const newEmployeeSchema = Joi.object({
@@ -41,4 +51,6 @@ export {
   newEmployeeSchema,
   updateProfileSchema,
   updateLoginSchema,
+  emailSchema,
+  passwordResetSchema,
 };

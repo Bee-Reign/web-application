@@ -26,9 +26,6 @@ export default function BatchTable({ productBatches = [], loading }) {
               Registrado Por
             </th>
             <th scope="col" className="font-mono text-black px-6 py-4 border-r">
-              Estado
-            </th>
-            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
               Producto
             </th>
             <th scope="col" className="font-mono text-black px-6 py-4 border-r">
@@ -69,9 +66,6 @@ export default function BatchTable({ productBatches = [], loading }) {
               <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
                 {capitalize(productBatch.employee.name)}{" "}
                 {capitalize(productBatch.employee.lastName)}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 border-r">
-                {productBatch.isFinished === true ? "Terminado" : "En Proceso"}
               </td>
               <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
                 {capitalize(productBatch.product.name)}

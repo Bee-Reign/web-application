@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 
 import { getRawMaterial } from "@service/api/rawMaterial";
 import EditRawMaterial from "@components/RawMaterial/Form/EditRawMaterial";
+import { logError } from "@utils/logError";
 
 export default function Edit() {
   const [rawMaterial, setRawMaterial] = useState(undefined);
@@ -14,8 +15,14 @@ export default function Edit() {
     if (!router.isReady) return;
     const { id } = router.query;
     async function getResult() {
-      const result = await getRawMaterial(id);
-      setRawMaterial(result);
+      getRawMaterial(id)
+        .then((result) => {
+          setRawMaterial(result);
+        })
+        .catch((err) => {
+          logError(err);
+          router.push("/raw-material");
+        });
     }
     getResult();
     // eslint-disable-next-line react-hooks/exhaustive-deps

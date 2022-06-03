@@ -5,7 +5,7 @@ import axios from "axios";
 
 import AuthContext from "context/AuthContext";
 import { employeeProfile } from "@service/api/employee";
-import { logError } from "@utils/errorHandler";
+import { logError } from "@utils/logError";
 import "../styles/globals.css";
 import "react-toastify/dist/ReactToastify.css";
 import MainLayout from "@layouts/MainLayout";

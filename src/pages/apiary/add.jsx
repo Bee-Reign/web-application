@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { ViewGridIcon } from "@heroicons/react/outline";
 import AddApiary from "@components/Apiary/Form/AddApiary";
+import CheckPermission from "@utils/checkPermission";
 
 export default function Add() {
+  CheckPermission("/apiary");
   return (
     <>
       <section className="mx-3 xl:mx-6 flex items-center justify-between">

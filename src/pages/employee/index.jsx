@@ -10,8 +10,10 @@ const EMPLOYEE_LIMIT = 15;
 
 import EmployeeTable from "@components/Employee/Table";
 import NewButton from "@components/Button/NewButton";
+import CheckPermission from "@utils/checkPermission";
 
 const Index = () => {
+  CheckPermission("/employee");
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);

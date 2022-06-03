@@ -6,7 +6,7 @@ import Select from "react-select";
 
 import { getRawMaterialBatches } from "@service/api/rawMaterialBatch";
 import Pagination from "@components/Pagination";
-import { logError } from "@utils/errorHandler";
+import { logError } from "@utils/logError";
 import BatchTable from "@components/RawMaterialBatch/Table/BatchTable";
 
 const RAW_MATERIAL_BATCH_LIMIT = 15;

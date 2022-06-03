@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import { getRawMaterials } from "@service/api/rawMaterial";
 import Pagination from "@components/Pagination";
-import { logError } from "@utils/errorHandler";
+import { logError } from "@utils/logError";
 
 const RAW_MATERIAL_LIMIT = 15;
 

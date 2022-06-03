@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { createSchema } from "@schema/productSchema";
 import { addProduct } from "@service/api/product";
 import Button from "@components/Button";
-import { logError } from "@utils/errorHandler";
+import { logError } from "@utils/logError";
 
 export default function AddProduct() {
   const formRef = useRef(null);

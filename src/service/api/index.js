@@ -8,6 +8,8 @@ const endPoints = {
   auth: {
     login: `${API}/${VERSION}/auth/login`,
     profile: `${API}/${VERSION}/auth/profile`,
+    recovery: `${API}/${VERSION}/auth/recovery`,
+    resetPassword: `${API}/${VERSION}/auth/reset-password`,
   },
   apiaries: {
     getApiaries: (limit, offset, filter) =>
@@ -90,12 +92,6 @@ const endPoints = {
     getById: (id) => `${API}/${VERSION}/product-batches/${id}?isOutput=false`,
     getByIdForOutput: (id) =>
       `${API}/${VERSION}/product-batches/${id}?isOutput=true`,
-  },
-  packing: {
-    getAll: (limit, offset) =>
-      `${API}/${VERSION}/packing?limit=${limit}&offset=${offset}`,
-    getById: (id) => `${API}/${VERSION}/packing/${id}`,
-    updateBatchSaved: (id) => `${API}/${VERSION}/packing/${id}`,
   },
 };
 

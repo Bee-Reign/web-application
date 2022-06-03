@@ -5,10 +5,12 @@ import { useRouter } from "next/router";
 
 import { getProductBatch } from "@service/api/productBatch";
 import EditBatch from "@components/ProductBatch/Form/EditBatch";
-import { logError } from "@utils/errorHandler";
+import { logError } from "@utils/logError";
 import Head from "next/head";
+import CheckPermission from "@utils/checkPermission";
 
 export default function Edit() {
+  CheckPermission("/product-batch");
   const [batch, setBatch] = useState(undefined);
   const router = useRouter();
 

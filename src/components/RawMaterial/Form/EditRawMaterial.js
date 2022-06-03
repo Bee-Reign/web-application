@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import Button from "@components/Button";
 import { updateRawMaterialSchema } from "@schema/rawMaterialSchema";
 import { updateRawMaterial } from "@service/api/rawMaterial";
-import { logError } from "@utils/errorHandler";
+import { logError } from "@utils/logError";
 
 export default function EditProfile({ rawMaterial }) {
   const formRef = useRef(null);

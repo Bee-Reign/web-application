@@ -6,12 +6,14 @@ import Select from "react-select";
 
 import { getProductBatches } from "@service/api/productBatch";
 import Pagination from "@components/Pagination";
-import { logError } from "@utils/errorHandler";
+import { logError } from "@utils/logError";
 import ProductBatchTable from "@components/ProductBatch/Table/BatchTable";
+import CheckPermission from "@utils/checkPermission";
 
 const PRODUCT_BATCH_LIMIT = 15;
 
 export default function Index() {
+  CheckPermission("/product-batch");
   const [productBatches, setBatches] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);

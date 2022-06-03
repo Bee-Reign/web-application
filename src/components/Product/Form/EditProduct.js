@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import Button from "@components/Button";
 import { updateSchema } from "@schema/productSchema";
 import { updateProduct } from "@service/api/product";
-import { logError } from "@utils/errorHandler";
+import { logError } from "@utils/logError";
 
 export default function EditProduct({ product }) {
   const formRef = useRef(null);

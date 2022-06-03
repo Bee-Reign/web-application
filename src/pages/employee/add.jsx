@@ -3,8 +3,10 @@ import { ViewGridIcon } from "@heroicons/react/outline";
 
 import AddEmployee from "@components/Employee/Form/AddEmployee";
 import Head from "next/head";
+import CheckPermission from "@utils/checkPermission";
 
 const Add = () => {
+  CheckPermission("/employee");
   return (
     <>
       <Head>

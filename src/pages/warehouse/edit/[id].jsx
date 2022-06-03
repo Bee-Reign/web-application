@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { getWarehouse } from "@service/api/warehouse";
 import EditWarehouse from "@components/Warehouse/Form/EditWarehouse";
 import Head from "next/head";
+import { logError } from "@utils/logError";
 
 export default function Edit() {
   const [warehouse, setWarehouse] = useState(undefined);
@@ -15,8 +16,14 @@ export default function Edit() {
     if (!router.isReady) return;
     const { id } = router.query;
     async function getResult() {
-      const result = await getWarehouse(id);
-      setWarehouse(result);
+      getWarehouse(id)
+        .then((result) => {
+          setWarehouse(result);
+        })
+        .catch((err) => {
+          logError(err);
+          router.push("/warehouse");
+        });
     }
     getResult();
     // eslint-disable-next-line react-hooks/exhaustive-deps

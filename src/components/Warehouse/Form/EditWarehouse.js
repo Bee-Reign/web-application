@@ -7,7 +7,7 @@ import { newWarehouseSchema } from "@schema/warehouseSchema";
 import { updateWarehouse } from "@service/api/warehouse";
 import { getAllCountries, getAllProvincesById } from "@service/api/country";
 import Button from "@components/Button";
-import { logError } from "@utils/errorHandler";
+import { logError } from "@utils/logError";
 import capitalize from "@utils/capitalize";
 
 export default function EditWarehouse({ warehouse }) {

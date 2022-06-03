@@ -7,7 +7,7 @@ import Button from "@components/Button";
 import { updateProfileSchema, updateLoginSchema } from "@schema/employeeSchema";
 import { getAllTypesOfEmployee } from "@service/api/typeOfEmployee";
 import { updateEmployee } from "@service/api/employee";
-import { logError } from "@utils/errorHandler";
+import { logError } from "@utils/logError";
 import capitalize from "@utils/capitalize";
 
 export default function EditProfile(props) {

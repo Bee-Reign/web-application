@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { newSchema } from "@schema/typeOfEmployeeSchema";
 import { addTypeOfEmployee, getAllModules } from "@service/api/typeOfEmployee";
 import Button from "@components/Button";
-import { logError } from "@utils/errorHandler";
+import { logError } from "@utils/logError";
 
 export default function AddType() {
   const formRef = useRef(null);

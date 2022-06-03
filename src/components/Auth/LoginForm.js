@@ -2,16 +2,19 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useRef, useState } from "react";
 import { toast } from "react-toastify";
+import Head from "next/head";
 
 import useAuth from "@hooks/useAuth";
 import { loginEmployeeSchema } from "@schema/employeeSchema";
 import { employeeLogin } from "@service/api/employee";
-import { logError } from "@utils/errorHandler";
-import Head from "next/head";
+import { logError } from "@utils/logError";
+import LoginButton from "@components/Button/LoginButton";
+import RecoveryPassword from "@components/Modal/RecoveryPassword";
 
 export default function LoginForm() {
   const formRef = useRef(null);
   const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const router = useRouter();
 
   const { login } = useAuth();
@@ -56,23 +59,26 @@ export default function LoginForm() {
       <Head>
         <title>Login - BeeReign</title>
       </Head>
+      <RecoveryPassword
+        showModal={showModal}
+        onShowModalChange={(showModal) => setShowModal(showModal)}
+      />
       <main className="bg-beereign_bg h-screen flex items-center justify-center">
         <div className="text-sm text-center px-4 sm:px-6 lg:px-8">
-          <div className="max-w-lg bg-white rounded-3xl px-5 py-12">
+          <div className="max-w-md md:max-w-lg bg-white rounded-3xl px-5 py-16 md:py-24">
             <Image
               src="/logo.png"
-              width="500"
-              height="200"
+              width="576"
+              height="150"
               alt="BeeReign logo"
             />
-            <div className="mt-7">
+            <div className="mt-14">
               <h1 className="text-4xl">Login</h1>
             </div>
             <form className="mt-14" ref={formRef} onSubmit={handleSubmit}>
               <div className="rounded-md">
                 <div className="mb-14 shadow-sm">
                   <input
-                    id="email"
                     name="email"
                     type="email"
                     autoComplete="email"
@@ -83,50 +89,29 @@ export default function LoginForm() {
                 </div>
                 <div className="shadow-sm">
                   <input
-                    id="password"
                     name="password"
                     type="password"
                     autoComplete="current-password"
                     maxLength={60}
+                    minLength={8}
                     className="font-thin appearance-none rounded-md relative block w-full px-3 py-4 border border-beereign_gray  text-gray-900 focus:border-beereign_yellow focus:outline-none sm:text-sm"
                     placeholder="Contraseña"
                   />
                 </div>
                 <div className="text-sm text-left mt-5">
-                  <a className="font-medium font-mono text-beereign_gray hover:text-beereign_yellow">
+                  <a
+                    className="font-medium font-mono text-beereign_gray hover:text-beereign_yellow"
+                    onClick={() => setShowModal(true)}
+                  >
                     ¿Olvidaste tu contraseña?
                   </a>
                 </div>
               </div>
-              <LoginButton loading={loading} />
+              <LoginButton loading={loading} message={"Ingresar"} />
             </form>
           </div>
         </div>
       </main>
     </>
-  );
-}
-
-function LoginButton({ loading }) {
-  if (loading == true) {
-    return (
-      <button
-        type="submit"
-        className="relative w-11/12 mt-12 py-4 text-base font-medium rounded-md text-black bg-beereign_yellow hover:bg-yellow-400"
-      >
-        <div
-          style={{ borderTopColor: "transparent" }}
-          className="mx-auto w-7 h-7 border-4 border-beereign_clear border-solid rounded-full animate-spin"
-        />
-      </button>
-    );
-  }
-  return (
-    <button
-      type="submit"
-      className="group relative w-11/12 mt-12 py-4 text-xl rounded-md text-black bg-beereign_yellow hover:bg-yellow-400"
-    >
-      <span>Sign in</span>
-    </button>
   );
 }

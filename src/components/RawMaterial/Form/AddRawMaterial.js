@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { newRawMaterialSchema } from "@schema/rawMaterialSchema";
 import { addRawMaterial } from "@service/api/rawMaterial";
 import Button from "@components/Button";
-import { logError } from "@utils/errorHandler";
+import { logError } from "@utils/logError";
 
 export default function AddRawMaterial() {
   const formRef = useRef(null);

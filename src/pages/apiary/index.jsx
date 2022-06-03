@@ -5,19 +5,20 @@ import Link from "next/link";
 
 import { getApiaries } from "@service/api/apiary";
 import Pagination from "@components/Pagination";
-import { logError } from "@utils/errorHandler";
+import { logError } from "@utils/logError";
 
 const APIARY_LIMIT = 15;
 
 import ApiaryTable from "@components/Apiary/Table";
 import NewButton from "@components/Button/NewButton";
+import CheckPermission from "@utils/checkPermission";
 
 export default function Index() {
+  CheckPermission("/apiary");
   const [apiaries, setApiaries] = useState([]);
   const [filter, setFilter] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(null);
   const [page, setPage] = useState(0);
-
   useEffect(() => {
     const loadApiaries = async () => {
       setLoading(true);
@@ -40,6 +41,7 @@ export default function Index() {
   };
 
   const totalPages = Math.ceil(apiaries?.count / APIARY_LIMIT);
+
   return (
     <>
       <Head>
@@ -96,7 +98,7 @@ export default function Index() {
           </div>
         </div>
       </section>
-      
+
       {apiaries?.rows?.length > 14 ? (
         <Pagination
           loading={loading}

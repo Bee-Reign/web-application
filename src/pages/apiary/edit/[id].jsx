@@ -5,8 +5,11 @@ import { useRouter } from "next/router";
 
 import { getApiary } from "@service/api/apiary";
 import EditApiary from "@components/Apiary/Form/EditApiary";
+import { logError } from "@utils/logError";
+import CheckPermission from "@utils/checkPermission";
 
 export default function Edit() {
+  CheckPermission("/apiary");
   const [apiary, setApiary] = useState(undefined);
   const router = useRouter();
 
@@ -14,8 +17,14 @@ export default function Edit() {
     if (!router.isReady) return;
     const { id } = router.query;
     async function getResult() {
-      const result = await getApiary(id);
-      setApiary(result);
+      getApiary(id)
+        .then((result) => {
+          setApiary(result);
+        })
+        .catch((err) => {
+          logError(err);
+          router.push("/apiary");
+        });
     }
     getResult();
     // eslint-disable-next-line react-hooks/exhaustive-deps

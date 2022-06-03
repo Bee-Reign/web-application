@@ -5,7 +5,7 @@ import Link from "next/link";
 
 import { getWarehouses } from "@service/api/warehouse";
 import Pagination from "@components/Pagination";
-import { logError } from "@utils/errorHandler";
+import { logError } from "@utils/logError";
 
 const WAREHOUSE_LIMIT = 15;
 

@@ -6,8 +6,11 @@ import { useRouter } from "next/router";
 import { getEmployee } from "@service/api/employee";
 import EditProfile from "@components/Employee/Form/EditProfile";
 import Head from "next/head";
+import { logError } from "@utils/logError";
+import CheckPermission from "@utils/checkPermission";
 
 export default function Edit() {
+  CheckPermission("/employee");
   const [employee, setEmployee] = useState(undefined);
   const [profile, setProfile] = useState(true);
   const router = useRouter();
@@ -16,8 +19,14 @@ export default function Edit() {
     const { id } = router.query;
     if (!router.isReady) return;
     async function getResult() {
-      const result = await getEmployee(id);
-      setEmployee(result);
+      getEmployee(id)
+        .then((result) => {
+          setEmployee(result);
+        })
+        .catch((err) => {
+          logError(err);
+          router.push("/employee");
+        });
     }
     getResult();
     // eslint-disable-next-line react-hooks/exhaustive-deps

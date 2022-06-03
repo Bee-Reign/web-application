@@ -5,7 +5,7 @@ import Link from "next/link";
 
 import { getTypesOfEmployee } from "@service/api/typeOfEmployee";
 import Pagination from "@components/Pagination";
-import { logError } from "@utils/errorHandler";
+import { logError } from "@utils/logError";
 
 const TYPE_LIMIT = 15;
 

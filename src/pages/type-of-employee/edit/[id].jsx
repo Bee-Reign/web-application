@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 
 import { getTypeOfEmployee } from "@service/api/typeOfEmployee";
 import EditType from "@components/TypeOfEmployee/Form/EditType";
-import { logError } from "@utils/errorHandler";
+import { logError } from "@utils/logError";
 
 export default function Edit() {
   const [typeOfEmployee, setType] = useState(undefined);
