@@ -1,10 +1,22 @@
+import { useState } from "react";
 import Link from "next/link";
 import { PencilIcon, TrashIcon } from "@heroicons/react/outline";
 
 import Loading from "@components/Animation/Loading";
 import capitalize from "@utils/capitalize";
+import YesNoModal from "@components/Modal/YesNoModal";
+import { deleteProductBatch } from "@service/api/productBatch";
+import { toast } from "react-toastify";
+import { logError } from "@utils/logError";
 
-export default function BatchTable({ productBatches = [], loading }) {
+export default function BatchTable({
+  productBatches = [],
+  onDelete,
+  refresh,
+  loading,
+}) {
+  const [showYesNoModal, setYesNoModal] = useState(false);
+  const [id, setID] = useState(null);
   if (loading == true) {
     return <Loading />;
   } else if (productBatches.length === 0) {
@@ -14,8 +26,27 @@ export default function BatchTable({ productBatches = [], loading }) {
       </h3>
     );
   }
+
+  const handleDelete = async () => {
+    if (id) {
+      deleteProductBatch(id)
+        .then((res) => {
+          onDelete(!refresh);
+          toast.info("Lote de Producto Eliminado");
+        })
+        .catch((err) => {
+          logError(err);
+        });
+    }
+  };
   return (
     <>
+      <YesNoModal
+        showModal={showYesNoModal}
+        message={"¿Desea Eliminar el Lote?"}
+        onShowModalChange={(showModal) => setYesNoModal(showModal)}
+        onYes={() => handleDelete()}
+      />
       <table className="min-w-full border text-center">
         <thead className="border-b">
           <tr>
@@ -104,7 +135,13 @@ export default function BatchTable({ productBatches = [], loading }) {
                       </button>
                     </a>
                   </Link>
-                  <div className="ml-4">
+                  <div
+                    className="ml-4"
+                    onClick={() => {
+                      setYesNoModal(true);
+                      setID(productBatch.id);
+                    }}
+                  >
                     <TrashIcon className="w-9 bg-gray-200 text-red-500 xl:hidden" />
                     <div className="hidden xl:inline-block px-6 py-2.5 bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-600 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-700 active:shadow-lg transition duration-150 ease-in-out">
                       Eliminar

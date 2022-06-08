@@ -17,6 +17,7 @@ export default function Index() {
   const [filter, setFilter] = useState("");
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     const loadRawMaterials = async () => {
@@ -33,7 +34,7 @@ export default function Index() {
         });
     };
     loadRawMaterials();
-  }, [page, filter]);
+  }, [page, filter, refresh]);
 
   const searchItems = (value) => {
     setFilter(value);
@@ -97,6 +98,8 @@ export default function Index() {
                 <RawMaterialTable
                   rawMaterials={rawMaterials?.rows}
                   loading={loading}
+                  onDelete={(deleted) => setRefresh(deleted)}
+                  refresh={refresh}
                 />
               </div>
             </div>

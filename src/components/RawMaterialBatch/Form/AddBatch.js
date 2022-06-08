@@ -154,8 +154,8 @@ export default function AddBatch() {
         <input
           name="quantity"
           type="number"
-          step={0.1}
-          min={0.1}
+          step={0.01}
+          min={0.01}
           className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
           placeholder="Cantidad *"
         />

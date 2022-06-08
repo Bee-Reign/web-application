@@ -1,25 +1,27 @@
 import { useState } from "react";
-import { PencilAltIcon, TrashIcon } from "@heroicons/react/outline";
-import Link from "next/link";
+import { BanIcon, CashIcon } from "@heroicons/react/outline";
 
 import Loading from "@components/Animation/Loading";
 import capitalize from "@utils/capitalize";
 import YesNoModal from "@components/Modal/YesNoModal";
-import { deleteProduct } from "@service/api/product";
+import { cancelOutput } from "@service/api/productOutput";
 import { toast } from "react-toastify";
 import { logError } from "@utils/logError";
+import EditStatus from "@components/ProductOutput/Modal/EditStatus";
 
-export default function RawMaterialTable({
-  products = [],
-  onDelete,
+export default function OutputTable({
+  productOutputs = [],
+  onChange,
   refresh,
   loading,
 }) {
+  const [showModal, setShowModal] = useState(false);
   const [showYesNoModal, setYesNoModal] = useState(false);
   const [id, setID] = useState(null);
+  const [output, setOutput] = useState(null);
   if (loading == true) {
     return <Loading />;
-  } else if (products.length === 0) {
+  } else if (productOutputs.length === 0) {
     return (
       <h3 className="text-center font-mono text-2xl">
         no se encontró ningún registro
@@ -27,12 +29,12 @@ export default function RawMaterialTable({
     );
   }
 
-  const handleDelete = async () => {
+  const handleCancell = async () => {
     if (id) {
-      deleteProduct(id)
+      cancelOutput(id)
         .then((res) => {
-          onDelete(!refresh);
-          toast.info("Producto Eliminado");
+          onChange(!refresh);
+          toast.success("Salida de Producto Cancelada ");
         })
         .catch((err) => {
           logError(err);
@@ -43,33 +45,36 @@ export default function RawMaterialTable({
     <>
       <YesNoModal
         showModal={showYesNoModal}
-        message={"¿Desea Eliminar el Lote?"}
+        message={"¿Desea Cancelar la Salida?"}
         onShowModalChange={(showModal) => setYesNoModal(showModal)}
-        onYes={() => handleDelete()}
+        onYes={() => handleCancell()}
+      />
+      <EditStatus
+        showModal={showModal}
+        onShowModalChange={(showModal) => setShowModal(showModal)}
+        productOutput={output}
+        onChange={() => onChange(!refresh)}
       />
       <table className="min-w-full border text-center">
         <thead className="border-b">
           <tr>
             <th scope="col" className="font-mono text-black px-6 py-4 border-r">
-              ID
+              Salida #
             </th>
             <th scope="col" className="font-mono text-black px-6 py-4 border-r">
-              Código de Barra
+              Registrado Por
             </th>
             <th scope="col" className="font-mono text-black px-6 py-4 border-r">
-              Nombre
+              Fecha
             </th>
             <th scope="col" className="font-mono text-black px-6 py-4 border-r">
-              En Inventario
+              Tipo de Venta
             </th>
             <th scope="col" className="font-mono text-black px-6 py-4 border-r">
-              Costo Promedio Unitario
+              Pagado
             </th>
             <th scope="col" className="font-mono text-black px-6 py-4 border-r">
-              Valor de Costo
-            </th>
-            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
-              Registrado el
+              Total
             </th>
             <th scope="col" className="font-mono text-black px-6 py-4 border-r">
               Acciones
@@ -77,55 +82,56 @@ export default function RawMaterialTable({
           </tr>
         </thead>
         <tbody>
-          {products.map((product) => (
+          {productOutputs.map((productOutput) => (
             <tr
-              key={`Product-item-${product.id}`}
-              className={`border-b ${product.stock ? "" : "bg-red-50"}`}
+              key={`Product-Output-item-${productOutput.id}`}
+              className="border-b"
             >
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium border-r">
-                {product.id}
+              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 border-r">
+                {productOutput.id}
               </td>
               <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
-                {product.barcode}
+                {capitalize(productOutput.employee.name)}{" "}
+                {capitalize(productOutput.employee.lastName)}
               </td>
               <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
-                {capitalize(product.name)}
+                {productOutput.createdAt}
               </td>
               <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
-                {product.stock ? product.stock + "UNIDADES" : "Sin Stock"}{" "}
+                {productOutput.typeOfSale}
+              </td>
+              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
+                {productOutput.isPaid === true ? "Sí" : "No"}
               </td>
               <td className="font-mono text-gray-900 px-6 py-4 whitespace-nowrap border-r">
-                ${product.averageCost ? product.averageCost : 0.0}
+                ${productOutput.amount}
               </td>
-              <td className="font-mono text-gray-900 px-6 py-4 whitespace-nowrap border-r">
-                ${product.amount ? product.amount : 0.0}
-              </td>
-              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
-                {product.createdAt}
-              </td>
-              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
+              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                 <div className="flex justify-center">
-                  <Link href={`/product/edit/${product.id}`}>
-                    <a>
-                      <PencilAltIcon className="w-9 bg-transparent rounded-lg text-beereign_grey xl:hidden" />
-                      <button
-                        type="button"
-                        className="hidden xl:inline-block px-6 py-2.5 bg-gray-200 text-beereign_grey font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-600 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-700 active:shadow-lg transition duration-150 ease-in-out"
-                      >
-                        Editar
-                      </button>
-                    </a>
-                  </Link>
                   <div
-                    className="ml-4"
                     onClick={() => {
-                      setYesNoModal(true);
-                      setID(product.id);
+                      setOutput(productOutput);
+                      setShowModal(true);
                     }}
                   >
-                    <TrashIcon className="w-9 bg-transparent text-red-500 xl:hidden" />
+                    <CashIcon className="w-9 bg-gray-200 rounded-lg text-beereign_grey xl:hidden" />
+                    <button
+                      type="button"
+                      className="hidden xl:inline-block px-6 py-2.5 bg-gray-200 text-beereign_grey font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-600 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-700 active:shadow-lg transition duration-150 ease-in-out"
+                    >
+                      Cambiar Estado de Pago
+                    </button>
+                  </div>
+                  <div
+                    onClick={() => {
+                      setYesNoModal(true);
+                      setID(productOutput.id);
+                    }}
+                    className="ml-4"
+                  >
+                    <BanIcon className="w-9 bg-gray-200 text-red-500 xl:hidden" />
                     <div className="hidden xl:inline-block px-6 py-2.5 bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-600 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-700 active:shadow-lg transition duration-150 ease-in-out">
-                      Eliminar
+                      Cancelar
                     </div>
                   </div>
                 </div>

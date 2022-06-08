@@ -27,7 +27,8 @@ const endPoints = {
     addEmployee: `${API}/${VERSION}/employees`,
     updateEmployee: (id, update) =>
       `${API}/${VERSION}/employees/${id}?update=${update}`,
-    deleteEmployee: (id) => `${API}/${VERSION}/employees/${id}`,
+    updatePassword: (id) => `${API}/${VERSION}/employees/${id}/password`,
+    disableEmployee: (id) => `${API}/${VERSION}/employees/${id}`,
   },
   typeOfEmployees: {
     getTypesOfEmployee: (limit, offset, filter) =>
@@ -38,7 +39,7 @@ const endPoints = {
     getAllModules: (id) => `${API}/${VERSION}/types-of-employee/${id}/modules`,
     addTypeOfEmployee: `${API}/${VERSION}/types-of-employee`,
     updateTypeOfEmployee: (id) => `${API}/${VERSION}/types-of-employee/${id}`,
-    disableTypeOfEmployee: (id) => `${API}/${VERSION}/types-of-employee/${id}`,
+    deleteTypeOfEmployee: (id) => `${API}/${VERSION}/types-of-employee/${id}`,
   },
   rawMaterials: {
     getRawMaterials: (limit, offset, filter) =>
@@ -48,7 +49,7 @@ const endPoints = {
     getRawMaterial: (id) => `${API}/${VERSION}/raw-materials/${id}`,
     addRawMaterial: `${API}/${VERSION}/raw-materials`,
     updateRawMaterial: (id) => `${API}/${VERSION}/raw-materials/${id}`,
-    disableRawMaterial: (id) => `${API}/${VERSION}/raw-materials/${id}`,
+    deleteRawMaterial: (id) => `${API}/${VERSION}/raw-materials/${id}`,
   },
   rawMaterialBatch: {
     getAll: (limit, offset, order, type) =>
@@ -60,6 +61,8 @@ const endPoints = {
       `${API}/${VERSION}/raw-material-batches/${id}?isPacking=false`,
     getByIdForPacking: (id) =>
       `${API}/${VERSION}/raw-material-batches/${id}?isPacking=true`,
+    deleteRawMaterialBatch: (id) =>
+      `${API}/${VERSION}/raw-material-batches/${id}`,
   },
   warehouses: {
     getWarehouses: (limit, offset, filter) =>
@@ -82,7 +85,7 @@ const endPoints = {
     getProduct: (id) => `${API}/${VERSION}/products/${id}`,
     addProduct: `${API}/${VERSION}/products`,
     updateProduct: (id) => `${API}/${VERSION}/products/${id}`,
-    disableProduct: (id) => `${API}/${VERSION}/products/${id}`,
+    deleteProduct: (id) => `${API}/${VERSION}/products/${id}`,
   },
   productBatch: {
     getAll: (limit, offset, order, type) =>
@@ -92,6 +95,14 @@ const endPoints = {
     getById: (id) => `${API}/${VERSION}/product-batches/${id}?isOutput=false`,
     getByIdForOutput: (id) =>
       `${API}/${VERSION}/product-batches/${id}?isOutput=true`,
+    deleteProductBatch: (id) => `${API}/${VERSION}/product-batches/${id}`,
+  },
+  productOutput: {
+    getAll: (limit, offset, isPaid, type) =>
+      `${API}/${VERSION}/product-outputs?limit=${limit}&offset=${offset}&isPaid=${isPaid}&typeOfSale=${type}`,
+    addProductOutput: `${API}/${VERSION}/product-outputs`,
+    updateProductOutput: (id) => `${API}/${VERSION}/product-outputs/${id}`,
+    cancelOutput: (id) => `${API}/${VERSION}/product-outputs/${id}`,
   },
 };
 

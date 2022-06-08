@@ -19,6 +19,7 @@ export default function Index() {
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState("ASC");
   const [type, setType] = useState("inStock");
+  const [refresh, setRefresh] = useState(false);
 
   const orderOptions = [
     { value: "ASC", label: "PEPS" },
@@ -28,7 +29,6 @@ export default function Index() {
   const typeOptions = [
     { value: "inStock", label: "En Stock" },
     { value: "empty", label: "Sin Stock" },
-    { value: "inProcess", label: "En Proceso" },
     { value: "all", label: "Todas" },
   ];
 
@@ -55,7 +55,7 @@ export default function Index() {
         });
     };
     loadBatches();
-  }, [page, order, type]);
+  }, [page, order, type, refresh]);
   const totalPages = Math.ceil(productBatches?.count / PRODUCT_BATCH_LIMIT);
   return (
     <>
@@ -109,6 +109,8 @@ export default function Index() {
                 <ProductBatchTable
                   productBatches={productBatches?.rows}
                   loading={loading}
+                  onDelete={(deleted) => setRefresh(deleted)}
+                  refresh={refresh}
                 />
               </div>
             </div>

@@ -33,6 +33,6 @@ export async function updateRawMaterial(id, body) {
   return response.data;
 }
 
-export async function disableRawMaterial(id) {
-  await deleteData(endPoints.rawMaterials.disableRawMaterial(id));
+export async function deleteRawMaterial(id) {
+  await deleteData(endPoints.rawMaterials.deleteRawMaterial(id));
 }

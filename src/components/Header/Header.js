@@ -38,14 +38,6 @@ export default function Header(props) {
 
         <ul className="flex mr-3 max-w-header_account 2xl:max-w-xs overflow-hidden items-center">
           <li>
-            <a>
-              <BellIcon className="w-9 text-beereign_yellow xl:text-beereign_ligth" />
-              <div className="absolute inline-block translate-x-4 -translate-y-11 skew-x-0 skew-y-0 scale-x-100 scale-y-100 py-1 px-2.5 text-xs leading-none font-bold text-beereign_yellow xl:text-beereign_ligth z-10">
-                1
-              </div>
-            </a>
-          </li>
-          <li>
             <Link href="/account">
               <a>
                 <div className="hidden xl:flex xl:items-center">

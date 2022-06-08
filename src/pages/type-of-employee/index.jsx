@@ -17,6 +17,7 @@ export default function Index() {
   const [filter, setFilter] = useState("");
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     const loadApiaries = async () => {
@@ -33,7 +34,7 @@ export default function Index() {
         });
     };
     loadApiaries();
-  }, [page, filter]);
+  }, [page, filter, refresh]);
 
   const searchItems = (value) => {
     setFilter(value);
@@ -71,7 +72,7 @@ export default function Index() {
               <input
                 type="search"
                 className="form-control relative flex-auto min-w-0 block w-full px-3 py-3 text-base font-light text-black bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0  focus:bg-white focus:border-beereign_yellow focus:outline-none"
-                placeholder="Buscar Apiario..."
+                placeholder="Buscar Tipo de Empleado..."
                 maxLength={25}
                 onChange={(e) =>
                   searchItems(e.target.value.toLocaleLowerCase())
@@ -98,6 +99,8 @@ export default function Index() {
                 <TypeOfEmployeeTable
                   typesOfEmployee={typesOfEmployee?.rows}
                   loading={loading}
+                  onDelete={(deleted) => setRefresh(deleted)}
+                  refresh={refresh}
                 />
               </div>
             </div>

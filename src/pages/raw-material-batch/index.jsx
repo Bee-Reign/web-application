@@ -17,6 +17,7 @@ export default function Index() {
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState("ASC");
   const [type, setType] = useState("inStock");
+  const [refresh, setRefresh] = useState(false);
 
   const orderOptions = [
     { value: "ASC", label: "PEPS" },
@@ -52,7 +53,7 @@ export default function Index() {
         });
     };
     loadBatches();
-  }, [page, order, type]);
+  }, [page, order, type, refresh]);
   const totalPages = Math.ceil(
     rawMaterialBatches?.count / RAW_MATERIAL_BATCH_LIMIT
   );
@@ -106,6 +107,8 @@ export default function Index() {
                 <BatchTable
                   rawMaterialBatches={rawMaterialBatches?.rows}
                   loading={loading}
+                  onDelete={(deleted) => setRefresh(deleted)}
+                  refresh={refresh}
                 />
               </div>
             </div>

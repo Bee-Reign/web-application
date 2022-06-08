@@ -10,7 +10,7 @@ export default function TabBar() {
     <div className="w-full h-20 border-t-2 bottom-0 fixed xl:relative xl:border-t-0 xl:h-8 bg-white xl:bg-beereign_clear flex items-center justify-between xl:justify-center">
       <div className="xl:hidden">
         <ClipboardListIcon
-          className="w-12 md:w-14 text-beereign_ligth ml-3"
+          className="w-12 md:w-14 text-beereign_ligth ml-3 opacity-20"
           aria-hidden="true"
         />
       </div>

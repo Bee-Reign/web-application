@@ -1,5 +1,5 @@
 import endPoints from "@service/api";
-import { postData, getData, patchData } from "@libs/fetchService";
+import { postData, getData, patchData, deleteData } from "@libs/fetchService";
 
 export async function getProductBatches(limit, offset, order, type) {
   const response = await getData(
@@ -29,4 +29,8 @@ export async function updateProductBatch(id, body) {
     body
   );
   return response.data;
+}
+
+export async function deleteProductBatch(id) {
+  await deleteData(endPoints.productBatch.deleteProductBatch(id));
 }

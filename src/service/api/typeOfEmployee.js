@@ -48,6 +48,6 @@ export async function updateTypeOfEmployee(id, body) {
   return response.data;
 }
 
-export async function disableTypeOfEmployee(id) {
-  await deleteData(endPoints.typeOfEmployees.disableTypeOfEmployee(id));
+export async function deleteTypeOfEmployee(id) {
+  await deleteData(endPoints.typeOfEmployees.deleteTypeOfEmployee(id));
 }

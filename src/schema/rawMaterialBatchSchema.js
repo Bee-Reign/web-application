@@ -15,7 +15,7 @@ const measurement = Joi.string()
   .valid("ONZAS")
   .valid("UNIDADES");
 const quantity = Joi.number().positive();
-const stock = Joi.number().positive();
+const stock = Joi.number().min(0);
 const unitCost = Joi.number().positive();
 
 const checkId = Joi.object({

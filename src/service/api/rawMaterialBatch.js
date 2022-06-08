@@ -1,5 +1,5 @@
 import endPoints from "@service/api";
-import { postData, getData, patchData } from "@libs/fetchService";
+import { postData, getData, patchData, deleteData } from "@libs/fetchService";
 
 export async function getRawMaterialBatches(limit, offset, order, type) {
   const response = await getData(
@@ -34,4 +34,8 @@ export async function updateRawMaterialBatch(id, body) {
     body
   );
   return response.data;
+}
+
+export async function deleteRawMaterialBatch(id) {
+  await deleteData(endPoints.rawMaterialBatch.deleteRawMaterialBatch(id));
 }

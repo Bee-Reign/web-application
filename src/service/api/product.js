@@ -28,6 +28,6 @@ export async function updateProduct(id, body) {
   return response.data;
 }
 
-export async function disableProduct(id) {
-  await deleteData(endPoints.products.disableProduct(id));
+export async function deleteProduct(id) {
+  await deleteData(endPoints.products.deleteProduct(id));
 }

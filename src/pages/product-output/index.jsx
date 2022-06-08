@@ -12,6 +12,8 @@ import Select from "react-select";
 import capitalize from "@utils/capitalize";
 import { checkId } from "@schema/productBatchSchema";
 import { getProductForOutput } from "@service/api/productBatch";
+import { createSchema } from "@schema/productOutputSchema";
+import { addProductOutput } from "@service/api/productOutput";
 import Loading from "@components/Animation/Loading";
 import CheckPermission from "@utils/checkPermission";
 import { logError } from "@utils/logError";
@@ -20,14 +22,14 @@ const Output = () => {
   CheckPermission("/product-output");
   const formRef = useRef(null);
   const [batch, setBatch] = useState("");
-  const [type, setType] = useState("counted");
+  const [type, setType] = useState("CONTADO");
   const [total, setTotal] = useState(0);
   const [batches, setBatches] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const typeOptions = [
-    { value: "counted", label: "CONTADO" },
-    { value: "credit", label: "CRÉDITO" },
+    { value: "CONTADO", label: "CONTADO" },
+    { value: "CRÉDITO", label: "CRÉDITO" },
   ];
 
   const handleChangeType = (value) => {
@@ -45,8 +47,9 @@ const Output = () => {
       }
       getProductForOutput(batch)
         .then((result) => {
-          result.quantityUsed = 0;
-          result.price = 0;
+          result.quantityUsed = 1;
+          result.price = result.unitCost;
+          result.total = result.quantityUsed * result.price;
           const list = batches;
           list.map((item) => {
             if (batch == item.id) {
@@ -56,6 +59,7 @@ const Output = () => {
           });
           list.push(result);
           setBatches(list);
+          updateTotal();
         })
         .catch((error) => {
           if (error != false) {
@@ -77,14 +81,15 @@ const Output = () => {
     let total = 0.0;
     const list = batches;
     list.map((item) => {
-      total += item.price * item.quantityUsed;
+      total += item.total;
     });
-    setTotal(total);
+    setTotal(total.toFixed(2));
   }
 
   const changeQuantity = (value, index) => {
     const list = batches;
     list[index].quantityUsed = value;
+    list[index].total = list[index].quantityUsed * list[index].price;
     setBatches(list);
     updateTotal();
   };
@@ -92,13 +97,37 @@ const Output = () => {
   const changePrice = (value, index) => {
     const list = batches;
     list[index].price = value;
+    list[index].total = list[index].quantityUsed * list[index].price;
     setBatches(list);
     updateTotal();
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    toast.info("Estamos trabajando en esto");
+    setLoading(true);
+    const data = {
+      amount: total,
+      typeOfSale: type,
+      batches: batches,
+    };
+    const { error } = await createSchema.validate(data);
+    if (error) {
+      toast.error("Los campos con ( * ) son necesarios");
+      setLoading(false);
+      return null;
+    }
+    addProductOutput(data)
+      .then((response) => {
+        toast.success("Salida Registrada");
+        setBatches([]);
+        setTotal(0);
+      })
+      .catch((err) => {
+        logError(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
   return (
     <>
@@ -137,7 +166,7 @@ const Output = () => {
               value={batch}
               type="search"
               className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-              placeholder="Lote de Mareria Prima #"
+              placeholder="Lote de Producto #"
               onKeyPress={handleKeyPress}
               onChange={(e) => setBatch(e.target.value)}
             />
@@ -201,6 +230,12 @@ const Output = () => {
                         >
                           Precio
                         </th>
+                        <th
+                          scope="col"
+                          className="font-mono text-black px-6 py-4 border-r"
+                        >
+                          Total
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -232,6 +267,7 @@ const Output = () => {
                                 type="number"
                                 step="1"
                                 min="1"
+                                defaultValue={1}
                                 max={data.stock}
                                 className="form-control block w-full px-1 py-1 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                                 placeholder="Cantidad (*)"
@@ -246,7 +282,8 @@ const Output = () => {
                               <input
                                 type="number"
                                 step="0.01"
-                                min="0"
+                                min={data.unitCost}
+                                defaultValue={data.unitCost}
                                 className="form-control block w-full px-1 py-1 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                                 placeholder="Precio (*)"
                                 onChange={(e) =>
@@ -254,6 +291,9 @@ const Output = () => {
                                 }
                               />
                             </div>
+                          </td>
+                          <td className="font-mono text-gray-900 px-6 py-4 whitespace-nowrap border-r">
+                            ${data.total.toFixed(2)}
                           </td>
                         </tr>
                       ))}
@@ -266,7 +306,7 @@ const Output = () => {
 
           <div className="text-right">
             <h3 className="text-lg font-mono">
-              Total de Venta: <span className="font-bold">${total}</span>
+              Total: <span className="font-bold">${total}</span>
             </h3>
           </div>
 

@@ -6,7 +6,7 @@ const warehouseId = Joi.number().integer().positive().max(32767);
 const entryDate = Joi.date();
 const expirationDate = Joi.date().allow(null);
 const quantity = Joi.number().integer().positive();
-const stock = Joi.number().integer().positive();
+const stock = Joi.number().integer().min(0);
 const unitCost = Joi.number().positive();
 const batches = Joi.array();
 

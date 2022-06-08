@@ -1,9 +1,22 @@
+import { useState } from "react";
 import Loading from "@components/Animation/Loading";
 import { PencilAltIcon, TrashIcon } from "@heroicons/react/outline";
-import capitalize from "@utils/capitalize";
 import Link from "next/link";
 
-export default function BatchTable({ rawMaterialBatches = [], loading }) {
+import capitalize from "@utils/capitalize";
+import YesNoModal from "@components/Modal/YesNoModal";
+import { deleteRawMaterialBatch } from "@service/api/rawMaterialBatch";
+import { toast } from "react-toastify";
+import { logError } from "@utils/logError";
+
+export default function BatchTable({
+  rawMaterialBatches = [],
+  onDelete,
+  refresh,
+  loading,
+}) {
+  const [showYesNoModal, setYesNoModal] = useState(false);
+  const [id, setID] = useState(null);
   if (loading == true) {
     return <Loading />;
   } else if (rawMaterialBatches.length === 0) {
@@ -13,8 +26,27 @@ export default function BatchTable({ rawMaterialBatches = [], loading }) {
       </h3>
     );
   }
+
+  const handleDelete = async () => {
+    if (id) {
+      deleteRawMaterialBatch(id)
+        .then((res) => {
+          onDelete(!refresh);
+          toast.info("Lote de Materia Prima Eliminada");
+        })
+        .catch((err) => {
+          logError(err);
+        });
+    }
+  };
   return (
     <>
+      <YesNoModal
+        showModal={showYesNoModal}
+        message={"¿Desea Eliminar el Lote?"}
+        onShowModalChange={(showModal) => setYesNoModal(showModal)}
+        onYes={() => handleDelete()}
+      />
       <table className="min-w-full border text-center">
         <thead className="border-b">
           <tr>
@@ -105,7 +137,13 @@ export default function BatchTable({ rawMaterialBatches = [], loading }) {
                       </button>
                     </a>
                   </Link>
-                  <div className="ml-4">
+                  <div
+                    className="ml-4"
+                    onClick={() => {
+                      setYesNoModal(true);
+                      setID(rawMaterialBatch.id);
+                    }}
+                  >
                     <TrashIcon className="w-9 bg-gray-200 text-red-500 xl:hidden" />
                     <div className="hidden xl:inline-block px-6 py-2.5 bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-600 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-700 active:shadow-lg transition duration-150 ease-in-out">
                       Eliminar

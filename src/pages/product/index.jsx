@@ -19,6 +19,7 @@ export default function Index() {
   const [filter, setFilter] = useState("");
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     const loadProducts = async () => {
@@ -35,7 +36,7 @@ export default function Index() {
         });
     };
     loadProducts();
-  }, [page, filter]);
+  }, [page, filter, refresh]);
 
   const searchItems = (value) => {
     setFilter(value);
@@ -91,7 +92,12 @@ export default function Index() {
           <div className="overflow-x-auto">
             <div className="py-2 inline-block min-w-full">
               <div className="overflow-hidden">
-                <ProductTable products={products?.rows} loading={loading} />
+                <ProductTable
+                  products={products?.rows}
+                  loading={loading}
+                  onDelete={(deleted) => setRefresh(deleted)}
+                  refresh={refresh}
+                />
               </div>
             </div>
           </div>
