@@ -15,6 +15,7 @@ import capitalize from "@utils/capitalize";
 import { getBatchForPacking } from "@service/api/rawMaterialBatch";
 import { checkId } from "@schema/rawMaterialBatchSchema";
 import Button from "@components/Button";
+import PrintModal from "@components/Modal/PrintModal";
 import CheckPermission from "@utils/checkPermission";
 
 const Packing = () => {
@@ -27,6 +28,8 @@ const Packing = () => {
   const [product, setProduct] = useState(null);
   const [warehouse, setWarehouse] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [printLabel, setPrintLabel] = useState(false);
+  const [item, setItem] = useState({});
   let query = "";
 
   const toDay = new Date().toISOString().substring(0, 10);
@@ -115,7 +118,7 @@ const Packing = () => {
   };
 
   const handleChangeProduct = (value) => {
-    setProduct(value.id);
+    setProduct(value);
     query = "";
   };
   const handleChangeWarehouse = (value) => {
@@ -144,7 +147,7 @@ const Packing = () => {
     setLoading(true);
     const formData = new FormData(formRef.current);
     const data = {
-      productId: product,
+      productId: product.id,
       warehouseId: warehouse,
       entryDate: formData.get("entryDate"),
       expirationDate: formData.get("expirationDate")
@@ -166,6 +169,12 @@ const Packing = () => {
         toast.success("Envasado Registrado");
         setQuantity(1);
         setBatches([]);
+        setItem({
+          id: response.id,
+          name: product.name,
+          quantity: `${response.quantity} UNIDADES`,
+        });
+        setPrintLabel(true);
       })
       .catch((err) => {
         logError(err);
@@ -179,6 +188,11 @@ const Packing = () => {
       <Head>
         <title>Envasado - BeeReign</title>
       </Head>
+      <PrintModal
+        showModal={printLabel}
+        item={item}
+        onShowLabelChange={(value) => setPrintLabel(value)}
+      />
       <section className="mx-3 xl:mx-6 flex items-center justify-between">
         <div className="flex justify-start items-center">
           <Link href="/home">
