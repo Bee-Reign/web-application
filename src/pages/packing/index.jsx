@@ -2,13 +2,13 @@ import { useRef, useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import Head from "next/head";
 import { HomeIcon, TrashIcon } from "@heroicons/react/outline";
-import { CameraIcon } from "@heroicons/react/solid";
+import { CameraIcon, SearchIcon } from "@heroicons/react/solid";
 import AsyncSelect from "react-select/async";
 import { toast } from "react-toastify";
 
 import { createSchema } from "@schema/productBatchSchema";
 import { addProductBatch } from "@service/api/productBatch";
-import { getAllProducts, getProductByBarcode } from "@service/api/product";
+import { getProductByBarcode } from "@service/api/product";
 import { getAllWarehouses } from "@service/api/warehouse";
 import { logError } from "@utils/logError";
 import capitalize from "@utils/capitalize";
@@ -16,6 +16,7 @@ import { getBatchForPacking } from "@service/api/rawMaterialBatch";
 import { checkId } from "@schema/rawMaterialBatchSchema";
 import Button from "@components/Button";
 import PrintModal from "@components/Modal/PrintModal";
+import SearchProduct from "@components/Modal/SearchProduct";
 import CheckPermission from "@utils/checkPermission";
 
 const Packing = () => {
@@ -25,10 +26,11 @@ const Packing = () => {
   const [unitCost, setUnitCost] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [batches, setBatches] = useState([]);
-  const [products, setProducts] = useState([]);
+  const [product, setProduct] = useState([]);
   const [warehouse, setWarehouse] = useState(null);
   const [loading, setLoading] = useState(false);
   const [printLabel, setPrintLabel] = useState(false);
+  const [search, setSearch] = useState(false);
   const [item, setItem] = useState({});
   const [productQuery, setPDQ] = useState("");
   let query = "";
@@ -100,22 +102,14 @@ const Packing = () => {
       e.preventDefault();
       getProductByBarcode(productQuery)
         .then((result) => {
-          setProducts([result]);
-          console.log(products);
-          setPDQ(0);
+          setProduct(result);
+          setPDQ("");
         })
         .catch((err) => {
           logError(err);
         });
       return;
     }
-    getAllProducts(productQuery)
-      .then((result) => {
-        setProducts(result);
-      })
-      .catch((err) => {
-        logError(err);
-      });
   }
 
   const getWarehouses = () => {
@@ -148,6 +142,7 @@ const Packing = () => {
   const handleReset = (e) => {
     setBatch("");
     setBatches([]);
+    setProduct(null);
     setQuantity(1);
     setWarehouse(null);
   };
@@ -158,7 +153,7 @@ const Packing = () => {
     const formData = new FormData(formRef.current);
     try {
       const data = {
-        productId: products[formData.get("product")].id,
+        productId: product.id,
         warehouseId: warehouse,
         entryDate: formData.get("entryDate"),
         expirationDate: formData.get("expirationDate")
@@ -183,10 +178,11 @@ const Packing = () => {
           setBatches([]);
           setItem({
             id: response.id,
-            name: products[formData.get("product")].name,
+            name: product.name,
             time: response.createdAt,
           });
           setPrintLabel(true);
+          setProduct(null);
         })
         .catch((err) => {
           logError(err);
@@ -208,6 +204,11 @@ const Packing = () => {
         item={item}
         onShowLabelChange={(value) => setPrintLabel(value)}
       />
+      <SearchProduct
+        showModal={search}
+        onClick={(value) => setProduct(value)}
+        onShowModalChange={(value) => setSearch(value)}
+      />
       <section className="mx-3 xl:mx-6 flex items-center justify-between">
         <div className="flex justify-start items-center">
           <Link href="/home">
@@ -224,22 +225,16 @@ const Packing = () => {
       <section className="mx-3 xl:mx-6 text-center">
         <h2 className="mt-6 font-mono text-2xl">Detalle del Envasado</h2>
         <form className="mt-5" ref={formRef} onSubmit={handleSubmit}>
-          <div className="mb-5 mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
+          <div className="mb-5 mx-auto flex w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
             <input
-              name="product"
               type="search"
-              list="productList"
               value={productQuery}
               onChange={(e) => setPDQ(e.target.value)}
               onKeyPress={handleKeyPressInProduct}
               className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-              placeholder="Buscar Producto..."
+              placeholder={product ? product.name : "Buscar Producto..."}
             />
-            <datalist id="productList">
-              {products.map((product, index) => (
-                <option key={index} value={index} label={product.name} />
-              ))}
-            </datalist>
+            <SearchIcon className="pl-2 w-12" onClick={() => setSearch(true)} />
           </div>
 
           <div className="mb-5 mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">

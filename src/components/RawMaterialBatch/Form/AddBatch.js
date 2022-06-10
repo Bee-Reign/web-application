@@ -4,24 +4,24 @@ import AsyncSelect from "react-select/async";
 
 import { newSchema } from "@schema/rawMaterialBatchSchema";
 import { addRawMaterialBatch } from "@service/api/rawMaterialBatch";
-import {
-  getAllRawMaterials,
-  getRawMaterialByCode,
-} from "@service/api/rawMaterial";
+import { getRawMaterialByCode } from "@service/api/rawMaterial";
 import { getAllWarehouses } from "@service/api/warehouse";
 import Button from "@components/Button";
 import PrintModal from "@components/Modal/PrintModal";
+import SearchRawMaterial from "@components/Modal/SearchRawMaterial";
 import { logError } from "@utils/logError";
 import capitalize from "@utils/capitalize";
+import { SearchIcon } from "@heroicons/react/solid";
 
 export default function AddBatch() {
   const formRef = useRef(null);
-  const [rawMaterials, setRawMaterials] = useState([]);
+  const [rawMaterial, setRawMaterial] = useState(null);
   const [warehouse, setWarehouse] = useState(null);
   const [loading, setLoading] = useState(false);
   const [printLabel, setPrintLabel] = useState(false);
+  const [search, setSearch] = useState(false);
+  const [RMQ, setRMQ] = useState(""); //Raw Material Query
   const [item, setItem] = useState({});
-  const [rawMaterialQuery, setRMQ] = useState("");
   let query = "";
 
   const toDay = new Date().toISOString().substring(0, 10);
@@ -30,23 +30,18 @@ export default function AddBatch() {
     const key = e.keyCode || e.which;
     if (key == 13) {
       e.preventDefault();
-      getRawMaterialByCode(rawMaterialQuery)
+      getRawMaterialByCode(RMQ)
         .then((result) => {
-          setRawMaterials([result]);
-          setRMQ(0);
+          setRawMaterial(result);
         })
         .catch((err) => {
           logError(err);
+        })
+        .finally(() => {
+          setRMQ("");
         });
       return;
     }
-    getAllRawMaterials(rawMaterialQuery)
-      .then((result) => {
-        setRawMaterials(result);
-      })
-      .catch((err) => {
-        logError(err);
-      });
   }
 
   const getWarehouses = () => {
@@ -82,7 +77,7 @@ export default function AddBatch() {
     const formData = new FormData(formRef.current);
     try {
       const data = {
-        rawMaterialId: rawMaterials[formData.get("rawMaterial")].id,
+        rawMaterialId: rawMaterial.id,
         warehouseId: warehouse,
         entryDate: formData.get("entryDate"),
         expirationDate: formData.get("expirationDate")
@@ -104,10 +99,11 @@ export default function AddBatch() {
           toast.success("Lote Registrado");
           setItem({
             id: response.id,
-            name: rawMaterials[formData.get("rawMaterial")].name,
+            name: rawMaterial.name,
             time: response.createdAt,
           });
           setPrintLabel(true);
+          setRawMaterial(null);
         })
         .catch((err) => {
           logError(err);
@@ -128,23 +124,24 @@ export default function AddBatch() {
         item={item}
         onShowLabelChange={(value) => setPrintLabel(value)}
       />
+      <SearchRawMaterial
+        showModal={search}
+        onClick={(value) => setRawMaterial(value)}
+        onShowModalChange={(value) => setSearch(value)}
+      />
       <form className="mt-5" ref={formRef} onSubmit={handleSubmit}>
-        <div className="mb-5 mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
+        <div className="mb-5 mx-auto w-full flex md:w-4/5 xl:w-9/12 2xl:w-3/5">
           <input
-            name="rawMaterial"
             type="search"
-            list="rawMat"
-            value={rawMaterialQuery}
+            value={RMQ}
             onChange={(e) => setRMQ(e.target.value)}
             onKeyPress={handleKeyPress}
             className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-            placeholder="Buscar Materia Prima..."
+            placeholder={
+              rawMaterial ? rawMaterial.name : "Buscar Materia Prima..."
+            }
           />
-          <datalist id="rawMat">
-            {rawMaterials.map((rawMaterial, index) => (
-              <option key={index} value={index} label={rawMaterial.name} />
-            ))}
-          </datalist>
+          <SearchIcon className="pl-2 w-12" onClick={() => setSearch(true)} />
         </div>
 
         <div className="mb-5 mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
