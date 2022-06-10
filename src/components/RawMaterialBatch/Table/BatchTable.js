@@ -141,7 +141,7 @@ export default function BatchTable({
                       setItem({
                         id: rawMaterialBatch.id,
                         name: rawMaterialBatch.rawMaterial.name,
-                        quantity: `${rawMaterialBatch.quantity} ${rawMaterialBatch.measurement}`,
+                        time: rawMaterialBatch.createdAt,
                       });
                       setPrintLabel(true);
                     }}

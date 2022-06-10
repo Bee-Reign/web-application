@@ -122,7 +122,7 @@ export default function Index() {
         <Pagination
           loading={loading}
           page={page}
-          limit={APIARY_LIMIT}
+          limit={PRODUCT_BATCH_LIMIT}
           totalPages={totalPages}
           onPageChange={(page) => setPage(page)}
         />

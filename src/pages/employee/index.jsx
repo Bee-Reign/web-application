@@ -93,7 +93,7 @@ const Index = () => {
         <Pagination
           loading={loading}
           page={page}
-          limit={APIARY_LIMIT}
+          limit={EMPLOYEE_LIMIT}
           totalPages={totalPages}
           onPageChange={(page) => setPage(page)}
         />

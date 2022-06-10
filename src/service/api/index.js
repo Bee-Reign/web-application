@@ -46,7 +46,9 @@ const endPoints = {
       `${API}/${VERSION}/raw-materials?limit=${limit}&offset=${offset}&filter=${filter}`,
     getAllRawMaterials: (query) =>
       `${API}/${VERSION}/raw-materials?filter=${query}`,
-    getRawMaterial: (id) => `${API}/${VERSION}/raw-materials/${id}`,
+    getRawMaterial: (id) => `${API}/${VERSION}/raw-materials/${id}?type=id`,
+    getRawMaterialByCode: (id) =>
+      `${API}/${VERSION}/raw-materials/${id}?type=code`,
     addRawMaterial: `${API}/${VERSION}/raw-materials`,
     updateRawMaterial: (id) => `${API}/${VERSION}/raw-materials/${id}`,
     deleteRawMaterial: (id) => `${API}/${VERSION}/raw-materials/${id}`,
@@ -82,7 +84,9 @@ const endPoints = {
     getProducts: (limit, offset, filter) =>
       `${API}/${VERSION}/products?limit=${limit}&offset=${offset}&filter=${filter}`,
     getAllProducts: (query) => `${API}/${VERSION}/products?filter=${query}`,
-    getProduct: (id) => `${API}/${VERSION}/products/${id}`,
+    getProduct: (id) => `${API}/${VERSION}/products/${id}?type=id`,
+    getProductByBarcode: (id) =>
+      `${API}/${VERSION}/products/${id}?type=barcode`,
     addProduct: `${API}/${VERSION}/products`,
     updateProduct: (id) => `${API}/${VERSION}/products/${id}`,
     deleteProduct: (id) => `${API}/${VERSION}/products/${id}`,

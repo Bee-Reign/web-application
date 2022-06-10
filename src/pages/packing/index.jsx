@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 
 import { createSchema } from "@schema/productBatchSchema";
 import { addProductBatch } from "@service/api/productBatch";
-import { getAllProducts } from "@service/api/product";
+import { getAllProducts, getProductByBarcode } from "@service/api/product";
 import { getAllWarehouses } from "@service/api/warehouse";
 import { logError } from "@utils/logError";
 import capitalize from "@utils/capitalize";
@@ -25,15 +25,16 @@ const Packing = () => {
   const [unitCost, setUnitCost] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [batches, setBatches] = useState([]);
-  const [product, setProduct] = useState(null);
+  const [products, setProducts] = useState([]);
   const [warehouse, setWarehouse] = useState(null);
   const [loading, setLoading] = useState(false);
   const [printLabel, setPrintLabel] = useState(false);
   const [item, setItem] = useState({});
+  const [productQuery, setPDQ] = useState("");
   let query = "";
 
   const toDay = new Date().toISOString().substring(0, 10);
-  async function handleKeyPress(e) {
+  async function handleKeyPressInBatch(e) {
     const key = e.keyCode || e.which;
     if (key == 13) {
       e.preventDefault();
@@ -93,15 +94,29 @@ const Packing = () => {
     updateCost();
   };
 
-  const getProducts = () => {
-    return getAllProducts(query)
+  async function handleKeyPressInProduct(e) {
+    const key = e.keyCode || e.which;
+    if (key == 13) {
+      e.preventDefault();
+      getProductByBarcode(productQuery)
+        .then((result) => {
+          setProducts([result]);
+          console.log(products);
+          setPDQ(0);
+        })
+        .catch((err) => {
+          logError(err);
+        });
+      return;
+    }
+    getAllProducts(productQuery)
       .then((result) => {
-        return result;
+        setProducts(result);
       })
       .catch((err) => {
         logError(err);
       });
-  };
+  }
 
   const getWarehouses = () => {
     return getAllWarehouses(query)
@@ -117,10 +132,6 @@ const Packing = () => {
     query = value.toLocaleLowerCase();
   };
 
-  const handleChangeProduct = (value) => {
-    setProduct(value);
-    query = "";
-  };
   const handleChangeWarehouse = (value) => {
     setWarehouse(value.id);
     query = "";
@@ -138,7 +149,6 @@ const Packing = () => {
     setBatch("");
     setBatches([]);
     setQuantity(1);
-    setProduct(null);
     setWarehouse(null);
   };
 
@@ -146,42 +156,47 @@ const Packing = () => {
     e.preventDefault();
     setLoading(true);
     const formData = new FormData(formRef.current);
-    const data = {
-      productId: product.id,
-      warehouseId: warehouse,
-      entryDate: formData.get("entryDate"),
-      expirationDate: formData.get("expirationDate")
-        ? new Date(formData.get("expirationDate")).toISOString()
-        : null,
-      quantity: quantity,
-      unitCost: unitCost,
-      batches: batches,
-    };
-    const { error } = await createSchema.validate(data);
-    if (error) {
-      toast.error("Los campos con ( * ) son necesarios");
-      setLoading(false);
-      return null;
-    }
-    addProductBatch(data)
-      .then((response) => {
-        formRef.current.reset();
-        toast.success("Envasado Registrado");
-        setQuantity(1);
-        setBatches([]);
-        setItem({
-          id: response.id,
-          name: product.name,
-          quantity: `${response.quantity} UNIDADES`,
-        });
-        setPrintLabel(true);
-      })
-      .catch((err) => {
-        logError(err);
-      })
-      .finally(() => {
+    try {
+      const data = {
+        productId: products[formData.get("product")].id,
+        warehouseId: warehouse,
+        entryDate: formData.get("entryDate"),
+        expirationDate: formData.get("expirationDate")
+          ? new Date(formData.get("expirationDate")).toISOString()
+          : null,
+        quantity: quantity,
+        unitCost: unitCost,
+        batches: batches,
+      };
+      console.log(data);
+      const { error } = await createSchema.validate(data);
+      if (error) {
+        toast.error("Los campos con ( * ) son necesarios");
         setLoading(false);
-      });
+        return null;
+      }
+      addProductBatch(data)
+        .then((response) => {
+          formRef.current.reset();
+          toast.success("Envasado Registrado");
+          setQuantity(1);
+          setBatches([]);
+          setItem({
+            id: response.id,
+            name: products[formData.get("product")].name,
+            time: response.createdAt,
+          });
+          setPrintLabel(true);
+        })
+        .catch((err) => {
+          logError(err);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    } catch (err) {
+      toast.error("Ups, ERROR");
+    }
   };
   return (
     <>
@@ -210,18 +225,21 @@ const Packing = () => {
         <h2 className="mt-6 font-mono text-2xl">Detalle del Envasado</h2>
         <form className="mt-5" ref={formRef} onSubmit={handleSubmit}>
           <div className="mb-5 mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
-            <AsyncSelect
-              className="form-control block w-full py-1 text-left font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none"
-              styles={customStyles}
-              getOptionLabel={(e) => capitalize(e.name)}
-              getOptionValue={(e) => e.id}
-              loadOptions={getProducts}
-              cacheOptions
-              onInputChange={onInputChange}
-              defaultOptions
-              placeholder={"Buscar Producto a Envasar... *"}
-              onChange={handleChangeProduct}
+            <input
+              name="product"
+              type="search"
+              list="productList"
+              value={productQuery}
+              onChange={(e) => setPDQ(e.target.value)}
+              onKeyPress={handleKeyPressInProduct}
+              className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+              placeholder="Buscar Producto..."
             />
+            <datalist id="productList">
+              {products.map((product, index) => (
+                <option key={index} value={index} label={product.name} />
+              ))}
+            </datalist>
           </div>
 
           <div className="mb-5 mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
@@ -283,7 +301,7 @@ const Packing = () => {
               type="search"
               className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
               placeholder="Lote de Mareria Prima #"
-              onKeyPress={handleKeyPress}
+              onKeyPress={handleKeyPressInBatch}
               onChange={(e) => setBatch(e.target.value)}
             />
             <div className="ml-2 xl:hidden">

@@ -14,7 +14,7 @@ export default function PrintModal({ showModal, item, onShowLabelChange }) {
   return (
     <div className="z-10 mt-16 absolute inset-0 flex items-center justify-center bg-beereign_bg bg-opacity-80">
       <div className="px-5 w-full max-w-md md:h-auto">
-        <div className="relative bg-white text-gray-900 rounded-xl shadow">
+        <div className="relative bg-white text-black rounded-xl shadow">
           <div className="flex justify-center pt-5">
             <ReactToPrint
               trigger={() => (
@@ -31,16 +31,23 @@ export default function PrintModal({ showModal, item, onShowLabelChange }) {
               Cerrar
             </button>
           </div>
-          <div className="pt-12 text-center overflow-hidden" ref={componentRef}>
+          <div
+            className="px-2 pt-12 text-center overflow-hidden"
+            ref={componentRef}
+          >
             <Image
               src="https://res.cloudinary.com/bayyand/image/upload/v1648776515/IsotipoR_ndsp5r.png"
               width="120"
               height="120"
               alt="Company Logo"
             />
-            <h2 className="text-2xl font-serif">Company Name</h2>
+            <h2 className="uppercase text-2xl font-mono font-bold">
+              Company Name
+            </h2>
             <div className="pt-6">
-              <h3 className="text-xl font-mono">{item.name}</h3>
+              <h3 className=" uppercase text-xl font-mono font-bold">
+                {item.name}
+              </h3>
               <Barcode
                 value={item.id}
                 className="mx-auto"
@@ -51,18 +58,17 @@ export default function PrintModal({ showModal, item, onShowLabelChange }) {
                 renderer="image"
               />
             </div>
-            <h3 className="pt-2 text-xl">
-              Lote # <span className="font-bold font-serif">{item.id}</span>
+            <h3 className="pt-2 text-xl font-mono font-bold">
+              Lot # <span className="uppercase">{item.id}</span>
             </h3>
             <h3 className="pt-2 text-xl">
-              Cantidad:{" "}
-              <span className="font-bold font-mono">{item.quantity}</span>
+              <span className="font-bold font-mono">{item.time}</span>
             </h3>
             <div className="pt-12 mr-5">
               <div className="flex justify-end items-center">
-                <p className="mr-2">Powered By</p>
+                <p className="mr-2 font-bold">Powered By</p>
                 <Image
-                  src="/logo.png"
+                  src="/black-logo.png"
                   width="130"
                   height="30"
                   alt="BeeReign logo"

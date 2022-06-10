@@ -18,6 +18,13 @@ export async function getProduct(id) {
   return response.data;
 }
 
+export async function getProductByBarcode(barcode) {
+  const response = await getData(
+    endPoints.products.getProductByBarcode(barcode)
+  );
+  return response.data;
+}
+
 export async function addProduct(body) {
   const response = await postData(endPoints.products.addProduct, body);
   return response.data;

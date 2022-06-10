@@ -20,6 +20,13 @@ export async function getRawMaterial(id) {
   return response.data;
 }
 
+export async function getRawMaterialByCode(code) {
+  const response = await getData(
+    endPoints.rawMaterials.getRawMaterialByCode(code)
+  );
+  return response.data;
+}
+
 export async function addRawMaterial(body) {
   const response = await postData(endPoints.rawMaterials.addRawMaterial, body);
   return response.data;

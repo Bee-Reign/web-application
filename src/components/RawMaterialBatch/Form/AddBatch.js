@@ -4,7 +4,10 @@ import AsyncSelect from "react-select/async";
 
 import { newSchema } from "@schema/rawMaterialBatchSchema";
 import { addRawMaterialBatch } from "@service/api/rawMaterialBatch";
-import { getAllRawMaterials } from "@service/api/rawMaterial";
+import {
+  getAllRawMaterials,
+  getRawMaterialByCode,
+} from "@service/api/rawMaterial";
 import { getAllWarehouses } from "@service/api/warehouse";
 import Button from "@components/Button";
 import PrintModal from "@components/Modal/PrintModal";
@@ -13,23 +16,38 @@ import capitalize from "@utils/capitalize";
 
 export default function AddBatch() {
   const formRef = useRef(null);
-  const [rawMaterial, setRawMaterial] = useState(null);
+  const [rawMaterials, setRawMaterials] = useState([]);
   const [warehouse, setWarehouse] = useState(null);
   const [loading, setLoading] = useState(false);
   const [printLabel, setPrintLabel] = useState(false);
   const [item, setItem] = useState({});
+  const [rawMaterialQuery, setRMQ] = useState("");
   let query = "";
 
   const toDay = new Date().toISOString().substring(0, 10);
-  const getRawMaterials = () => {
-    return getAllRawMaterials(query)
+
+  async function handleKeyPress(e) {
+    const key = e.keyCode || e.which;
+    if (key == 13) {
+      e.preventDefault();
+      getRawMaterialByCode(rawMaterialQuery)
+        .then((result) => {
+          setRawMaterials([result]);
+          setRMQ(0);
+        })
+        .catch((err) => {
+          logError(err);
+        });
+      return;
+    }
+    getAllRawMaterials(rawMaterialQuery)
       .then((result) => {
-        return result;
+        setRawMaterials(result);
       })
       .catch((err) => {
         logError(err);
       });
-  };
+  }
 
   const getWarehouses = () => {
     return getAllWarehouses(query)
@@ -45,10 +63,6 @@ export default function AddBatch() {
     query = value.toLocaleLowerCase();
   };
 
-  const handleChangeRawMaterial = (value) => {
-    setRawMaterial(value);
-    query = "";
-  };
   const handleChangeWarehouse = (value) => {
     setWarehouse(value.id);
     query = "";
@@ -66,40 +80,45 @@ export default function AddBatch() {
     e.preventDefault();
     setLoading(true);
     const formData = new FormData(formRef.current);
-    const data = {
-      rawMaterialId: rawMaterial.id,
-      warehouseId: warehouse,
-      entryDate: formData.get("entryDate"),
-      expirationDate: formData.get("expirationDate")
-        ? new Date(formData.get("expirationDate")).toISOString()
-        : null,
-      measurement: formData.get("measurement"),
-      quantity: Number(formData.get("quantity")),
-      unitCost: Number(formData.get("unitCost")),
-    };
-    const { error } = await newSchema.validate(data);
-    if (error) {
-      toast.error("Los campos con ( * ) son necesarios");
-      setLoading(false);
-      return null;
-    }
-    addRawMaterialBatch(data)
-      .then((response) => {
-        formRef.current.reset();
-        toast.success("Lote Registrado");
-        setItem({
-          id: response.id,
-          name: rawMaterial.name,
-          quantity: `${response.quantity} ${response.measurement}`,
-        });
-        setPrintLabel(true);
-      })
-      .catch((err) => {
-        logError(err);
-      })
-      .finally(() => {
+    try {
+      const data = {
+        rawMaterialId: rawMaterials[formData.get("rawMaterial")].id,
+        warehouseId: warehouse,
+        entryDate: formData.get("entryDate"),
+        expirationDate: formData.get("expirationDate")
+          ? new Date(formData.get("expirationDate")).toISOString()
+          : null,
+        measurement: formData.get("measurement"),
+        quantity: Number(formData.get("quantity")),
+        unitCost: Number(formData.get("unitCost")),
+      };
+      const { error } = await newSchema.validate(data);
+      if (error) {
+        toast.error("Los campos con ( * ) son necesarios");
         setLoading(false);
-      });
+        return null;
+      }
+      addRawMaterialBatch(data)
+        .then((response) => {
+          formRef.current.reset();
+          toast.success("Lote Registrado");
+          setItem({
+            id: response.id,
+            name: rawMaterials[formData.get("rawMaterial")].name,
+            time: response.createdAt,
+          });
+          setPrintLabel(true);
+        })
+        .catch((err) => {
+          logError(err);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    } catch (err) {
+      toast.error("Ups, ERROR");
+      setLoading(false);
+    }
   };
 
   return (
@@ -111,18 +130,21 @@ export default function AddBatch() {
       />
       <form className="mt-5" ref={formRef} onSubmit={handleSubmit}>
         <div className="mb-5 mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
-          <AsyncSelect
-            className="form-control block w-full py-1 text-left font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none"
-            styles={customStyles}
-            getOptionLabel={(e) => capitalize(e.name)}
-            getOptionValue={(e) => e.id}
-            loadOptions={getRawMaterials}
-            cacheOptions
-            onInputChange={onInputChange}
-            defaultOptions
-            placeholder={"Buscar Materia Prima... *"}
-            onChange={handleChangeRawMaterial}
+          <input
+            name="rawMaterial"
+            type="search"
+            list="rawMat"
+            value={rawMaterialQuery}
+            onChange={(e) => setRMQ(e.target.value)}
+            onKeyPress={handleKeyPress}
+            className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+            placeholder="Buscar Materia Prima..."
           />
+          <datalist id="rawMat">
+            {rawMaterials.map((rawMaterial, index) => (
+              <option key={index} value={index} label={rawMaterial.name} />
+            ))}
+          </datalist>
         </div>
 
         <div className="mb-5 mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
