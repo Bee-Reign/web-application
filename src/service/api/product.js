@@ -13,6 +13,13 @@ export async function getAllProducts(query) {
   return response.data;
 }
 
+export async function getAllProductBatchesByBarcode(barcode) {
+  const response = await getData(
+    endPoints.products.getAllProductBatchesByBarcode(barcode)
+  );
+  return response.data;
+}
+
 export async function getProduct(id) {
   const response = await getData(endPoints.products.getProduct(id));
   return response.data;

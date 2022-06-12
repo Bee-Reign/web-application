@@ -1,45 +1,44 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { XCircleIcon } from "@heroicons/react/outline";
 
-import { getAllProducts } from "@service/api/product";
+import { getAllProductBatchesByBarcode } from "@service/api/product";
 import { logError } from "@utils/logError";
 import capitalize from "@utils/capitalize";
 import Loading from "@components/Animation/Loading";
 
-export default function SearchProduct({
+export default function SearchProductBatch({
   showModal,
   onShowModalChange,
   onClick,
 }) {
-  const [products, serProducts] = useState([]);
+  const [batches, setBatches] = useState([]);
+  const [barcode, setBarcode] = useState("");
   const [loading, setLoading] = useState(false);
-  const [filter, setFilter] = useState("");
 
-  useEffect(() => {
-    const loadProducts = async () => {
+  if (showModal === false) return <></>;
+
+  async function handleKeyPress(e) {
+    const key = e.keyCode || e.which;
+    if (key == 13) {
+      e.preventDefault();
       setLoading(true);
-      getAllProducts(filter)
+      getAllProductBatchesByBarcode(barcode)
         .then((result) => {
-          serProducts(result);
+          console.log(result);
+          setBatches(result);
         })
         .catch((error) => {
           logError(error);
         })
         .finally(() => {
+          setBarcode("");
           setLoading(false);
         });
-    };
-    loadProducts();
-  }, [filter]);
-
-  if (showModal === false) return <></>;
-
-  const searchItems = (value) => {
-    setFilter(value);
-  };
+    }
+  }
 
   const handleClose = () => {
-    setFilter("");
+    setBarcode("");
     onShowModalChange(false);
   };
 
@@ -64,9 +63,11 @@ export default function SearchProduct({
           <div className="pb-2">
             <input
               type="search"
+              autoFocus
               className="relative flex-auto min-w-0 block w-full px-3 py-3 text-base font-light text-black bg-beereign_clear bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0  focus:bg-white focus:border-beereign_yellow focus:outline-none"
-              placeholder="Buscar Producto..."
-              onChange={(e) => searchItems(e.target.value.toLocaleLowerCase())}
+              placeholder="Escanear Código de Barra..."
+              onKeyPress={handleKeyPress}
+              onChange={(e) => setBarcode(e.target.value)}
             />
           </div>
           {loading === false ? (
@@ -78,28 +79,37 @@ export default function SearchProduct({
                       scope="col"
                       className="font-mono text-black px-6 py-4 border-r"
                     >
-                      Producto
+                      Lote #
                     </th>
                     <th
                       scope="col"
                       className="font-mono text-black px-6 py-4 border-r"
                     >
-                      Código de Barra
+                      Bodega
+                    </th>
+                    <th
+                      scope="col"
+                      className="font-mono text-black px-6 py-4 border-r"
+                    >
+                      Stock
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  {products.map((product) => (
+                  {batches.map((batch) => (
                     <tr
-                      key={`Product-item-${product.id}`}
+                      key={`Product-item-${batch.id}`}
                       className="border-b hover:bg-blue-200"
-                      onClick={() => handleClick(product)}
+                      onClick={() => handleClick(batch)}
                     >
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 border-r">
-                        {capitalize(product.name)}
+                        {batch.id}
                       </td>
                       <td className="uppercase text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
-                        {product.barcode}
+                        {capitalize(batch.warehouse.name)}
+                      </td>
+                      <td className="uppercase text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
+                        {batch.stock}
                       </td>
                     </tr>
                   ))}

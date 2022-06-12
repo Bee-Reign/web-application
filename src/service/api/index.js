@@ -85,6 +85,8 @@ const endPoints = {
       `${API}/${VERSION}/products?limit=${limit}&offset=${offset}&filter=${filter}`,
     getAllProducts: (query) => `${API}/${VERSION}/products?filter=${query}`,
     getProduct: (id) => `${API}/${VERSION}/products/${id}?type=id`,
+    getAllProductBatchesByBarcode: (id) =>
+      `${API}/${VERSION}/products/${id}/batches?type=barcode`,
     getProductByBarcode: (id) =>
       `${API}/${VERSION}/products/${id}?type=barcode`,
     addProduct: `${API}/${VERSION}/products`,

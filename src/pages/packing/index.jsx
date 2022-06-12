@@ -26,7 +26,7 @@ const Packing = () => {
   const [unitCost, setUnitCost] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [batches, setBatches] = useState([]);
-  const [product, setProduct] = useState([]);
+  const [product, setProduct] = useState(null);
   const [warehouse, setWarehouse] = useState(null);
   const [loading, setLoading] = useState(false);
   const [printLabel, setPrintLabel] = useState(false);
@@ -163,7 +163,6 @@ const Packing = () => {
         unitCost: unitCost,
         batches: batches,
       };
-      console.log(data);
       const { error } = await createSchema.validate(data);
       if (error) {
         toast.error("Los campos con ( * ) son necesarios");
@@ -228,11 +227,12 @@ const Packing = () => {
           <div className="mb-5 mx-auto flex w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
             <input
               type="search"
+              autoFocus
               value={productQuery}
               onChange={(e) => setPDQ(e.target.value)}
               onKeyPress={handleKeyPressInProduct}
               className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-              placeholder={product ? product.name : "Buscar Producto..."}
+              placeholder={product ? product.name : "Producto a Envasar..."}
             />
             <SearchIcon className="pl-2 w-12" onClick={() => setSearch(true)} />
           </div>
@@ -290,18 +290,15 @@ const Packing = () => {
             />
           </div>
 
-          <div className="mb-5 flex mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
+          <div className="mb-5 mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
             <input
               value={batch}
               type="search"
               className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-              placeholder="Lote de Mareria Prima #"
+              placeholder="Escanear Lote de Materia Prima..."
               onKeyPress={handleKeyPressInBatch}
               onChange={(e) => setBatch(e.target.value)}
             />
-            <div className="ml-2 xl:hidden">
-              <CameraIcon className="w-12 text-beereign_silver" />
-            </div>
           </div>
 
           <div className="flex flex-col mb-6">

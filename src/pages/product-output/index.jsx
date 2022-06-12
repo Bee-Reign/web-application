@@ -17,6 +17,8 @@ import { addProductOutput } from "@service/api/productOutput";
 import Loading from "@components/Animation/Loading";
 import CheckPermission from "@utils/checkPermission";
 import { logError } from "@utils/logError";
+import SearchProductBatch from "@components/Modal/SearchProductBatch";
+import { SearchIcon } from "@heroicons/react/solid";
 
 const Output = () => {
   CheckPermission("/product-output");
@@ -25,6 +27,7 @@ const Output = () => {
   const [type, setType] = useState("CONTADO");
   const [total, setTotal] = useState(0);
   const [batches, setBatches] = useState([]);
+  const [search, setSearch] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const typeOptions = [
@@ -43,23 +46,12 @@ const Output = () => {
       const { error } = await checkId.validate({ id: batch });
       if (error) {
         toast.error("El código de lote del producto no es válido");
+        setBatch("");
         return;
       }
       getProductForOutput(batch)
         .then((result) => {
-          result.quantityUsed = 1;
-          result.price = result.unitCost;
-          result.total = result.quantityUsed * result.price;
-          const list = batches;
-          list.map((item) => {
-            if (batch == item.id) {
-              toast.error("Ese producto ya está en la lista");
-              throw false;
-            }
-          });
-          list.push(result);
-          setBatches(list);
-          updateTotal();
+          addBatch(result);
         })
         .catch((error) => {
           if (error != false) {
@@ -70,6 +62,22 @@ const Output = () => {
           setBatch("");
         });
     }
+  }
+
+  async function addBatch(batch) {
+    batch.quantityUsed = 1;
+    batch.price = batch.unitCost;
+    batch.total = batch.quantityUsed * batch.price;
+    const list = batches;
+    list.map((item) => {
+      if (batch == item.id) {
+        toast.error("Ese producto ya está en la lista");
+        return;
+      }
+    });
+    list.push(batch);
+    setBatches(list);
+    updateTotal();
   }
 
   const handleDelete = async (index, e) => {
@@ -118,7 +126,7 @@ const Output = () => {
     }
     addProductOutput(data)
       .then((response) => {
-        toast.success("Salida Registrada");
+        toast.success("Salida de producto Registrada");
         setBatches([]);
         setTotal(0);
       })
@@ -134,6 +142,11 @@ const Output = () => {
       <Head>
         <title>Salida de Productos - BeeReign</title>
       </Head>
+      <SearchProductBatch
+        showModal={search}
+        onClick={(value) => addBatch(value)}
+        onShowModalChange={(value) => setSearch(value)}
+      />
       <section className="mx-3 xl:mx-6 flex items-center justify-between">
         <div className="flex justify-start items-center">
           <Link href="/home">
@@ -161,15 +174,17 @@ const Output = () => {
       <section className="mx-3 xl:mx-6 text-center">
         <h2 className="mt-6 font-mono text-2xl">Salida de Productos</h2>
         <form className="mt-5" ref={formRef} onSubmit={handleSubmit}>
-          <div className="mb-5 mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
+          <div className="mb-5 mx-auto w-full flex md:w-4/5 xl:w-9/12 2xl:w-3/5">
             <input
               value={batch}
               type="search"
+              autoFocus
               className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-              placeholder="Lote de Producto #"
+              placeholder="Escanear Lote..."
               onKeyPress={handleKeyPress}
               onChange={(e) => setBatch(e.target.value)}
             />
+            <SearchIcon className="pl-2 w-12" onClick={() => setSearch(true)} />
           </div>
 
           <div className="mb-5 flex mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">

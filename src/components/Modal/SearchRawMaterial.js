@@ -69,7 +69,8 @@ export default function SearchRawMaterial({
             />
           </div>
           {loading === false ? (
-            <table className="min-w-full border text-center">
+            <div className="overflow-scroll w-full">
+              <table className="border text-center">
               <thead className="border-b">
                 <tr>
                   <th
@@ -103,6 +104,7 @@ export default function SearchRawMaterial({
                 ))}
               </tbody>
             </table>
+            </div>
           ) : (
             <Loading />
           )}

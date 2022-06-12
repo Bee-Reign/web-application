@@ -64,7 +64,7 @@ export default function History() {
       </Head>
       <section className="mx-3 xl:mx-6 flex items-center justify-between">
         <div className="flex justify-start items-center">
-          <Link href="/home">
+          <Link href="/product-output">
             <a>
               <ViewGridIcon className="w-9 text-beereign_grey" />
             </a>
@@ -126,7 +126,7 @@ export default function History() {
         <Pagination
           loading={loading}
           page={page}
-          limit={APIARY_LIMIT}
+          limit={PRODUCT_OUTPUT_LIMIT}
           totalPages={totalPages}
           onPageChange={(page) => setPage(page)}
         />

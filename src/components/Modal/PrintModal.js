@@ -32,7 +32,11 @@ export default function PrintModal({ showModal, item, onShowLabelChange }) {
             </button>
           </div>
           <div
-            className="px-2 pt-12 text-center overflow-hidden"
+            className={
+              item.name.length > 28
+                ? "pt-5 px-2 text-center overflow-hidden"
+                : "pt-12 px-2 text-center overflow-hidden"
+            }
             ref={componentRef}
           >
             <Image

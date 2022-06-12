@@ -137,7 +137,7 @@ export default function BatchTable({
                       setItem({
                         id: productBatch.id,
                         name: productBatch.product.name,
-                        quantity: `${productBatch.quantity} UNIDADES`,
+                        time: productBatch.createdAt,
                       });
                       setPrintLabel(true);
                     }}
