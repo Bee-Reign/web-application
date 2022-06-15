@@ -13,7 +13,7 @@ export default function Index(props) {
   return (
     <>
       <Head>
-        <title>Mi Cuenta - BeeReign</title>
+        <title>Mi Cuenta</title>
       </Head>
       <ChangePassword
         showModal={showModal}

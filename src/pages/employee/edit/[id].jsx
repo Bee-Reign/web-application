@@ -35,7 +35,7 @@ export default function Edit() {
   return (
     <>
       <Head>
-        <title>Editar Empleado - BeeReign</title>
+        <title>Editar Empleado</title>
       </Head>
       <section className="mx-3 xl:mx-6 flex items-center justify-between">
         <div className="flex justify-start items-center">

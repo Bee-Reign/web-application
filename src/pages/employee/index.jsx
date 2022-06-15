@@ -16,12 +16,13 @@ const Index = () => {
   CheckPermission("/employee");
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [filter, setFilter] = useState("");
   const [page, setPage] = useState(0);
 
   useEffect(() => {
     const loadEmployees = async () => {
       setLoading(true);
-      getEmployees(EMPLOYEE_LIMIT, page)
+      getEmployees(EMPLOYEE_LIMIT, page, filter)
         .then((result) => {
           setEmployees(result);
         })
@@ -33,13 +34,17 @@ const Index = () => {
         });
     };
     loadEmployees();
-  }, [page]);
+  }, [page, filter]);
   const totalPages = Math.ceil(employees?.count / EMPLOYEE_LIMIT);
+
+  const searchItems = (value) => {
+    setFilter(value);
+  };
 
   return (
     <>
       <Head>
-        <title>Empleados - BeeReign</title>
+        <title>Empleados</title>
       </Head>
       <section className="mx-3 xl:mx-6 flex items-center justify-between">
         <div className="flex justify-start items-center">
@@ -63,6 +68,9 @@ const Index = () => {
                 type="search"
                 className="form-control relative flex-auto min-w-0 block w-full px-3 py-3 text-base font-light text-black bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0  focus:bg-white focus:border-beereign_yellow focus:outline-none"
                 placeholder="Buscar Empleado..."
+                onChange={(e) =>
+                  searchItems(e.target.value.toLocaleLowerCase())
+                }
               />
             </div>
           </div>

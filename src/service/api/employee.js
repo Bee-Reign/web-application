@@ -11,9 +11,9 @@ export async function employeeProfile() {
   return response;
 }
 
-export async function getEmployees(limit, offset) {
+export async function getEmployees(limit, offset, filter) {
   const response = await getData(
-    endPoints.employees.getEmployees(limit, offset)
+    endPoints.employees.getEmployees(limit, offset, filter)
   );
   return response.data;
 }

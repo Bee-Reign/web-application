@@ -10,7 +10,7 @@ const Add = () => {
   return (
     <>
       <Head>
-        <title>Registrar Empleado - BeeReign</title>
+        <title>Registrar Empleado</title>
       </Head>
       <section className="mx-3 xl:mx-6 flex items-center justify-between">
         <div className="flex justify-start items-center">
@@ -20,7 +20,7 @@ const Add = () => {
             </a>
           </Link>
           <div className="ml-2 font-sans font-normal text-3xl">
-            Agregar Empleado
+            Registrar Empleado
           </div>
         </div>
       </section>

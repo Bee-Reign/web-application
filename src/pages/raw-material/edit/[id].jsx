@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { getRawMaterial } from "@service/api/rawMaterial";
 import EditRawMaterial from "@components/RawMaterial/Form/EditRawMaterial";
 import { logError } from "@utils/logError";
+import Head from "next/head";
 
 export default function Edit() {
   const [rawMaterial, setRawMaterial] = useState(undefined);
@@ -30,6 +31,9 @@ export default function Edit() {
 
   return (
     <>
+      <Head>
+        <title>Editar Materia Prima</title>
+      </Head>
       <section className="mx-3 xl:mx-6 flex items-center justify-between">
         <div className="flex justify-start items-center">
           <Link href="/raw-material">

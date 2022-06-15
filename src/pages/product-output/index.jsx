@@ -140,7 +140,7 @@ const Output = () => {
   return (
     <>
       <Head>
-        <title>Salida de Productos - BeeReign</title>
+        <title>Salida de Productos</title>
       </Head>
       <SearchProductBatch
         showModal={search}

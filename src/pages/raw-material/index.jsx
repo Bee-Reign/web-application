@@ -44,7 +44,7 @@ export default function Index() {
   return (
     <>
       <Head>
-        <title>Inventario de Materia Prima - BeeReign</title>
+        <title>Inventario de Materia Prima</title>
       </Head>
       <section className="mx-3 xl:mx-6 flex items-center justify-between">
         <div className="flex justify-start items-center">

@@ -60,7 +60,7 @@ export default function History() {
   return (
     <>
       <Head>
-        <title>Historial de Salidas - BeeReign</title>
+        <title>Historial de Salidas</title>
       </Head>
       <section className="mx-3 xl:mx-6 flex items-center justify-between">
         <div className="flex justify-start items-center">

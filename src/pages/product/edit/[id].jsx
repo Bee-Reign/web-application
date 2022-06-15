@@ -7,6 +7,7 @@ import { getProduct } from "@service/api/product";
 import EditProduct from "@components/Product/Form/EditProduct";
 import { logError } from "@utils/logError";
 import CheckPermission from "@utils/checkPermission";
+import Head from "next/head";
 
 export default function Edit() {
   CheckPermission("/product");
@@ -23,7 +24,7 @@ export default function Edit() {
         })
         .catch((err) => {
           logError(err);
-          router.push("/product")
+          router.push("/product");
         });
     }
     getResult();
@@ -32,6 +33,9 @@ export default function Edit() {
 
   return (
     <>
+      <Head>
+        <title>Editar Producto</title>
+      </Head>
       <section className="mx-3 xl:mx-6 flex items-center justify-between">
         <div className="flex justify-start items-center">
           <Link href="/product">

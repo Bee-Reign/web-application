@@ -21,8 +21,8 @@ const endPoints = {
     disableApiary: (id) => `${API}/${VERSION}/apiaries/${id}`,
   },
   employees: {
-    getEmployees: (limit, offset) =>
-      `${API}/${VERSION}/employees?limit=${limit}&offset=${offset}`,
+    getEmployees: (limit, offset, filter) =>
+      `${API}/${VERSION}/employees?limit=${limit}&offset=${offset}&filter=${filter}`,
     getEmployee: (id) => `${API}/${VERSION}/employees/${id}`,
     addEmployee: `${API}/${VERSION}/employees`,
     updateEmployee: (id, update) =>

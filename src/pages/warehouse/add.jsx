@@ -7,7 +7,7 @@ export default function Add() {
   return (
     <>
       <Head>
-        <title>Registro de Bodega - BeeReign</title>
+        <title>Registro de Bodega</title>
       </Head>
       <section className="mx-3 xl:mx-6 flex items-center justify-between">
         <div className="flex justify-start items-center">

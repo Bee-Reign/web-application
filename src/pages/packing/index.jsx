@@ -103,10 +103,12 @@ const Packing = () => {
       getProductByBarcode(productQuery)
         .then((result) => {
           setProduct(result);
-          setPDQ("");
         })
         .catch((err) => {
           logError(err);
+        })
+        .finally(() => {
+          setPDQ("");
         });
       return;
     }
@@ -196,7 +198,7 @@ const Packing = () => {
   return (
     <>
       <Head>
-        <title>Envasado - BeeReign</title>
+        <title>Envasado</title>
       </Head>
       <PrintModal
         showModal={printLabel}

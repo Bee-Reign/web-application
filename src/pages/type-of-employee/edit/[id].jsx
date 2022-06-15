@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { getTypeOfEmployee } from "@service/api/typeOfEmployee";
 import EditType from "@components/TypeOfEmployee/Form/EditType";
 import { logError } from "@utils/logError";
+import Head from "next/head";
 
 export default function Edit() {
   const [typeOfEmployee, setType] = useState(undefined);
@@ -30,6 +31,9 @@ export default function Edit() {
 
   return (
     <>
+      <Head>
+        <title>Editar Tipo de Empleado</title>
+      </Head>
       <section className="mx-3 xl:mx-6 flex items-center justify-between">
         <div className="flex justify-start items-center">
           <Link href="/type-of-employee">

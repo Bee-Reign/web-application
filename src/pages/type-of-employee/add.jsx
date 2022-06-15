@@ -1,10 +1,14 @@
 import Link from "next/link";
 import { ViewGridIcon } from "@heroicons/react/outline";
 import AddType from "@components/TypeOfEmployee/Form/AddType";
+import Head from "next/head";
 
 export default function Add() {
   return (
     <>
+      <Head>
+        <title>Agregar Tipo de Empleado</title>
+      </Head>
       <section className="mx-3 xl:mx-6 flex items-center justify-between">
         <div className="flex justify-start items-center">
           <Link href="/type-of-employee">
