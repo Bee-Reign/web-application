@@ -70,7 +70,7 @@ export default function EditType({ typeOfEmployee }) {
     const { error } = await updateSchema.validate(data);
 
     if (error) {
-      toast.error("Los campos con ( * ) son necesarios");
+      toast.error("*" + error);
       setLoading(false);
       return null;
     }
@@ -95,6 +95,7 @@ export default function EditType({ typeOfEmployee }) {
         <input
           name="name"
           type="text"
+          required
           className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
           placeholder="Nombre *"
           maxLength={30}
@@ -104,6 +105,7 @@ export default function EditType({ typeOfEmployee }) {
       <div className="mb-5 mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
         <textarea
           name="description"
+          required
           className="w-full h-32 px-4 py-3 border-2 border-gray-300 rounded-sm outline-none focus:border-blue-400"
           placeholder="Descripción del tipo de empleado..."
           maxLength={255}

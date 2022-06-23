@@ -14,11 +14,11 @@ const createSchema = Joi.object({
   amount: amount.required(),
   typeOfSale: typeOfSale.required(),
   batches: batches.required(),
-});
+}).options({ abortEarly: false });
 
 const updateIsPaid = Joi.object({
   isPaid: isPaid.required(),
-});
+}).options({ abortEarly: false });
 
 module.exports = {
   checkId,

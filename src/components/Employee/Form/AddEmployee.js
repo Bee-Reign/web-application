@@ -57,7 +57,7 @@ export default function AddEmployee() {
     const { error } = await newEmployeeSchema.validate(data);
 
     if (error) {
-      toast.error("Los campos con ( * ) son necesarios");
+      toast.error("*" + error);
       setLoading(false);
       return null;
     }
@@ -81,6 +81,7 @@ export default function AddEmployee() {
           id="name"
           name="name"
           type="text"
+          required
           className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
           placeholder="Nombre *"
           maxLength={20}
@@ -92,6 +93,7 @@ export default function AddEmployee() {
           id="lastName"
           name="lastName"
           type="text"
+          required
           className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
           placeholder="Apellido *"
           maxLength={20}
@@ -114,6 +116,7 @@ export default function AddEmployee() {
           id="email"
           name="email"
           type="email"
+          required
           className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
           placeholder="Correo Electronico *"
           maxLength={256}
@@ -125,6 +128,7 @@ export default function AddEmployee() {
           id="password"
           name="password"
           type="password"
+          required
           className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
           placeholder="Contraseña *"
           minLength={8}

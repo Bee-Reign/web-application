@@ -9,13 +9,13 @@ const createSchema = Joi.object({
   barcode: barcode.required(),
   name: name.required(),
   description,
-});
+}).options({ abortEarly: false });
 
 const updateSchema = Joi.object({
   barcode: barcode.required(),
   name: name.required(),
   description,
-});
+}).options({ abortEarly: false });
 
 module.exports = {
   createSchema,

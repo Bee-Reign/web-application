@@ -9,13 +9,13 @@ const newSchema = Joi.object({
   name: name.required(),
   description: description.required(),
   modules: modules.required(),
-});
+}).options({ abortEarly: false });
 
 const updateSchema = Joi.object({
   name: name.required(),
   description: description.required(),
   modules: modules.required(),
-});
+}).options({ abortEarly: false });
 
 const checkId = Joi.object({
   id: id.required(),

@@ -77,7 +77,7 @@ export default function EditBatch({ batch }) {
     };
     const { error } = await updateSchema.validate(data);
     if (error) {
-      toast.error("Los campos con ( * ) son necesarios");
+      toast.error("*" + error);
       setLoading(false);
       return null;
     }

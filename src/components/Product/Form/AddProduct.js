@@ -29,7 +29,7 @@ export default function AddProduct() {
     const { error } = await createSchema.validate(data);
 
     if (error) {
-      toast.error("Los campos con ( * ) son necesarios");
+      toast.error("*" + error);
       setLoading(false);
       return null;
     }
@@ -52,6 +52,7 @@ export default function AddProduct() {
         <input
           name="barcode"
           type="text"
+          required
           className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
           placeholder="Código de  Barra *"
           maxLength={128}
@@ -63,6 +64,7 @@ export default function AddProduct() {
         <input
           name="name"
           type="text"
+          required
           className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
           placeholder="Nombre del producto *"
           maxLength={50}

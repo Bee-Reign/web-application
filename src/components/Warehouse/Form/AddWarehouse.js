@@ -71,7 +71,7 @@ export default function AddWarehouse() {
     const { error } = await newWarehouseSchema.validate(data);
 
     if (error) {
-      toast.error("Los campos con ( * ) son necesarios");
+      toast.error("*" + error);
       setLoading(false);
       return null;
     }
@@ -95,6 +95,7 @@ export default function AddWarehouse() {
           id="name"
           name="name"
           type="text"
+          required
           className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
           placeholder="Nombre *"
           maxLength={50}
@@ -145,6 +146,7 @@ export default function AddWarehouse() {
           id="city"
           name="city"
           type="text"
+          required
           className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
           placeholder="Ciudad  *"
           maxLength={50}

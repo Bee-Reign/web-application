@@ -23,7 +23,7 @@ export default function EditProfile({ rawMaterial }) {
     const { error } = await updateRawMaterialSchema.validate(data);
 
     if (error) {
-      toast.error("Los campos con ( * ) son necesarios");
+      toast.error("*" + error);
       setLoading(false);
       return null;
     }

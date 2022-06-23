@@ -14,7 +14,6 @@
     "@headlessui/react": "^1.6.0",
     "@heroicons/react": "^1.0.6",
     "axios": "^0.27.2",
-    "i": "^0.3.7",
     "joi": "^17.6.0",
     "js-cookie": "^3.0.1",
     "jsbarcode-react": "^0.2.5",

@@ -51,7 +51,7 @@ export default function SearchProduct({
   return (
     <div className="z-10 absolute inset-0 flex items-center justify-center bg-beereign_bg bg-opacity-80">
       <div className="p-4 w-full max-w-md md:h-auto">
-        <div className=" bg-beereign_clear text-gray-900 rounded-xl shadow px-5">
+        <div className="bg-beereign_clear text-gray-900 max-h-96 rounded-xl shadow px-5">
           <div className=" flex justify-center">
             <button
               type="button"
@@ -70,7 +70,7 @@ export default function SearchProduct({
             />
           </div>
           {loading === false ? (
-            <div className="overflow-scroll w-full">
+            <div className="overflow-scroll h-64 w-full">
               <table className="min-w-full border text-center">
                 <thead className="border-b">
                   <tr>

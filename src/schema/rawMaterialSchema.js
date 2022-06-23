@@ -11,12 +11,12 @@ const checkId = Joi.object({
 const newRawMaterialSchema = Joi.object({
   code: code,
   name: name.required(),
-});
+}).options({ abortEarly: false });
 
 const updateRawMaterialSchema = Joi.object({
   code: code,
   name: name.required(),
-});
+}).options({ abortEarly: false });
 
 module.exports = {
   checkId,

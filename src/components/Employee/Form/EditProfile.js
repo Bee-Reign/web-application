@@ -60,7 +60,7 @@ export default function EditProfile(props) {
     const { error } = await updateProfileSchema.validate(data);
 
     if (error) {
-      toast.error("Los campos con ( * ) son necesarios");
+      toast.error("*" + error);
       setLoading(false);
       return null;
     }
@@ -88,7 +88,7 @@ export default function EditProfile(props) {
     };
     const { error } = await updateLoginSchema.validate(data);
     if (error) {
-      toast.error("Los campos con ( * ) son necesarios");
+      toast.error("*" + error);
       setLoading(false);
       return null;
     }

@@ -9,7 +9,9 @@ const email = Joi.string()
   .email({ tlds: { allow: false } });
 const password = Joi.string().max(60).min(8);
 const repeat_password = Joi.equal(Joi.ref("password"));
-const typeOfEmployeeId = Joi.number().integer().positive().max(32767);
+const typeOfEmployeeId = Joi.number().integer().positive().max(32767).messages({
+  "number.base": `"type of employee" required`,
+});
 
 const loginEmployeeSchema = Joi.object({
   email: email.required(),

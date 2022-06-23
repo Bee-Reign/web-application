@@ -49,10 +49,10 @@ export default function SearchRawMaterial({
   };
 
   return (
-    <div className="z-10 absolute inset-0 flex items-center justify-center bg-beereign_bg bg-opacity-80">
+    <div className="z-10 fixed inset-0 flex items-center justify-center bg-beereign_bg bg-opacity-80">
       <div className="p-4 w-full max-w-md md:h-auto">
-        <div className="bg-beereign_clear text-gray-900 rounded-xl shadow px-5">
-          <div className=" flex justify-center">
+        <div className="bg-beereign_clear text-gray-900 max-h-96 rounded-xl shadow px-5">
+          <div className="flex justify-center">
             <button
               type="button"
               className=" bg-transparent hover:text-beereign_yellow rounded-lg text-sm mx-auto"
@@ -69,41 +69,41 @@ export default function SearchRawMaterial({
             />
           </div>
           {loading === false ? (
-            <div className="overflow-scroll w-full">
+            <div className="overflow-scroll h-64 w-full">
               <table className="border text-center">
-              <thead className="border-b">
-                <tr>
-                  <th
-                    scope="col"
-                    className="font-mono text-black px-6 py-4 border-r"
-                  >
-                    Materia Prima
-                  </th>
-                  <th
-                    scope="col"
-                    className="font-mono text-black px-6 py-4 border-r"
-                  >
-                    Código
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {rawMaterials.map((rawMaterial) => (
-                  <tr
-                    key={`RawMaterial-item-${rawMaterial.id}`}
-                    className="border-b hover:bg-blue-200"
-                    onClick={() => handleClick(rawMaterial)}
-                  >
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 border-r">
-                      {capitalize(rawMaterial.name)}
-                    </td>
-                    <td className="uppercase text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
-                      {rawMaterial.code}
-                    </td>
+                <thead className="border-b">
+                  <tr>
+                    <th
+                      scope="col"
+                      className="font-mono text-black px-6 py-4 border-r"
+                    >
+                      Materia Prima
+                    </th>
+                    <th
+                      scope="col"
+                      className="font-mono text-black px-6 py-4 border-r"
+                    >
+                      Código
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {rawMaterials.map((rawMaterial) => (
+                    <tr
+                      key={`RawMaterial-item-${rawMaterial.id}`}
+                      className="border-b hover:bg-blue-200"
+                      onClick={() => handleClick(rawMaterial)}
+                    >
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 border-r">
+                        {capitalize(rawMaterial.name)}
+                      </td>
+                      <td className="uppercase text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
+                        {rawMaterial.code}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           ) : (
             <Loading />

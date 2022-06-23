@@ -30,7 +30,7 @@ export default function AddBatch() {
     const key = e.keyCode || e.which;
     if (key == 13) {
       e.preventDefault();
-      getRawMaterialByCode(RMQ)
+      getRawMaterialByCode(RMQ.toLowerCase())
         .then((result) => {
           setRawMaterial(result);
         })
@@ -75,46 +75,42 @@ export default function AddBatch() {
     e.preventDefault();
     setLoading(true);
     const formData = new FormData(formRef.current);
-    try {
-      const data = {
-        rawMaterialId: rawMaterial.id,
-        warehouseId: warehouse,
-        entryDate: formData.get("entryDate"),
-        expirationDate: formData.get("expirationDate")
-          ? new Date(formData.get("expirationDate")).toISOString()
-          : null,
-        measurement: formData.get("measurement"),
-        quantity: Number(formData.get("quantity")),
-        unitCost: Number(formData.get("unitCost")),
-      };
-      const { error } = await newSchema.validate(data);
-      if (error) {
-        toast.error("Los campos con ( * ) son necesarios");
-        setLoading(false);
-        return null;
-      }
-      addRawMaterialBatch(data)
-        .then((response) => {
-          formRef.current.reset();
-          toast.success("Lote Registrado");
-          setItem({
-            id: response.id,
-            name: rawMaterial.name,
-            time: response.createdAt,
-          });
-          setPrintLabel(true);
-          setRawMaterial(null);
-        })
-        .catch((err) => {
-          logError(err);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    } catch (err) {
-      toast.error("Ups, ERROR");
+
+    const data = {
+      rawMaterialId: rawMaterial?.id ? rawMaterial.id : null,
+      warehouseId: warehouse,
+      entryDate: formData.get("entryDate"),
+      expirationDate: formData.get("expirationDate")
+        ? new Date(formData.get("expirationDate")).toISOString()
+        : null,
+      measurement: formData.get("measurement"),
+      quantity: Number(formData.get("quantity")),
+      unitCost: Number(formData.get("unitCost")),
+    };
+    const { error } = await newSchema.validate(data);
+    if (error) {
+      toast.error("*" + error);
       setLoading(false);
+      return null;
     }
+    addRawMaterialBatch(data)
+      .then((response) => {
+        formRef.current.reset();
+        toast.success("Lote Registrado");
+        setItem({
+          id: response.id,
+          name: rawMaterial.name,
+          time: response.createdAt,
+        });
+        setPrintLabel(true);
+        setRawMaterial(null);
+      })
+      .catch((err) => {
+        logError(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (

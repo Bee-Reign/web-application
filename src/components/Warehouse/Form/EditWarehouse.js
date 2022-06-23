@@ -73,7 +73,7 @@ export default function EditWarehouse({ warehouse }) {
     const { error } = await newWarehouseSchema.validate(data);
 
     if (error) {
-      toast.error("Los campos con ( * ) son necesarios");
+      toast.error("*" + error);
       setLoading(false);
       return null;
     }
@@ -97,6 +97,7 @@ export default function EditWarehouse({ warehouse }) {
         <input
           name="name"
           type="text"
+          required
           defaultValue={warehouse?.name}
           className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
           placeholder="Nombre *"
@@ -147,6 +148,7 @@ export default function EditWarehouse({ warehouse }) {
         <input
           name="city"
           type="text"
+          required
           defaultValue={warehouse?.city}
           className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
           placeholder="Ciudad  *"
