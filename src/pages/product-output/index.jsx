@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, useMemo } from "react";
+import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import Head from "next/head";
 import {
@@ -94,6 +94,11 @@ const Output = () => {
     setTotal(total.toFixed(2));
   }
 
+  useEffect(() => {
+    updateTotal();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [batches]);
+
   const changeQuantity = (value, index) => {
     const list = batches;
     list[index].quantityUsed = value;
@@ -120,7 +125,7 @@ const Output = () => {
     };
     const { error } = await createSchema.validate(data);
     if (error) {
-      toast.error("Los campos con ( * ) son necesarios");
+      toast.error("*" + error);
       setLoading(false);
       return null;
     }
@@ -128,7 +133,6 @@ const Output = () => {
       .then((response) => {
         toast.success("Salida de producto Registrada");
         setBatches([]);
-        setTotal(0);
       })
       .catch((err) => {
         logError(err);
@@ -151,7 +155,7 @@ const Output = () => {
         <div className="flex justify-start items-center">
           <Link href="/home">
             <a>
-              <HomeIcon className="w-9 text-beereign_grey" />
+              <HomeIcon className="w-9 text-beereign_grey hover:text-beereign_yellow" />
             </a>
           </Link>
           <div className="ml-2 font-sans font-normal text-3xl">

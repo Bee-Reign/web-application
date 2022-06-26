@@ -28,16 +28,24 @@ export default function TabBar() {
       </div>
 
       <div className="hidden xl:inline text-center">
-        <h3 className="font-mono" >© 2022 · <a href="https://github.com/Bee-Reign" target="_blank" rel="noreferrer"><span className="font-semibold">BeeReign · </span></a>0.1.0</h3>
+        <h3 className="font-mono">
+          © 2022 ·{" "}
+          <a
+            href="https://github.com/Bee-Reign"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <span className="font-semibold hover:text-beereign_yellow">BeeReign · </span>
+          </a>
+          0.2.0
+        </h3>
       </div>
 
       <div className="xl:hidden items-center flex">
         <Link href="/account">
           <a className="mr-3">
             <div>
-              <UserCircleIcon
-                className="w-12 md:w-14 text-beereign_ligth"
-              />
+              <UserCircleIcon className="w-12 md:w-14 text-beereign_ligth" />
             </div>
           </a>
         </Link>

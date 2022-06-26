@@ -184,15 +184,28 @@ export default function EditBatch({ batch }) {
         <label className="font-serif" htmlFor="stock">
           Cantidad Disponible:
         </label>
-        <input
-          name="stock"
-          type="number"
-          step={1}
-          min={0}
-          className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-          placeholder="Cantidad *"
-          defaultValue={batch?.stock}
-        />
+        {batch?.stock > 0 ? (
+          <input
+            name="stock"
+            type="number"
+            step={1}
+            min={0}
+            className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+            placeholder="Cantidad *"
+            defaultValue={batch?.stock}
+          />
+        ) : (
+          <input
+            name="stock"
+            disabled
+            type="number"
+            step={1}
+            min={0}
+            className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-beereign_clear bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+            placeholder="Cantidad *"
+            defaultValue={batch?.stock}
+          />
+        )}
       </div>
 
       <div className="mb-5 mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">

@@ -12,7 +12,7 @@ export default function PrintModal({ showModal, item, onShowLabelChange }) {
   };
 
   return (
-    <div className="z-10 mt-16 absolute inset-0 flex items-center justify-center bg-beereign_bg bg-opacity-80">
+    <div className="z-10 mt-16 fixed inset-0 flex items-center justify-center bg-beereign_bg bg-opacity-80">
       <div className="px-5 w-full max-w-md md:h-auto">
         <div className="relative bg-white text-black rounded-xl shadow">
           <div className="flex justify-center pt-5">

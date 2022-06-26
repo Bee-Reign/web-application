@@ -44,6 +44,10 @@ export default function AddBatch() {
     }
   }
 
+  const handleReset = (e) => {
+    setRawMaterial(null);
+  };
+
   const getWarehouses = () => {
     return getAllWarehouses(query)
       .then((result) => {
@@ -83,7 +87,6 @@ export default function AddBatch() {
       expirationDate: formData.get("expirationDate")
         ? new Date(formData.get("expirationDate")).toISOString()
         : null,
-      measurement: formData.get("measurement"),
       quantity: Number(formData.get("quantity")),
       unitCost: Number(formData.get("unitCost")),
     };
@@ -189,19 +192,15 @@ export default function AddBatch() {
             className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
             placeholder="Cantidad *"
           />
-          <select
-            name="measurement"
-            placeholder="Unidad de Medidad"
-            className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-          >
-            <option value="GALONES">GALONES</option>
-            <option value="GRAMOS">GRAMOS</option>
-            <option value="KILOGRAMOS">KILOGRAMOS</option>
-            <option value="LIBRAS">LIBRAS</option>
-            <option value="LITROS">LITROS</option>
-            <option value="ONZAS">ONZAS</option>
-            <option value="UNIDADES">UNIDADES</option>
-          </select>
+          {rawMaterial ? (
+            <input
+              readOnly
+              className="ml-1 form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+              value={rawMaterial?.measurement}
+            />
+          ) : (
+            <></>
+          )}
         </div>
 
         <div className="mb-5 mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
@@ -215,7 +214,15 @@ export default function AddBatch() {
           />
         </div>
 
-        <Button loading={loading} />
+        <div>
+          <Button loading={loading} reset={false} />
+          <input
+            className="mt-5 xl:ml-5 px-16 py-4 bg-beereign_clear text-beereign_grey font-medium text-xl leading-tight uppercase rounded shadow-md hover:bg-gray-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-700 active:shadow-lg transition duration-150 ease-in-out"
+            value="limpiar"
+            type="reset"
+            onClick={(e) => handleReset(e)}
+          ></input>
+        </div>
       </form>
     </>
   );

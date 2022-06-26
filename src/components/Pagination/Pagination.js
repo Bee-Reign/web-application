@@ -36,7 +36,7 @@ const Pagination = ({ loading, page, limit, totalPages, onPageChange }) => {
     <section className="mt-5 flex justify-center xl:justify-start xl:ml-6">
       <a className="w-12 md:w-14 border flex items-center" onClick={firstPage}>
         <ChevronDoubleLeftIcon
-          className="w-8 md:w-10 mx-auto text-beereign_silver"
+          className="w-8 md:w-10 mx-auto text-beereign_silver hover:text-beereign_yellow"
           aria-hidden="true"
         />
       </a>
@@ -45,7 +45,7 @@ const Pagination = ({ loading, page, limit, totalPages, onPageChange }) => {
         onClick={previousPage}
       >
         <ChevronLeftIcon
-          className="w-8 md:w-10 mx-auto text-beereign_silver"
+          className="w-8 md:w-10 mx-auto text-beereign_silver hover:text-beereign_yellow"
           aria-hidden="true"
         />
       </a>
@@ -56,13 +56,13 @@ const Pagination = ({ loading, page, limit, totalPages, onPageChange }) => {
       </div>
       <a className="w-12 md:w-14 border flex items-center" onClick={nextPage}>
         <ChevronRightIcon
-          className="w-8 md:w-10 mx-auto text-beereign_silver"
+          className="w-8 md:w-10 mx-auto text-beereign_silver hover:text-beereign_yellow"
           aria-hidden="true"
         />
       </a>
       <a className="w-12 md:w-14 border flex items-center" onClick={lastPage}>
         <ChevronDoubleRightIcon
-          className="w-8 md:w-10 mx-auto text-beereign_silver"
+          className="w-8 md:w-10 mx-auto text-beereign_silver hover:text-beereign_yellow"
           aria-hidden="true"
         />
       </a>

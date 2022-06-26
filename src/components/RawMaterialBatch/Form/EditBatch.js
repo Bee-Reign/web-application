@@ -71,7 +71,6 @@ export default function EditBatch({ batch }) {
       expirationDate: formData.get("expirationDate")
         ? new Date(formData.get("expirationDate")).toISOString()
         : null,
-      measurement: formData.get("measurement"),
       quantity: Number(formData.get("quantity")),
       stock: Number(formData.get("stock")),
       unitCost: Number(formData.get("unitCost")),
@@ -179,20 +178,9 @@ export default function EditBatch({ batch }) {
             placeholder="Cantidad *"
             defaultValue={batch?.quantity}
           />
-          <select
-            name="measurement"
-            placeholder="Unidad de Medidad"
-            defaultValue={batch?.measurement}
-            className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-          >
-            <option value="GALONES">GALONES</option>
-            <option value="GRAMOS">GRAMOS</option>
-            <option value="KILOGRAMOS">KILOGRAMOS</option>
-            <option value="LIBRAS">LIBRAS</option>
-            <option value="LITROS">LITROS</option>
-            <option value="ONZAS">ONZAS</option>
-            <option value="UNIDADES">UNIDADES</option>
-          </select>
+          <div className="ml-1 form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-beereign_clear bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:border-blue-600 focus:outline-none">
+            {batch?.rawMaterial?.measurement}
+          </div>
         </div>
       </div>
 
@@ -200,15 +188,35 @@ export default function EditBatch({ batch }) {
         <label className="font-serif" htmlFor="stock">
           Cantidad Disponible:
         </label>
-        <input
-          name="stock"
-          type="number"
-          step={0.01}
-          min={0}
-          className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-          placeholder="Cantidad *"
-          defaultValue={batch?.stock}
-        />
+        {batch?.stock > 0 ? (
+          <div className="flex">
+            <input
+              name="stock"
+              type="number"
+              step={0.01}
+              min={0}
+              className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+              placeholder="Cantidad *"
+              defaultValue={batch?.stock}
+            />
+            <div className="ml-1 form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-beereign_clear bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:border-blue-600 focus:outline-none">
+              {batch?.rawMaterial?.measurement}
+            </div>
+          </div>
+        ) : (
+          <div className="flex">
+            <input
+              name="stock"
+              className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-beereign_clear bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+              placeholder="Cantidad *"
+              disabled
+              defaultValue={batch?.stock}
+            />
+            <div className="ml-1 form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-beereign_clear bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:border-blue-600 focus:outline-none">
+              {batch?.rawMaterial?.measurement}
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">

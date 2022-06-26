@@ -54,8 +54,8 @@ const endPoints = {
     deleteRawMaterial: (id) => `${API}/${VERSION}/raw-materials/${id}`,
   },
   rawMaterialBatch: {
-    getAll: (limit, offset, order, type) =>
-      `${API}/${VERSION}/raw-material-batches?limit=${limit}&offset=${offset}&order=${order}&type=${type}`,
+    getAll: (limit, offset, order, type, rawMaterialId) =>
+      `${API}/${VERSION}/raw-material-batches?limit=${limit}&offset=${offset}&order=${order}&type=${type}&rawMaterialId=${rawMaterialId}`,
     addRawMaterialBatch: `${API}/${VERSION}/raw-material-batches`,
     updateRawMaterialBatch: (id) =>
       `${API}/${VERSION}/raw-material-batches/${id}`,
@@ -94,8 +94,8 @@ const endPoints = {
     deleteProduct: (id) => `${API}/${VERSION}/products/${id}`,
   },
   productBatch: {
-    getAll: (limit, offset, order, type) =>
-      `${API}/${VERSION}/product-batches?limit=${limit}&offset=${offset}&order=${order}&type=${type}`,
+    getAll: (limit, offset, order, type, productId) =>
+      `${API}/${VERSION}/product-batches?limit=${limit}&offset=${offset}&order=${order}&type=${type}&productId=${productId}`,
     addProductBatch: `${API}/${VERSION}/product-batches`,
     updateProductBatch: (id) => `${API}/${VERSION}/product-batches/${id}`,
     getById: (id) => `${API}/${VERSION}/product-batches/${id}?isOutput=false`,

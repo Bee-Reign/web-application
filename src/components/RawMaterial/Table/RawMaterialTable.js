@@ -97,15 +97,14 @@ export default function RawMaterialTable({
                 </td>
               ) : (
                 <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
-                  {rawMaterial.stock ? rawMaterial.stock : "Sin Stock"}{" "}
-                  {rawMaterial.measurement}
+                  {rawMaterial.stock} {rawMaterial.measurement}
                 </td>
               )}
               <td className="font-mono text-gray-900 px-6 py-4 whitespace-nowrap border-r">
-                ${rawMaterial.averageCost ? rawMaterial.averageCost : 0.0}
+                ${rawMaterial.averageCost ? rawMaterial.averageCost : "0.00"}
               </td>
               <td className="font-mono text-gray-900 px-6 py-4 whitespace-nowrap border-r">
-                ${rawMaterial.amount ? rawMaterial.amount : 0.0}
+                ${rawMaterial.amount}
               </td>
               <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
                 {rawMaterial.createdAt}

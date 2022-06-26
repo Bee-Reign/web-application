@@ -52,7 +52,7 @@ export default function Index() {
         <div className="flex justify-start items-center">
           <Link href="/home">
             <a>
-              <HomeIcon className="w-9 text-beereign_grey" />
+              <HomeIcon className="w-9 text-beereign_grey hover:text-beereign_yellow" />
             </a>
           </Link>
           <div className="ml-2 font-sans font-normal text-3xl">Productos</div>
@@ -88,6 +88,19 @@ export default function Index() {
       />
 
       <section className="mt-6 mx-3 xl:mx-6">
+        <p className="text-center font-serif text-lg">
+          Items: <span className="font-bold font-mono">{products?.count}</span>
+        </p>
+        {filter === "" ? (
+          <p className="text-center font-serif text-lg">
+            Total:{" "}
+            <span className="font-bold font-mono">
+              ${products?.totalAmount ? products?.totalAmount : "0.00"}
+            </span>
+          </p>
+        ) : (
+          <></>
+        )}
         <div className="flex flex-col">
           <div className="overflow-x-auto">
             <div className="py-2 inline-block min-w-full">

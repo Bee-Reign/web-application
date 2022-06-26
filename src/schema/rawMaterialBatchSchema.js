@@ -13,15 +13,6 @@ const warehouseId = Joi.number().integer().positive().max(32767).messages({
 });
 const entryDate = Joi.date();
 const expirationDate = Joi.date().allow(null);
-const measurement = Joi.string()
-  .alphanum()
-  .valid("GALONES")
-  .valid("GRAMOS")
-  .valid("KILOGRAMOS")
-  .valid("LIBRAS")
-  .valid("LITROS")
-  .valid("ONZAS")
-  .valid("UNIDADES");
 const quantity = Joi.number().positive();
 const stock = Joi.number().min(0);
 const unitCost = Joi.number().positive();
@@ -36,7 +27,6 @@ const newSchema = Joi.object({
   entryDate: entryDate.required(),
   expirationDate,
   quantity: quantity.required(),
-  measurement: measurement.required(),
   unitCost: unitCost.required(),
 }).options({ abortEarly: false });
 
@@ -45,7 +35,6 @@ const updateSchema = Joi.object({
   warehouseId: warehouseId.required(),
   entryDate: entryDate.required(),
   expirationDate,
-  measurement: measurement.required(),
   quantity: quantity.required(),
   stock: stock.required(),
   unitCost: unitCost.required(),

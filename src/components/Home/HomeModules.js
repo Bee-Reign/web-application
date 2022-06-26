@@ -7,7 +7,7 @@ export default function HomeModules({ modules }) {
       {modules.map((module) => (
         <div
           key={module.id}
-          className="bg-beereign_grey h-28 md:h-32 mx-3 mb-5 group relative overflow-hidden rounded-lg shadow-md"
+          className="bg-beereign_grey hover:bg-gray-800 h-28 md:h-32 mx-3 mb-5 group relative overflow-hidden rounded-lg shadow-md"
         >
           <Link href={module.path}>
             <a>

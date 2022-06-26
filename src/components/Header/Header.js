@@ -28,7 +28,7 @@ export default function Header(props) {
             <Link href="/home">
               <a>
                 <HomeIcon
-                  className="w-9 text-beereign_ligth mr-1"
+                  className="w-9 text-beereign_ligth hover:text-beereign_yellow mr-1"
                   aria-hidden="true"
                 />
               </a>
@@ -40,9 +40,9 @@ export default function Header(props) {
           <li>
             <Link href="/account">
               <a>
-                <div className="hidden xl:flex xl:items-center">
-                  <UserCircleIcon className="w-9 text-beereign_silver mr-1" />
-                  <p className="font-sans font-light text-lg capitalize">
+                <div className="hidden xl:flex xl:items-center text-beereign_ligth hover:text-beereign_yellow">
+                  <UserCircleIcon className="w-9 mr-1" />
+                  <p className="font-serif text-lg capitalize">
                     {employee.name}
                   </p>
                 </div>

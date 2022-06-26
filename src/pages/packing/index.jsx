@@ -1,8 +1,8 @@
-import { useRef, useState, useEffect, useMemo } from "react";
+import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import Head from "next/head";
 import { HomeIcon, TrashIcon } from "@heroicons/react/outline";
-import { CameraIcon, SearchIcon } from "@heroicons/react/solid";
+import { SearchIcon } from "@heroicons/react/solid";
 import AsyncSelect from "react-select/async";
 import { toast } from "react-toastify";
 
@@ -153,47 +153,43 @@ const Packing = () => {
     e.preventDefault();
     setLoading(true);
     const formData = new FormData(formRef.current);
-    try {
-      const data = {
-        productId: product.id,
-        warehouseId: warehouse,
-        entryDate: formData.get("entryDate"),
-        expirationDate: formData.get("expirationDate")
-          ? new Date(formData.get("expirationDate")).toISOString()
-          : null,
-        quantity: quantity,
-        unitCost: unitCost,
-        batches: batches,
-      };
-      const { error } = await createSchema.validate(data);
-      if (error) {
-        toast.error("Los campos con ( * ) son necesarios");
-        setLoading(false);
-        return null;
-      }
-      addProductBatch(data)
-        .then((response) => {
-          formRef.current.reset();
-          toast.success("Envasado Registrado");
-          setQuantity(1);
-          setBatches([]);
-          setItem({
-            id: response.id,
-            name: product.name,
-            time: response.createdAt,
-          });
-          setPrintLabel(true);
-          setProduct(null);
-        })
-        .catch((err) => {
-          logError(err);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    } catch (err) {
-      toast.error("Ups, ERROR");
+    const data = {
+      productId: product ? product?.id : null,
+      warehouseId: warehouse,
+      entryDate: formData.get("entryDate"),
+      expirationDate: formData.get("expirationDate")
+        ? new Date(formData.get("expirationDate")).toISOString()
+        : null,
+      quantity: quantity,
+      unitCost: unitCost,
+      batches: batches,
+    };
+    const { error } = await createSchema.validate(data);
+    if (error) {
+      toast.error("*" + error);
+      setLoading(false);
+      return null;
     }
+    addProductBatch(data)
+      .then((response) => {
+        formRef.current.reset();
+        toast.success("Envasado Registrado");
+        setQuantity(1);
+        setBatches([]);
+        setItem({
+          id: response.id,
+          name: product.name,
+          time: response.createdAt,
+        });
+        setPrintLabel(true);
+        setProduct(null);
+      })
+      .catch((err) => {
+        logError(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
   return (
     <>
@@ -214,7 +210,7 @@ const Packing = () => {
         <div className="flex justify-start items-center">
           <Link href="/home">
             <a>
-              <HomeIcon className="w-9 text-beereign_grey" />
+              <HomeIcon className="w-9 text-beereign_grey hover:text-beereign_yellow" />
             </a>
           </Link>
           <div className="ml-2 font-sans font-normal text-3xl">

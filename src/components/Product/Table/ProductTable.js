@@ -92,13 +92,13 @@ export default function RawMaterialTable({
                 {capitalize(product.name)}
               </td>
               <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
-                {product.stock ? product.stock + "UNIDADES" : "Sin Stock"}{" "}
+                {product.stock} UNIDADES
               </td>
               <td className="font-mono text-gray-900 px-6 py-4 whitespace-nowrap border-r">
-                ${product.averageCost ? product.averageCost : 0.0}
+                ${product.averageCost ? product.averageCost : "0.00"}
               </td>
               <td className="font-mono text-gray-900 px-6 py-4 whitespace-nowrap border-r">
-                ${product.amount ? product.amount : 0.0}
+                ${product.amount}
               </td>
               <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
                 {product.createdAt}

@@ -49,7 +49,7 @@ export default function Index() {
         <div className="flex justify-start items-center">
           <Link href="/home">
             <a>
-              <HomeIcon className="w-9 text-beereign_grey" />
+              <HomeIcon className="w-9 text-beereign_grey hover:text-beereign_yellow" />
             </a>
           </Link>
           <div className="ml-2 font-sans font-normal text-3xl">Bodegas</div>

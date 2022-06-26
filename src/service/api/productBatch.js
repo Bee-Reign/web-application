@@ -1,9 +1,9 @@
 import endPoints from "@service/api";
 import { postData, getData, patchData, deleteData } from "@libs/fetchService";
 
-export async function getProductBatches(limit, offset, order, type) {
+export async function getProductBatches(limit, offset, order, type, productId) {
   const response = await getData(
-    endPoints.productBatch.getAll(limit, offset, order, type)
+    endPoints.productBatch.getAll(limit, offset, order, type, productId)
   );
   return response.data;
 }

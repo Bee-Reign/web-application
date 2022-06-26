@@ -31,6 +31,8 @@ export default function OutputTable({
 
   const handleCancell = async () => {
     if (id) {
+      toast.info("las salidas no se pueden cancelar en este momento");
+      /*
       cancelOutput(id)
         .then((res) => {
           onChange(!refresh);
@@ -38,7 +40,7 @@ export default function OutputTable({
         })
         .catch((err) => {
           logError(err);
-        });
+        });*/
     }
   };
   return (
@@ -108,20 +110,24 @@ export default function OutputTable({
               </td>
               <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                 <div className="flex justify-center">
-                  <div
-                    onClick={() => {
-                      setOutput(productOutput);
-                      setShowModal(true);
-                    }}
-                  >
-                    <CashIcon className="w-9 bg-gray-200 rounded-lg text-beereign_grey xl:hidden" />
-                    <button
-                      type="button"
-                      className="hidden xl:inline-block px-6 py-2.5 bg-gray-200 text-beereign_grey font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-600 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-700 active:shadow-lg transition duration-150 ease-in-out"
+                  {productOutput?.isPaid === false ? (
+                    <div
+                      onClick={() => {
+                        setOutput(productOutput);
+                        setShowModal(true);
+                      }}
                     >
-                      Cambiar Estado de Pago
-                    </button>
-                  </div>
+                      <CashIcon className="w-9 bg-gray-200 rounded-lg text-beereign_grey xl:hidden" />
+                      <button
+                        type="button"
+                        className="hidden xl:inline-block px-6 py-2.5 bg-gray-200 text-beereign_grey font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-600 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-700 active:shadow-lg transition duration-150 ease-in-out"
+                      >
+                        Cambiar Estado de Pago
+                      </button>
+                    </div>
+                  ) : (
+                    <></>
+                  )}
                   <div
                     onClick={() => {
                       setYesNoModal(true);

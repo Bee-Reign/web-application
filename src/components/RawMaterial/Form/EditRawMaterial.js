@@ -19,6 +19,7 @@ export default function EditProfile({ rawMaterial }) {
     const data = {
       code: formData.get("code").toLocaleLowerCase(),
       name: formData.get("name").toLocaleLowerCase(),
+      measurement: formData.get("measurement"),
     };
     const { error } = await updateRawMaterialSchema.validate(data);
 
@@ -46,6 +47,7 @@ export default function EditProfile({ rawMaterial }) {
       <div className="mb-5 mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
         <input
           name="code"
+          required
           type="text"
           defaultValue={rawMaterial?.code}
           className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
@@ -57,12 +59,32 @@ export default function EditProfile({ rawMaterial }) {
       <div className="mb-5 mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
         <input
           name="name"
+          required
           type="text"
           defaultValue={rawMaterial?.name}
           className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
           placeholder="Nombre *"
           maxLength={50}
         />
+      </div>
+
+      <div className="mb-5 mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
+        <input
+          list="measurements"
+          name="measurement"
+          required
+          defaultValue={rawMaterial?.measurement}
+          className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+        />
+        <datalist id="measurements">
+          <option value="GALONES"></option>
+          <option value="GRAMOS"></option>
+          <option value="KILOGRAMOS"></option>
+          <option value="LIBRAS"></option>
+          <option value="LITROS"></option>
+          <option value="ONZAS"></option>
+          <option value="UNIDADES"></option>
+        </datalist>
       </div>
 
       <Button loading={loading} />

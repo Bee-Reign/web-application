@@ -41,7 +41,7 @@ export default function Edit() {
         <div className="flex justify-start items-center">
           <Link href="/employee">
             <a>
-              <ViewGridIcon className="w-9 text-beereign_grey" />
+              <ViewGridIcon className="w-9 text-beereign_grey hover:text-beereign_yellow" />
             </a>
           </Link>
           <div className="ml-2 font-sans font-normal text-2xl">

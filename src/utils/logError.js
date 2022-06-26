@@ -4,7 +4,6 @@ import { toast } from "react-toastify";
 
 export function logError(error) {
   //Sentry Log --- --> ERROR
-  console.log("ERROR HANDLER");
   const {
     response: { status, data },
   } = error;
