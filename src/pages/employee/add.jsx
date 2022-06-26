@@ -1,7 +1,10 @@
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { ViewGridIcon } from "@heroicons/react/outline";
 
-import AddEmployee from "@components/Employee/Form/AddEmployee";
+const AddEmployee = dynamic(() =>
+  import("@components/Employee/Form/AddEmployee")
+);
 import Head from "next/head";
 import CheckPermission from "@utils/checkPermission";
 

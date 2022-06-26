@@ -1,11 +1,12 @@
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 
-import Header from "@components/Header/Header";
-import TabBar from "@components/TabBar/TabBar";
+const Header = dynamic(() => import("@components/Header"));
+const TabBar = dynamic(() => import("@components/TabBar"));
 import useAuth from "@hooks/useAuth";
-import LoginForm from "@components/Auth/LoginForm";
+const LoginForm = dynamic(() => import("@components/Auth/LoginForm"));
 import Loading from "@components/Animation/Loading";
-import PasswordReset from "@components/Auth/PasswordReset";
+const PasswordReset = dynamic(() => import("@components/Auth/PasswordReset"));
 
 export default function MainLayout(props) {
   const { auth } = useAuth();

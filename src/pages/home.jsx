@@ -1,8 +1,9 @@
+import dynamic from "next/dynamic";
 import Head from "next/head";
 import { HomeIcon } from "@heroicons/react/solid";
 
-import HomeModules from "@components/Home";
 import useAuth from "@hooks/useAuth";
+const HomeModules = dynamic(() => import("@components/Home"));
 
 export default function Home() {
   const {

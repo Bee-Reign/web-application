@@ -96,6 +96,19 @@ export default function Index() {
         onShowModalChange={(value) => setSearch(value)}
       />
 
+      <section className="mx-3 xl:mx-6 flex items-center justify-between">
+        <div className="flex justify-start items-center">
+          <Link href="/home">
+            <a>
+              <HomeIcon className="w-9 text-beereign_grey hover:text-beereign_yellow" />
+            </a>
+          </Link>
+          <div className="ml-2 font-sans font-normal text-3xl">
+            Lotes de Productos
+          </div>
+        </div>
+      </section>
+
       <section className="mx-3 xl:mx-6 mt-5">
         <div className="flex justify-center xl:justify-start">
           <div className="w-full xl:w-3/4 2xl:w-1/2">
@@ -123,19 +136,6 @@ export default function Index() {
                 onClick={() => setSearch(true)}
               />
             </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="mx-3 xl:mx-6 flex items-center justify-between">
-        <div className="flex justify-start items-center">
-          <Link href="/home">
-            <a>
-              <HomeIcon className="w-9 text-beereign_grey hover:text-beereign_yellow" />
-            </a>
-          </Link>
-          <div className="ml-2 font-sans font-normal text-3xl">
-            Lotes de Productos
           </div>
         </div>
       </section>

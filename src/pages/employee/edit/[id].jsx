@@ -1,10 +1,13 @@
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { ViewGridIcon } from "@heroicons/react/outline";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 import { getEmployee } from "@service/api/employee";
-import EditProfile from "@components/Employee/Form/EditProfile";
+const EditProfile = dynamic(() =>
+  import("@components/Employee/Form/EditProfile")
+);
 import Head from "next/head";
 import { logError } from "@utils/logError";
 import CheckPermission from "@utils/checkPermission";

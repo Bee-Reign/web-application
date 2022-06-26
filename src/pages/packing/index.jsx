@@ -1,9 +1,10 @@
 import { useRef, useState, useEffect } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import Head from "next/head";
 import { HomeIcon, TrashIcon } from "@heroicons/react/outline";
 import { SearchIcon } from "@heroicons/react/solid";
-import AsyncSelect from "react-select/async";
+const AsyncSelect = dynamic(() => import("react-select/async"));
 import { toast } from "react-toastify";
 
 import { createSchema } from "@schema/productBatchSchema";
@@ -15,8 +16,8 @@ import capitalize from "@utils/capitalize";
 import { getBatchForPacking } from "@service/api/rawMaterialBatch";
 import { checkId } from "@schema/rawMaterialBatchSchema";
 import Button from "@components/Button";
-import PrintModal from "@components/Modal/PrintModal";
-import SearchProduct from "@components/Modal/SearchProduct";
+const PrintModal = dynamic(() => import("@components/Modal/PrintModal"));
+const SearchProduct = dynamic(() => import("@components/Modal/SearchProduct"));
 import CheckPermission from "@utils/checkPermission";
 
 const Packing = () => {
@@ -356,7 +357,7 @@ const Packing = () => {
                             {capitalize(data.rawMaterial.name)}
                           </td>
                           <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
-                            {data.stock} {data.measurement}
+                            {data.stock} {data.rawMaterial.measurement}
                           </td>
                           <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
                             <div className="mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">

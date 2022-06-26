@@ -1,16 +1,17 @@
+import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
 import { HomeIcon } from "@heroicons/react/outline";
+import Head from "next/head";
 import Link from "next/link";
 
 import { getRawMaterials } from "@service/api/rawMaterial";
-import Pagination from "@components/Pagination";
 import { logError } from "@utils/logError";
 
 const RAW_MATERIAL_LIMIT = 15;
 
-import RawMaterialTable from "@components/RawMaterial/Table";
-import Head from "next/head";
 import NewButton from "@components/Button/NewButton";
+const Pagination = dynamic(() => import("@components/Pagination"));
+const RawMaterialTable = dynamic(() => import("@components/RawMaterial/Table"));
 
 export default function Index() {
   const [rawMaterials, setRawMaterials] = useState([]);

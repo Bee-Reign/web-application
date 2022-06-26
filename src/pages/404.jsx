@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 const FourOhFour = () => {
   return (
     <div className="mt-6">
