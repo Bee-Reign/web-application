@@ -80,7 +80,7 @@ export default function RawMaterialTable({
           {products.map((product) => (
             <tr
               key={`Product-item-${product.id}`}
-              className={`border-b ${product.stock ? "" : "bg-red-50"}`}
+              className={`border-b ${product.stock > 0 ? "" : "bg-red-50"}`}
             >
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium border-r">
                 {product.id}
@@ -95,7 +95,10 @@ export default function RawMaterialTable({
                 {product.stock} UNIDADES
               </td>
               <td className="font-mono text-gray-900 px-6 py-4 whitespace-nowrap border-r">
-                ${product.averageCost ? product.averageCost : "0.00"}
+                $
+                {Number(product.amount) === 0
+                  ? "0.00"
+                  : (Number(product.amount) / Number(product.stock)).toFixed(2)}
               </td>
               <td className="font-mono text-gray-900 px-6 py-4 whitespace-nowrap border-r">
                 ${product.amount}
