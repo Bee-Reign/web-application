@@ -28,7 +28,8 @@ const endPoints = {
     updateEmployee: (id, update) =>
       `${API}/${VERSION}/employees/${id}?update=${update}`,
     updatePassword: (id) => `${API}/${VERSION}/employees/${id}/password`,
-    disableEmployee: (id) => `${API}/${VERSION}/employees/${id}`,
+    disableEmployee: (id) => `${API}/${VERSION}/employees/${id}/disable`,
+    enableEmployee: (id) => `${API}/${VERSION}/employees/${id}/enable`,
   },
   typeOfEmployees: {
     getTypesOfEmployee: (limit, offset, filter) =>
@@ -93,12 +94,20 @@ const endPoints = {
     updateProduct: (id) => `${API}/${VERSION}/products/${id}`,
     deleteProduct: (id) => `${API}/${VERSION}/products/${id}`,
   },
+  packing: {
+    getPackings: (limit, offset, order, type) =>
+      `${API}/${VERSION}/packing?limit=${limit}&offset=${offset}&order=${order}&type=${type}`,
+    addPacking: `${API}/${VERSION}/packing`,
+    addBatch: `${API}/${VERSION}/packing/batch`,
+    suspendPacking: `${API}/${VERSION}/packing/suspend`,
+    updatePacking: (id) => `${API}/${VERSION}/packing/${id}`,
+    updateBatch: (id) => `${API}/${VERSION}/packing/${id}/batch`,
+    getById: (id) => `${API}/${VERSION}/packing/${id}`,
+    getAllBatchesById: (id) => `${API}/${VERSION}/packing/${id}/batches`,
+  },
   productBatch: {
     getAll: (limit, offset, order, type, productId) =>
       `${API}/${VERSION}/product-batches?limit=${limit}&offset=${offset}&order=${order}&type=${type}&productId=${productId}`,
-    addProductBatch: `${API}/${VERSION}/product-batches`,
-    updateProductBatch: (id) => `${API}/${VERSION}/product-batches/${id}`,
-    getById: (id) => `${API}/${VERSION}/product-batches/${id}?isOutput=false`,
     getByIdForOutput: (id) =>
       `${API}/${VERSION}/product-batches/${id}?isOutput=true`,
     deleteProductBatch: (id) => `${API}/${VERSION}/product-batches/${id}`,

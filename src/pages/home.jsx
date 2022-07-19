@@ -12,17 +12,11 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Home - BeeReign</title>
+        <title>Home</title>
       </Head>
-      <section className="ml-3 flex items-center justify-start">
-        <div>
-          <HomeIcon className="w-9 text-beereign_grey" aria-hidden="true" />
-        </div>
-        <h2 className="ml-2 font-sans font-normal text-3xl">Home</h2>
-      </section>
       {/* ---------- Modules ---------- */}
-      <section className=" mt-5">
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+      <section className=" mt-4 mx-4">
+        <div className="grid grid-cols-1 gap-6 mb-2 w-full md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
           <HomeModules modules={employee?.modules} />
         </div>
       </section>

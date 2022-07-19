@@ -10,9 +10,9 @@ module.exports = {
         beereign_bg: "#0F1421",
         beereign_yellow: "#EDD224",
         beereign_grey: "#2C303B",
-        beereign_silver: "#54545C",
+        beereign_silver: "#515057",
         beereign_ligth: "#505058",
-        beereign_clear: "#F3F4F6",
+        beereign_clear: "#F9FAFB",
         beereign_green: "#28A745",
         beereign_hover: "#E0F3FF",
         shadow: "#919295",
@@ -22,14 +22,19 @@ module.exports = {
       },
       spacing: {
         side_height: "calc(100vh - 4rem)",
-        tab_height: "calc(100vh - 9rem)",
+        tab_height: "calc(100vh - 8rem)",
       },
       minHeight: {
-        tab_height: "calc(100vh - 9rem)",
+        tab_height: "calc(100vh - 8rem)",
+        xl_height: "calc(100vh - 6rem)",
+      },
+      maxHeight: {
+        tab_height: "calc(100vh - 10rem)",
         xl_height: "calc(100vh - 6rem)",
       },
       maxWidth: {
         header_account: "13rem",
+        xl_width: "calc(100vw - 16rem)",
       },
     },
   },

@@ -45,7 +45,7 @@ export default function ChangePassword({ showModal, id, onShowModalChange }) {
       });
   };
   return (
-    <div className="z-10 absolute inset-0 flex items-center justify-center bg-beereign_bg bg-opacity-80">
+    <div className="z-50 absolute inset-0 flex items-center justify-center bg-beereign_bg bg-opacity-80">
       <div className="p-4 w-full max-w-md md:h-auto">
         <div className="relative bg-beereign_clear text-gray-900 rounded-xl shadow">
           <button

@@ -1,4 +1,4 @@
-const Joi = require("joi");
+import Joi from "joi";
 
 const id = Joi.number().integer().positive().max(2147483647);
 const name = Joi.string().max(100);
@@ -29,8 +29,4 @@ const updateRawMaterialSchema = Joi.object({
   measurement: measurement.required(),
 }).options({ abortEarly: false });
 
-module.exports = {
-  checkId,
-  newRawMaterialSchema,
-  updateRawMaterialSchema,
-};
+export { checkId, newRawMaterialSchema, updateRawMaterialSchema };

@@ -6,6 +6,7 @@ const TabBar = dynamic(() => import("@components/TabBar"));
 import useAuth from "@hooks/useAuth";
 const LoginForm = dynamic(() => import("@components/Auth/LoginForm"));
 import Loading from "@components/Animation/Loading";
+const Aside = dynamic(() => import("@components/Aside"));
 const PasswordReset = dynamic(() => import("@components/Auth/PasswordReset"));
 
 export default function MainLayout(props) {
@@ -26,13 +27,18 @@ export default function MainLayout(props) {
   }
   return (
     <>
-      <Header employee={auth.employee} />
-      <main className="mt-16 bg-beereign_clear min-h-tab_height xl:min-h-xl_height">
-        <div className="pt-4">{children}</div>
-      </main>
-      <footer className="mt-20 xl:mt-0">
+      <div className="w-full min-h-screen flex flex-col">
+        <Header employee={auth.employee} />
+        <main className="bg-beereign_clear min-h-tab_height max-h-tab_height xl:min-h-xl_height overflow-y-scroll xl:overflow-hidden">
+          <div className="xl:flex overflow-hidden">
+            <Aside />
+            <div className="w-full pt-4 xl:max-w-xl_width h-full xl:max-h-xl_height xl:overflow-y-auto">
+              {children}
+            </div>
+          </div>
+        </main>
         <TabBar />
-      </footer>
+      </div>
     </>
   );
 }

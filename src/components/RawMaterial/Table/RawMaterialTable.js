@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { PencilAltIcon, TrashIcon } from "@heroicons/react/outline";
-import Link from "next/link";
 
 import Loading from "@components/Animation/Loading";
 import capitalize from "@utils/capitalize";
@@ -8,30 +7,32 @@ import YesNoModal from "@components/Modal/YesNoModal";
 import { deleteRawMaterial } from "@service/api/rawMaterial";
 import { toast } from "react-toastify";
 import { logError } from "@utils/logError";
+import EditRawMaterialModal from "../Modal/EditRawMaterialModal";
 
 export default function RawMaterialTable({
   rawMaterials = [],
-  onDelete,
+  onChange,
   refresh,
   loading,
 }) {
   const [showYesNoModal, setYesNoModal] = useState(false);
-  const [id, setID] = useState(null);
+  const [rawMaterial, setRawMaterial] = useState(null);
+  const [showEditModal, setShowEditModal] = useState(false);
   if (loading == true) {
     return <Loading />;
   } else if (rawMaterials.length === 0) {
     return (
-      <h3 className="text-center font-mono text-2xl">
+      <h3 className="text-center bg-white text-gray-500">
         no se encontró ningún registro
       </h3>
     );
   }
 
   const handleDelete = async () => {
-    if (id) {
-      deleteRawMaterial(id)
+    if (rawMaterial) {
+      deleteRawMaterial(rawMaterial?.id)
         .then((res) => {
-          onDelete(!refresh);
+          onChange(!refresh);
           toast.info("Materia Prima Eliminada");
         })
         .catch((err) => {
@@ -47,60 +48,90 @@ export default function RawMaterialTable({
         onShowModalChange={(showModal) => setYesNoModal(showModal)}
         onYes={() => handleDelete()}
       />
-      <table className="min-w-full border text-center">
-        <thead className="border-b">
+      <EditRawMaterialModal
+        showModal={showEditModal}
+        onShowModalChange={(showModal) => setShowEditModal(showModal)}
+        rawMaterial={rawMaterial}
+        onEdit={(refresh) => onChange(!refresh)}
+      />
+      <table className="min-w-full divide-y divide-gray-200 table-fixed">
+        <thead className="bg-white">
           <tr>
-            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
-              ID
-            </th>
-            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
-              Código
-            </th>
-            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
+            <th
+              scope="col"
+              className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+            >
               Nombre
             </th>
-            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
+            <th
+              scope="col"
+              className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+            >
+              ID
+            </th>
+            <th
+              scope="col"
+              className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+            >
+              Código
+            </th>
+            <th
+              scope="col"
+              className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+            >
               En Inventario
             </th>
-            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
+            <th
+              scope="col"
+              className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+            >
               Costo Promedio Unitario
             </th>
-            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
+            <th
+              scope="col"
+              className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+            >
               Valor de Costo
             </th>
-            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
+            <th
+              scope="col"
+              className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+            >
               Registrado el
             </th>
-            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
-              Acciones
-            </th>
+            <th
+              scope="col"
+              className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+            ></th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="bg-white divide-y divide-gray-200">
           {rawMaterials.map((rawMaterial) => (
             <tr
               key={`RawMaterial-item-${rawMaterial.id}`}
-              className={`border-b ${rawMaterial.stock > 0 ? "" : "bg-red-50"}`}
+              className={`hover:bg-gray-100 ${
+                rawMaterial.stock > 0 ? "" : "bg-red-50"
+              }`}
             >
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium border-r">
-                {rawMaterial.id}
-              </td>
-              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
-                {rawMaterial.code.toLocaleUpperCase()}
-              </td>
-              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
+              <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                 {capitalize(rawMaterial.name)}
               </td>
+              <td className="p-4 text-sm font-mono text-gray-500 whitespace-nowrap lg:p-5">
+                #{rawMaterial.id}
+              </td>
+              <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
+                {rawMaterial.code.toLocaleUpperCase()}
+              </td>
               {rawMaterial.measurement === "UNIDADES" ? (
-                <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
+                <td className="p-4 text-sm font-mono text-gray-500 whitespace-nowrap lg:p-5">
                   {Math.round(rawMaterial.stock)} {rawMaterial.measurement}
                 </td>
               ) : (
-                <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
+                <td className="p-4 text-sm font-mono text-gray-500 whitespace-nowrap lg:p-5">
                   {rawMaterial.stock} {rawMaterial.measurement}
                 </td>
               )}
-              <td className="font-mono text-gray-900 px-6 py-4 whitespace-nowrap border-r">
+              <td className="p-4 text-sm font-mono text-gray-500 whitespace-nowrap lg:p-5">
                 $
                 {Number(rawMaterial.amount) === 0
                   ? "0.00"
@@ -108,36 +139,33 @@ export default function RawMaterialTable({
                       Number(rawMaterial.amount) / Number(rawMaterial.stock)
                     ).toFixed(2)}
               </td>
-              <td className="font-mono text-gray-900 px-6 py-4 whitespace-nowrap border-r">
+              <td className="p-4 text-sm font-mono text-gray-500 whitespace-nowrap lg:p-5">
                 ${rawMaterial.amount}
               </td>
-              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
+              <td className="p-4 text-sm font-mono text-gray-500 whitespace-nowrap lg:p-5">
                 {rawMaterial.createdAt}
               </td>
-              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
+              <td className="p-4 space-x-2 whitespace-nowrap lg:p-5">
                 <div className="flex justify-center">
-                  <Link href={`/raw-material/edit/${rawMaterial.id}`}>
-                    <a>
-                      <PencilAltIcon className="w-9 bg-transparent rounded-lg text-beereign_grey xl:hidden" />
-                      <button
-                        type="button"
-                        className="hidden xl:inline-block px-6 py-2.5 bg-gray-200 text-beereign_grey font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-600 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-700 active:shadow-lg transition duration-150 ease-in-out"
-                      >
-                        Editar
-                      </button>
-                    </a>
-                  </Link>
                   <div
-                    className="ml-4"
+                    onClick={() => {
+                      setRawMaterial(rawMaterial);
+                      setShowEditModal(true);
+                    }}
+                    className="flex items-center mr-3 hover:scale-110 cursor-default transition-transform"
+                  >
+                    <PencilAltIcon className="w-4 mr-1" />
+                    Editar
+                  </div>
+                  <div
                     onClick={() => {
                       setYesNoModal(true);
-                      setID(rawMaterial.id);
+                      setRawMaterial(rawMaterial);
                     }}
+                    className="flex items-center text-red-500 hover:scale-105 cursor-default transition-transform"
                   >
-                    <TrashIcon className="w-9 bg-transparent text-red-500 xl:hidden" />
-                    <div className="hidden xl:inline-block px-6 py-2.5 bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-600 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-700 active:shadow-lg transition duration-150 ease-in-out">
-                      Eliminar
-                    </div>
+                    <TrashIcon className="w-4 mr-1" />
+                    Eliminar
                   </div>
                 </div>
               </td>

@@ -1,41 +1,43 @@
 import { useState } from "react";
-import Link from "next/link";
-import { PencilIcon, PrinterIcon, TrashIcon } from "@heroicons/react/outline";
+import {
+  PencilAltIcon,
+  PrinterIcon,
+  TrashIcon,
+} from "@heroicons/react/outline";
 
 import Loading from "@components/Animation/Loading";
 import capitalize from "@utils/capitalize";
 import YesNoModal from "@components/Modal/YesNoModal";
-import PrintModal from "@components/Modal/PrintModal";
 import { deleteProductBatch } from "@service/api/productBatch";
 import { toast } from "react-toastify";
 import { logError } from "@utils/logError";
+import EditProductBatchModal from "../Modal/EditProductBatchModal";
 
 export default function BatchTable({
   productBatches = [],
-  onDelete,
-  refresh,
+  onChange,
   loading,
+  onPrint,
 }) {
   const [showYesNoModal, setYesNoModal] = useState(false);
-  const [id, setID] = useState(null);
-  const [printLabel, setPrintLabel] = useState(false);
-  const [item, setItem] = useState({});
+  const [batch, setBatch] = useState(null);
+  const [showEditModal, setShowEditModal] = useState(false);
   if (loading == true) {
     return <Loading />;
   } else if (productBatches.length === 0) {
     return (
-      <h3 className="text-center font-mono text-2xl">
+      <h3 className="text-center bg-white text-gray-500">
         no se encontró ningún registro
       </h3>
     );
   }
 
   const handleDelete = async () => {
-    if (id) {
-      deleteProductBatch(id)
+    if (batch) {
+      deleteProductBatch(batch?.id)
         .then((res) => {
-          onDelete(!refresh);
-          toast.info("Lote de Producto Eliminado");
+          onChange();
+          toast.info("Lote de producto eliminado");
         })
         .catch((err) => {
           logError(err);
@@ -44,131 +46,161 @@ export default function BatchTable({
   };
   return (
     <>
-      <PrintModal
-        showModal={printLabel}
-        item={item}
-        onShowLabelChange={(value) => setPrintLabel(value)}
-      />
       <YesNoModal
         showModal={showYesNoModal}
         message={"¿Desea Eliminar el Lote?"}
         onShowModalChange={(showModal) => setYesNoModal(showModal)}
         onYes={() => handleDelete()}
       />
-      <table className="min-w-full border text-center">
-        <thead className="border-b">
+      <EditProductBatchModal
+        showModal={showEditModal}
+        onShowModalChange={(showModal) => setShowEditModal(showModal)}
+        batch={batch}
+        onEdit={() => onChange()}
+      />
+      <table className="min-w-full divide-y divide-gray-200 table-fixed">
+        <thead className="bg-white">
           <tr>
-            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
-              Lote #
-            </th>
-            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
-              Registrado Por
-            </th>
-            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
-              Producto
-            </th>
-            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
-              Bodega
-            </th>
-            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
+            <th
+              scope="col"
+              className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+            >
               Fecha de entrada
             </th>
-            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
+            <th
+              scope="col"
+              className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+            >
+              Producto
+            </th>
+            <th
+              scope="col"
+              className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+            >
+              Lote #
+            </th>
+            <th
+              scope="col"
+              className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+            >
+              Registrado Por
+            </th>
+            <th
+              scope="col"
+              className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+            >
+              Bodega
+            </th>
+
+            <th
+              scope="col"
+              className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+            >
               Fecha de Expiración
             </th>
-            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
+            <th
+              scope="col"
+              className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+            >
               Cantidad Ingresada
             </th>
-            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
+            <th
+              scope="col"
+              className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+            >
               Costo Unitario
             </th>
-            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
+            <th
+              scope="col"
+              className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+            >
               Valor de Costo
             </th>
-            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
+            <th
+              scope="col"
+              className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+            >
               Disponible
             </th>
-            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
+            <th
+              scope="col"
+              className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+            >
               Acciones
             </th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="bg-white divide-y divide-gray-200">
           {productBatches.map((productBatch) => (
             <tr
-              key={`Product-Batch-item-${productBatch.id}`}
-              className="border-b"
+              key={`product-batch-item-${productBatch.id}`}
+              className="hover:bg-gray-100"
             >
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 border-r">
-                {productBatch.id}
+              <td className="p-4 text-sm font-mono text-gray-500 whitespace-nowrap lg:p-5">
+                {productBatch.packing.entryDate}
               </td>
-              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
-                {capitalize(productBatch.employee.name)}{" "}
-                {capitalize(productBatch.employee.lastName)}
+              <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
+                {capitalize(productBatch.packing.product.name)}
               </td>
-              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
-                {capitalize(productBatch.product.name)}
+              <td className="p-4 text-sm font-mono text-gray-500 whitespace-nowrap lg:p-5">
+                #{productBatch.id}
               </td>
-              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
-                {capitalize(productBatch.warehouse.name)}
+              <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
+                {capitalize(productBatch.packing.employee.name)}{" "}
+                {capitalize(productBatch.packing.employee.lastName)}
               </td>
-              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
-                {productBatch.entryDate}
+              <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
+                {capitalize(productBatch.packing.warehouse.name)}
               </td>
-              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
-                {productBatch.expirationDate}
+              <td className="p-4 text-sm font-mono text-gray-500 whitespace-nowrap lg:p-5">
+                {productBatch.packing.expirationDate}
               </td>
-              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
-                {productBatch.quantity} UNIDADES
+              <td className="p-4 text-sm font-mono text-gray-500 whitespace-nowrap lg:p-5">
+                {productBatch.packing.quantity} UNIDADES
               </td>
-              <td className="font-mono text-gray-900 px-6 py-4 whitespace-nowrap border-r">
+              <td className="p-4 text-sm font-mono text-gray-500 whitespace-nowrap lg:p-5">
                 ${productBatch.unitCost}
               </td>
-              <td className="font-mono text-gray-900 px-6 py-4 whitespace-nowrap border-r">
+              <td className="p-4 text-sm font-mono text-gray-500 whitespace-nowrap lg:p-5">
                 ${productBatch.totalCost}
               </td>
-              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
+              <td className="p-4 text-sm font-mono text-gray-500 whitespace-nowrap lg:p-5">
                 {productBatch.stock} UNIDADES
               </td>
-              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+              <td className="p-4 space-x-2 whitespace-nowrap lg:p-5">
                 <div className="flex justify-center">
                   <div
-                    onClick={() => {
-                      setItem({
+                    onClick={() =>
+                      onPrint({
                         id: productBatch.id,
-                        name: productBatch.product.name,
-                        time: productBatch.createdAt,
-                      });
-                      setPrintLabel(true);
-                    }}
+                        name: productBatch.packing.product.name,
+                        time: productBatch.packing.createdAt,
+                      })
+                    }
+                    className="flex items-center text-blue-500 mr-3 hover:scale-110 cursor-default transition-transform"
                   >
-                    <PrinterIcon className="w-9 bg-transparent text-blue-500 xl:hidden" />
-                    <div className="hidden xl:inline-block px-6 py-2.5 bg-blue-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-600 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-700 active:shadow-lg transition duration-150 ease-in-out">
-                      Imprimir
-                    </div>
+                    <PrinterIcon className="w-4 mr-1" />
+                    Imprimir
                   </div>
-                  <Link href={`/product-batch/edit/${productBatch.id}`}>
-                    <a className="ml-4">
-                      <PencilIcon className="w-9 bg-gray-200 rounded-lg text-beereign_grey xl:hidden" />
-                      <button
-                        type="button"
-                        className="hidden xl:inline-block px-6 py-2.5 bg-gray-200 text-beereign_grey font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-600 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-700 active:shadow-lg transition duration-150 ease-in-out"
-                      >
-                        Editar
-                      </button>
-                    </a>
-                  </Link>
                   <div
-                    className="ml-4"
+                    onClick={() => {
+                      setBatch(productBatch);
+                      setShowEditModal(true);
+                    }}
+                    className="flex items-center mr-3 hover:scale-110 cursor-default transition-transform"
+                  >
+                    <PencilAltIcon className="w-4 mr-1" />
+                    Editar
+                  </div>
+                  <div
                     onClick={() => {
                       setYesNoModal(true);
-                      setID(productBatch.id);
+                      setBatch(productBatch);
                     }}
+                    className="flex items-center text-red-500 hover:scale-105 cursor-default transition-transform"
                   >
-                    <TrashIcon className="w-9 bg-gray-200 text-red-500 xl:hidden" />
-                    <div className="hidden xl:inline-block px-6 py-2.5 bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-600 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-700 active:shadow-lg transition duration-150 ease-in-out">
-                      Eliminar
-                    </div>
+                    <TrashIcon className="w-4 mr-1" />
+                    Eliminar
                   </div>
                 </div>
               </td>

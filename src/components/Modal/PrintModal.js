@@ -12,13 +12,13 @@ export default function PrintModal({ showModal, item, onShowLabelChange }) {
   };
 
   return (
-    <div className="z-10 mt-16 fixed inset-0 flex items-center justify-center bg-beereign_bg bg-opacity-80">
-      <div className="px-5 w-full max-w-md md:h-auto">
+    <div className="z-50 fixed inset-0 flex items-center justify-center overflow-y-auto bg-beereign_bg bg-opacity-80">
+      <div className="px-5 w-full max-w-md max-h-screen md:h-auto">
         <div className="relative bg-white text-black rounded-xl shadow">
           <div className="flex justify-center pt-5">
             <ReactToPrint
               trigger={() => (
-                <button className="bg-blue-500 text-white font-bold py-2 px-8 rounded shadow border-2 border-blue-500 hover:bg-transparent hover:text-blue-500 transition-all duration-300">
+                <button className="text-white bg-gradient-to-br from-blue-600 to-blue-800 font-medium rounded-lg text-base inline-flex items-center px-6 py-3 text-center mr-5 shadow-md shadow-gray-300 hover:scale-105 transition-transform">
                   Imprimir
                 </button>
               )}
@@ -26,7 +26,7 @@ export default function PrintModal({ showModal, item, onShowLabelChange }) {
             />
             <button
               onClick={() => handleClose()}
-              className="ml-5 bg-gray-500 text-white font-bold py-2 px-8 rounded shadow border-2 border-gray-500 hover:bg-transparent hover:text-gray-500 transition-all duration-300"
+              className="text-white bg-gradient-to-br from-gray-400 to-gray-600 font-medium rounded-lg text-base inline-flex items-center px-9 py-3 text-center shadow-md shadow-gray-300 hover:scale-105 transition-transform"
             >
               Cerrar
             </button>

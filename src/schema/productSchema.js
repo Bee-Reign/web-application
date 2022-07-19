@@ -1,4 +1,4 @@
-const Joi = require("joi");
+import Joi from "joi";
 
 const id = Joi.number().integer().positive().max(2147483647);
 const barcode = Joi.string().max(128).alphanum();
@@ -17,7 +17,4 @@ const updateSchema = Joi.object({
   description,
 }).options({ abortEarly: false });
 
-module.exports = {
-  createSchema,
-  updateSchema,
-};
+export { createSchema, updateSchema };

@@ -33,39 +33,43 @@ const Pagination = ({ loading, page, limit, totalPages, onPageChange }) => {
   if (loading === true || totalPages === 0) return;
 
   return (
-    <section className="mt-5 flex justify-center xl:justify-start xl:ml-6">
-      <a className="w-12 md:w-14 border flex items-center" onClick={firstPage}>
-        <ChevronDoubleLeftIcon
-          className="w-8 md:w-10 mx-auto text-beereign_silver hover:text-beereign_yellow"
-          aria-hidden="true"
-        />
-      </a>
-      <a
-        className="w-12 md:w-14 border flex items-center"
-        onClick={previousPage}
-      >
-        <ChevronLeftIcon
-          className="w-8 md:w-10 mx-auto text-beereign_silver hover:text-beereign_yellow"
-          aria-hidden="true"
-        />
-      </a>
-      <div className="w-40 md:w-44 h-12 border flex items-center overflow-hidden">
-        <p className="mx-auto text-center font-light">
-          Página {page / limit + 1} de {totalPages}
-        </p>
+    <section className="items-center p-4 mx-4 bg-white rounded-2xl border border-gray-200 sm:flex sm:justify-between">
+      <div className="flex items-center mb-4 sm:mb-0">
+        <span className="text-sm font-normal text-gray-500">
+          Mostrando página{" "}
+          <span className="font-semibold text-gray-900">
+            {page / limit + 1} de {totalPages}
+          </span>{" "}
+        </span>
       </div>
-      <a className="w-12 md:w-14 border flex items-center" onClick={nextPage}>
-        <ChevronRightIcon
-          className="w-8 md:w-10 mx-auto text-beereign_silver hover:text-beereign_yellow"
-          aria-hidden="true"
-        />
-      </a>
-      <a className="w-12 md:w-14 border flex items-center" onClick={lastPage}>
-        <ChevronDoubleRightIcon
-          className="w-8 md:w-10 mx-auto text-beereign_silver hover:text-beereign_yellow"
-          aria-hidden="true"
-        />
-      </a>
+      <div className="flex items-center space-x-3 overflow-x-scroll sm:overflow-hidden">
+        <a
+          onClick={firstPage}
+          className="inline-flex flex-1 justify-center items-center py-2 px-3 text-sm font-medium text-center text-white bg-gradient-to-br from-gray-800 to-gray-600 rounded-lg shadow-md shadow-gray-300 xl:hover:scale-105 transition-transform"
+        >
+          <ChevronDoubleLeftIcon className="mr-1 -ml-1 w-5 h-5" />
+        </a>
+        <a
+          onClick={previousPage}
+          className="cursor-default inline-flex flex-1 justify-center items-center py-2 px-3 text-sm font-medium text-center text-white bg-gradient-to-br from-gray-800 to-gray-600 rounded-lg shadow-md shadow-gray-300 xl:hover:scale-105 transition-transform"
+        >
+          <ChevronLeftIcon className="mr-1 -ml-1 w-5 h-5" />
+          Anterior
+        </a>
+        <a
+          onClick={nextPage}
+          className="cursor-default inline-flex flex-1 justify-center items-center py-2 px-3 text-sm font-medium text-center text-white bg-gradient-to-br from-gray-800 to-gray-600 rounded-lg shadow-md shadow-gray-300 xl:hover:scale-105 transition-transform"
+        >
+          <ChevronRightIcon className="mr-1 -ml-1 w-5 h-5" />
+          Siguiente
+        </a>
+        <a
+          onClick={lastPage}
+          className="inline-flex flex-1 justify-center items-center py-2 px-3 text-sm font-medium text-center text-white bg-gradient-to-br from-gray-800 to-gray-600 rounded-lg shadow-md shadow-gray-300 xl:hover:scale-105 transition-transform"
+        >
+          <ChevronDoubleRightIcon className="mr-1 -ml-1 w-5 h-5" />
+        </a>
+      </div>
     </section>
   );
 };

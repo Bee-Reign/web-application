@@ -1,24 +1,27 @@
+import dynamic from "next/dynamic";
 import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import Head from "next/head";
 import {
   ClipboardListIcon,
+  ChevronRightIcon,
   HomeIcon,
   TrashIcon,
 } from "@heroicons/react/outline";
+import { SearchIcon } from "@heroicons/react/solid";
 import { toast } from "react-toastify";
-import Select from "react-select";
 
+import CheckPermission from "@utils/checkPermission";
 import capitalize from "@utils/capitalize";
 import { checkId } from "@schema/productBatchSchema";
 import { getProductForOutput } from "@service/api/productBatch";
 import { createSchema } from "@schema/productOutputSchema";
 import { addProductOutput } from "@service/api/productOutput";
-import Loading from "@components/Animation/Loading";
-import CheckPermission from "@utils/checkPermission";
 import { logError } from "@utils/logError";
-import SearchProductBatch from "@components/Modal/SearchProductBatch";
-import { SearchIcon } from "@heroicons/react/solid";
+const SearchProductBatch = dynamic(() =>
+  import("@components/ProductBatch/Modal/SearchProductBatch")
+);
+const Button = dynamic(() => import("@components/Button"));
 
 const Output = () => {
   CheckPermission("/product-output");
@@ -29,15 +32,6 @@ const Output = () => {
   const [batches, setBatches] = useState([]);
   const [search, setSearch] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  const typeOptions = [
-    { value: "CONTADO", label: "CONTADO" },
-    { value: "CRÉDITO", label: "CRÉDITO" },
-  ];
-
-  const handleChangeType = (value) => {
-    setType(value.value);
-  };
 
   async function handleKeyPress(e) {
     const key = e.keyCode || e.which;
@@ -125,7 +119,7 @@ const Output = () => {
     };
     const { error } = await createSchema.validate(data);
     if (error) {
-      toast.error("*" + error);
+      toast.error("" + error);
       setLoading(false);
       return null;
     }
@@ -151,199 +145,203 @@ const Output = () => {
         onClick={(value) => addBatch(value)}
         onShowModalChange={(value) => setSearch(value)}
       />
-      <section className="mx-3 xl:mx-6 flex items-center justify-between">
-        <div className="flex justify-start items-center">
-          <Link href="/home">
-            <a>
-              <HomeIcon className="w-9 text-beereign_grey hover:text-beereign_yellow" />
-            </a>
-          </Link>
-          <div className="ml-2 font-sans font-normal text-3xl">
-            Registrar Salida
+      <section className="block justify-between items-center p-4 mx-4 mb-6 bg-white rounded-2xl shadow-xl shadow-gray-200 lg:p-5 sm:flex">
+        <div className="mb-1 w-full">
+          <div className="mb-4">
+            <nav className="flex mb-5">
+              <ol className="inline-flex items-center space-x-1 md:space-x-2">
+                <li className="inline-flex items-center">
+                  <Link href="/home">
+                    <a className="inline-flex items-center text-gray-700 hover:text-beereign_yellow cursor-default">
+                      <HomeIcon className="w-5 mr-5" />
+                      Home
+                    </a>
+                  </Link>
+                </li>
+                <li>
+                  <div className="flex items-center">
+                    <ChevronRightIcon className="w-4 text-gray-400" />
+                  </div>
+                </li>
+                <div className="ml-1 font-medium text-gray-400 md:ml-2 cursor-default">
+                  Salida de productos
+                </div>
+              </ol>
+            </nav>
+            <h1 className="text-xl font-semibold text-gray-900 sm:text-2xl">
+              Registrar nueva salida
+            </h1>
           </div>
-        </div>
-        <Link href="/product-output/history">
-          <a>
-            <ClipboardListIcon className="w-10 bg-gray-500 rounded-3xl text-white xl:hidden" />
-            <button
-              type="button"
-              className="hidden xl:inline-block px-6 py-2.5 bg-gray-500 text-white font-medium uppercase text-sm rounded shadow-md hover:bg-gray-600 hover:shadow-lg focus:bg-gray-600 focus:shadow-lg transition"
-            >
-              Historial de Salidas
-            </button>
-          </a>
-        </Link>
-      </section>
-
-      <section className="mx-3 xl:mx-6 text-center">
-        <h2 className="mt-6 font-mono text-2xl">Salida de Productos</h2>
-        <form className="mt-5" ref={formRef} onSubmit={handleSubmit}>
-          <div className="mb-5 mx-auto w-full flex md:w-4/5 xl:w-9/12 2xl:w-3/5">
-            <input
-              value={batch}
-              type="search"
-              autoFocus
-              className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-              placeholder="Escanear Lote..."
-              onKeyPress={handleKeyPress}
-              onChange={(e) => setBatch(e.target.value)}
-            />
-            <SearchIcon className="pl-2 w-12" onClick={() => setSearch(true)} />
-          </div>
-
-          <div className="mb-5 flex mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
-            <Select
-              defaultValue={typeOptions[0]}
-              onChange={handleChangeType}
-              options={typeOptions}
-              isSearchable={false}
-            />
-          </div>
-
-          <div className="flex flex-col mb-6">
-            <div className="overflow-x-auto">
-              <div className="py-2 inline-block min-w-full">
-                <div className="overflow-hidden">
-                  <table className="min-w-full border text-center">
-                    <thead className="border-b">
-                      <tr>
-                        <th
-                          scope="col"
-                          className="font-mono text-black px-6 py-4 border-r"
-                        >
-                          Borrar
-                        </th>
-                        <th
-                          scope="col"
-                          className="font-mono text-black px-6 py-4 border-r"
-                        >
-                          Lote #
-                        </th>
-                        <th
-                          scope="col"
-                          className="font-mono text-black px-6 py-4 border-r"
-                        >
-                          Nombre del Producto
-                        </th>
-                        <th
-                          scope="col"
-                          className="font-mono text-black px-6 py-4 border-r"
-                        >
-                          Cantidad Disponible
-                        </th>
-                        <th
-                          scope="col"
-                          className="font-mono text-black px-6 py-4 border-r"
-                        >
-                          Costo del producto
-                        </th>
-                        <th
-                          scope="col"
-                          className="font-mono text-black px-6 py-4 border-r"
-                        >
-                          Cantidad a salir
-                        </th>
-                        <th
-                          scope="col"
-                          className="font-mono text-black px-6 py-4 border-r"
-                        >
-                          Precio
-                        </th>
-                        <th
-                          scope="col"
-                          className="font-mono text-black px-6 py-4 border-r"
-                        >
-                          Total
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {batches.map((data, index) => (
-                        <tr key={index} className="border-b">
-                          <td className="px-6 flex justify-center items-center py-4 whitespace-nowrap text-sm font-medium text-gray-900 border-r">
-                            <div
-                              type="button"
-                              onClick={(e) => handleDelete(index, e)}
-                            >
-                              <TrashIcon className="w-6 text-red-500" />
-                            </div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 border-r">
-                            {data.id}
-                          </td>
-                          <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
-                            {capitalize(data.product.name)}
-                          </td>
-                          <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
-                            {data.stock}
-                          </td>
-                          <td className="font-mono text-gray-900 px-6 py-4 whitespace-nowrap border-r">
-                            ${data.unitCost}
-                          </td>
-                          <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
-                            <div className="mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
-                              <input
-                                type="number"
-                                step="1"
-                                min="1"
-                                defaultValue={1}
-                                max={data.stock}
-                                className="form-control block w-full px-1 py-1 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                                placeholder="Cantidad (*)"
-                                onChange={(e) =>
-                                  changeQuantity(e.target.value, index)
-                                }
-                              />
-                            </div>
-                          </td>
-                          <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
-                            <div className="mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
-                              <input
-                                type="number"
-                                step="0.01"
-                                min={data.unitCost}
-                                defaultValue={data.unitCost}
-                                className="form-control block w-full px-1 py-1 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                                placeholder="Precio (*)"
-                                onChange={(e) =>
-                                  changePrice(e.target.value, index)
-                                }
-                              />
-                            </div>
-                          </td>
-                          <td className="font-mono text-gray-900 px-6 py-4 whitespace-nowrap border-r">
-                            ${data.total.toFixed(2)}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+          <div className="block items-center sm:flex">
+            <div className="mb-4 sm:pr-3 sm:mb-0">
+              <div className="relative mt-1 sm:w-64 xl:w-96">
+                <div className="flex">
+                  <input
+                    type="search"
+                    value={batch}
+                    autoFocus
+                    className="border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-2 focus:ring-yellow-50 focus:border-beereign_yellow block w-full p-2.5 focus:outline-none"
+                    placeholder="Esperando escanner..."
+                    onKeyPress={handleKeyPress}
+                    onChange={(e) => setBatch(e.target.value)}
+                  />
+                  <SearchIcon
+                    className="pl-2 w-12 hover:text-beereign_yellow hover:scale-110"
+                    onClick={() => setSearch(true)}
+                  />
                 </div>
               </div>
             </div>
+            <div className="flex items-center w-full sm:justify-end">
+              <Link href="/product-output/history">
+                <a className="inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white rounded-lg bg-gradient-to-br from-gray-800 to-gray-600 sm:ml-auto shadow-md shadow-gray-300 hover:scale-105 cursor-default transition-transfor">
+                  <ClipboardListIcon className="w-6 mr-2 -ml-1" />
+                  Historial de salida
+                </a>
+              </Link>
+            </div>
           </div>
+        </div>
+      </section>
 
-          <div className="text-right">
-            <h3 className="text-lg font-mono">
-              Total: <span className="font-bold">${total}</span>
-            </h3>
+      <section className="flex flex-col my-6 mx-4 rounded-2xl shadow-xl shadow-gray-200">
+        <div className="bg-white rounded-t-2xl">
+          <select
+            value={type}
+            onChange={(e) => setType(e.target.value)}
+            className="mx-3 font-mono text-xl form-select box bg-white text-gray-500 focus:outline-none"
+          >
+            <option>CONTADO</option>
+            <option>CRÉDITO</option>
+          </select>
+        </div>
+        <div className="overflow-x-auto rounded-b-2xl">
+          <div className="inline-block min-w-full align-middle">
+            <div className="overflow-hidden">
+              <form className="bg-white" ref={formRef} onSubmit={handleSubmit}>
+                <table className="min-w-full divide-y divide-gray-200 table-fixed">
+                  <thead className="bg-white">
+                    <tr>
+                      <th
+                        scope="col"
+                        className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+                      ></th>
+                      <th
+                        scope="col"
+                        className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+                      >
+                        Lote
+                      </th>
+                      <th
+                        scope="col"
+                        className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+                      >
+                        Nombre del Producto
+                      </th>
+                      <th
+                        scope="col"
+                        className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+                      >
+                        Cantidad Disponible
+                      </th>
+                      <th
+                        scope="col"
+                        className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+                      >
+                        Costo del producto
+                      </th>
+                      <th
+                        scope="col"
+                        className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+                      >
+                        Cantidad a salir
+                      </th>
+                      <th
+                        scope="col"
+                        className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+                      >
+                        Precio
+                      </th>
+                      <th
+                        scope="col"
+                        className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+                      >
+                        Total
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {batches.map((data, index) => (
+                      <tr key={index} className="hover:bg-gray-100">
+                        <td className="p-4 space-x-2 whitespace-nowrap lg:p-5">
+                          <div
+                            type="button"
+                            onClick={(e) => handleDelete(index, e)}
+                          >
+                            <TrashIcon className="w-6 text-red-500" />
+                          </div>
+                        </td>
+                        <td className="p-4 text-sm font-mono text-gray-500 whitespace-nowrap lg:p-5">
+                          #{data.id}
+                        </td>
+                        <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
+                          {capitalize(data.packing.product.name)}
+                        </td>
+                        <td className="p-4 text-sm font-mono text-gray-500 whitespace-nowrap lg:p-5">
+                          {data.stock}
+                        </td>
+                        <td className="p-4 text-sm font-mono text-gray-500 whitespace-nowrap lg:p-5">
+                          ${data.unitCost}
+                        </td>
+                        <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
+                          <input
+                            type="number"
+                            step="1"
+                            min="1"
+                            defaultValue={1}
+                            max={data.stock}
+                            className="appearance-none block w-48 text-gray-900 focus:ring-yellow-100 focus:border-beereign_yellow shadow-sm border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none"
+                            placeholder="Cantidad"
+                            onChange={(e) =>
+                              changeQuantity(e.target.value, index)
+                            }
+                          />
+                        </td>
+                        <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
+                          <input
+                            type="number"
+                            step="0.01"
+                            min={data.unitCost}
+                            defaultValue={data.unitCost}
+                            className="form-control block w-full px-1 py-1 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                            placeholder="Precio de venta"
+                            onChange={(e) => changePrice(e.target.value, index)}
+                          />
+                        </td>
+                        <td className="p-4 text-sm font-mono text-gray-500 whitespace-nowrap lg:p-5">
+                          ${data.total.toFixed(2)}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+
+                <div className="flex justify-end mr-5">
+                  <div className="text-base font-semibold text-gray-900 uppercase">
+                    Total
+                  </div>
+                  <div className="text-base font-bold text-gray-900">
+                    ${total}
+                  </div>
+                </div>
+
+                <div className="flex justify-center items-center">
+                  <Button reset={false} loading={loading} />
+                </div>
+              </form>
+            </div>
           </div>
-
-          <section>
-            {loading === true ? (
-              <Loading />
-            ) : (
-              <>
-                <button
-                  type="submit"
-                  className="px-14 py-4 bg-beereign_yellow text-yellow-100 font-medium text-xl leading-tight uppercase rounded shadow-md hover:bg-yellow-400 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out"
-                >
-                  Registrar
-                </button>
-              </>
-            )}
-          </section>
-        </form>
+        </div>
       </section>
     </>
   );

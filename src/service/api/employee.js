@@ -55,5 +55,9 @@ export async function resetPassword(body) {
 }
 
 export async function disableEmployee(id) {
-  await deleteData(endPoints.employees.disableEmployee(id));
+  await patchData(endPoints.employees.disableEmployee(id));
+}
+
+export async function enableEmployee(id) {
+  await patchData(endPoints.employees.enableEmployee(id));
 }

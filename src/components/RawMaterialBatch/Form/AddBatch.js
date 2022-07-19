@@ -8,7 +8,7 @@ import { getRawMaterialByCode } from "@service/api/rawMaterial";
 import { getAllWarehouses } from "@service/api/warehouse";
 import Button from "@components/Button";
 import PrintModal from "@components/Modal/PrintModal";
-import SearchRawMaterial from "@components/Modal/SearchRawMaterial";
+import SearchRawMaterial from "@components/RawMaterialBatch/Modal/SearchRawMaterial";
 import { logError } from "@utils/logError";
 import capitalize from "@utils/capitalize";
 import { SearchIcon } from "@heroicons/react/solid";
@@ -22,7 +22,7 @@ export default function AddBatch() {
   const [search, setSearch] = useState(false);
   const [RMQ, setRMQ] = useState(""); //Raw Material Query
   const [item, setItem] = useState({});
-  let query = "";
+  let warehouseQuery = "";
 
   const toDay = new Date().toISOString().substring(0, 10);
 
@@ -44,12 +44,13 @@ export default function AddBatch() {
     }
   }
 
-  const handleReset = (e) => {
+  const handleReset = () => {
     setRawMaterial(null);
+    setWarehouse(null);
   };
 
   const getWarehouses = () => {
-    return getAllWarehouses(query)
+    return getAllWarehouses(warehouseQuery)
       .then((result) => {
         return result;
       })
@@ -59,12 +60,12 @@ export default function AddBatch() {
   };
 
   const onInputChange = (value) => {
-    query = value.toLocaleLowerCase();
+    warehouseQuery = value.toLocaleLowerCase();
   };
 
   const handleChangeWarehouse = (value) => {
-    setWarehouse(value.id);
-    query = "";
+    setWarehouse(value);
+    warehouseQuery = "";
   };
 
   const customStyles = {
@@ -81,8 +82,8 @@ export default function AddBatch() {
     const formData = new FormData(formRef.current);
 
     const data = {
-      rawMaterialId: rawMaterial?.id ? rawMaterial.id : null,
-      warehouseId: warehouse,
+      rawMaterialId: rawMaterial ? rawMaterial?.id : null,
+      warehouseId: warehouse ? warehouse?.id : null,
       entryDate: formData.get("entryDate"),
       expirationDate: formData.get("expirationDate")
         ? new Date(formData.get("expirationDate")).toISOString()
@@ -92,7 +93,7 @@ export default function AddBatch() {
     };
     const { error } = await newSchema.validate(data);
     if (error) {
-      toast.error("*" + error);
+      toast.error("" + error);
       setLoading(false);
       return null;
     }
@@ -128,100 +129,124 @@ export default function AddBatch() {
         onClick={(value) => setRawMaterial(value)}
         onShowModalChange={(value) => setSearch(value)}
       />
-      <form className="mt-5" ref={formRef} onSubmit={handleSubmit}>
-        <div className="mb-5 mx-auto w-full flex md:w-4/5 xl:w-9/12 2xl:w-3/5">
-          <input
-            type="search"
-            value={RMQ}
-            onChange={(e) => setRMQ(e.target.value)}
-            onKeyPress={handleKeyPress}
-            className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-            placeholder={
-              rawMaterial ? rawMaterial.name : "Buscar Materia Prima..."
-            }
-          />
-          <SearchIcon className="pl-2 w-12" onClick={() => setSearch(true)} />
-        </div>
-
-        <div className="mb-5 mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
-          <AsyncSelect
-            className="form-control block w-full py-1 text-left font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none"
-            styles={customStyles}
-            getOptionLabel={(e) => capitalize(e.name)}
-            getOptionValue={(e) => e.id}
-            loadOptions={getWarehouses}
-            cacheOptions
-            onInputChange={onInputChange}
-            defaultOptions
-            placeholder={"Buscar Bodega... *"}
-            onChange={handleChangeWarehouse}
-          />
-        </div>
-
-        <div className="mb-5 flex mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
-          <label className="font-serif" htmlFor="entryDate">
-            Fecha de Entrada
-          </label>
-          <input
-            name="entryDate"
-            type="date"
-            defaultValue={toDay}
-            className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-            placeholder="Fecha de Entrada *"
-          />
-        </div>
-
-        <div className="mb-5 flex mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
-          <label className="font-serif" htmlFor="expirationDate">
-            Fecha de Expiración
-          </label>
-          <input
-            name="expirationDate"
-            type="date"
-            className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-            placeholder="Fecha de Expiración "
-          />
-        </div>
-
-        <div className="flex mb-5 mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
-          <input
-            name="quantity"
-            type="number"
-            step={0.01}
-            min={0.01}
-            className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-            placeholder="Cantidad *"
-          />
-          {rawMaterial ? (
-            <input
-              readOnly
-              className="ml-1 form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-              value={rawMaterial?.measurement}
+      <form ref={formRef} onSubmit={handleSubmit}>
+        <div className="grid grid-cols-6 gap-6">
+          <div className="col-span-6 sm:col-span-3">
+            <label className="block text-xs font-medium text-left text-gray-500 uppercase mb-1">
+              Materia prima
+            </label>
+            <div className="flex">
+              <input
+                type="text"
+                value={RMQ}
+                autoFocus
+                onChange={(e) => setRMQ(e.target.value)}
+                onKeyPress={handleKeyPress}
+                className="appearance-none block w-full text-gray-900 focus:ring-yellow-100 focus:border-beereign_yellow shadow-sm border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none"
+                placeholder={
+                  rawMaterial ? rawMaterial.name : "Esperando scanner"
+                }
+              />
+              <SearchIcon
+                className="pl-2 w-12 text-gray-700 mb-3 hover:text-beereign_yellow hover:scale-105 transition-transform"
+                onClick={() => setSearch(true)}
+              />
+            </div>
+          </div>
+          <div className="col-span-6 sm:col-span-3">
+            <label className="block text-xs font-medium text-left text-gray-500 uppercase mb-1">
+              Bodega
+            </label>
+            <AsyncSelect
+              value={warehouse}
+              className="appearance-none block w-full text-gray-900 focus-within:ring-yellow-100 focus-within:border-beereign_yellow shadow-sm border border-gray-300 rounded py-1 focus:outline-none"
+              styles={customStyles}
+              getOptionLabel={(e) => capitalize(e.name)}
+              getOptionValue={(e) => e.id}
+              loadOptions={getWarehouses}
+              cacheOptions
+              onInputChange={onInputChange}
+              defaultOptions
+              placeholder={"Seleccionar bodega"}
+              onChange={handleChangeWarehouse}
             />
-          ) : (
-            <></>
-          )}
-        </div>
-
-        <div className="mb-5 mx-auto w-full md:w-4/5 xl:w-9/12 2xl:w-3/5">
-          <input
-            name="unitCost"
-            type="number"
-            step={0.01}
-            min={0.01}
-            className="form-control block w-full px-3 py-3 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-            placeholder="Costo Unitario *"
-          />
-        </div>
-
-        <div>
-          <Button loading={loading} reset={false} />
-          <input
-            className="mt-5 xl:ml-5 px-16 py-4 bg-beereign_clear text-beereign_grey font-medium text-xl leading-tight uppercase rounded shadow-md hover:bg-gray-700 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-700 active:shadow-lg transition duration-150 ease-in-out"
-            value="limpiar"
-            type="reset"
-            onClick={(e) => handleReset(e)}
-          ></input>
+          </div>
+          <div className="col-span-6 sm:col-span-3">
+            <label
+              htmlFor="entryDate"
+              required
+              className="block text-xs font-medium text-left text-gray-500 uppercase mb-1"
+            >
+              Fecha de entrada
+            </label>
+            <input
+              name="entryDate"
+              type="date"
+              defaultValue={toDay}
+              className="appearance-none block w-full text-gray-900 focus:ring-yellow-100 focus:border-beereign_yellow shadow-sm border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none"
+            />
+          </div>
+          <div className="col-span-6 sm:col-span-3">
+            <label
+              htmlFor="expirationDate"
+              className="block text-xs font-medium text-left text-gray-500 uppercase mb-1"
+            >
+              Fecha de expiración
+            </label>
+            <input
+              name="expirationDate"
+              type="date"
+              className="appearance-none block w-full text-gray-900 focus:ring-yellow-100 focus:border-beereign_yellow shadow-sm border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none"
+            />
+          </div>
+          <div className="col-span-6 sm:col-span-3">
+            <label
+              htmlFor="quantity"
+              className="block text-xs font-medium text-left text-gray-500 uppercase mb-1"
+            >
+              Cantidad
+            </label>
+            <div className="flex">
+              <input
+                name="quantity"
+                type="number"
+                step={0.01}
+                min={0.01}
+                className={`${
+                  rawMaterial ? "mr-1" : ""
+                } appearance-none block w-full text-gray-900 focus:ring-yellow-100 focus:border-beereign_yellow shadow-sm border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none`}
+                placeholder="0"
+              />
+              {rawMaterial ? (
+                <input
+                  readOnly
+                  className="appearance-none block w-full text-gray-900 focus:ring-yellow-100 focus:border-beereign_yellow shadow-sm border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none"
+                  value={rawMaterial?.measurement}
+                />
+              ) : (
+                <></>
+              )}
+            </div>
+          </div>
+          <div className="col-span-6 sm:col-span-3">
+            <label
+              htmlFor="unitCost"
+              className="block text-xs font-medium text-left text-gray-500 uppercase mb-1"
+            >
+              Costo unitario
+            </label>
+            <input
+              name="unitCost"
+              type="number"
+              step={0.01}
+              min={0.01}
+              className="appearance-none block w-full text-gray-900 focus:ring-yellow-100 focus:border-beereign_yellow shadow-sm border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none"
+              placeholder="0.00"
+            />
+          </div>
+          <div className="col-span-6 sm:col-full flex justify-center items-center">
+            <Button onHandleReset={() => handleReset()} loading={loading} />
+          </div>
         </div>
       </form>
     </>

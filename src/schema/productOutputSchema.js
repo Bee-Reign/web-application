@@ -1,4 +1,4 @@
-const Joi = require("joi");
+import Joi from "joi";
 
 const id = Joi.number().unsafe().min(1).max(9223372036854775807);
 const amount = Joi.number().unsafe().positive().messages({
@@ -24,8 +24,4 @@ const updateIsPaid = Joi.object({
   isPaid: isPaid.required(),
 }).options({ abortEarly: false });
 
-module.exports = {
-  checkId,
-  createSchema,
-  updateIsPaid,
-};
+export { checkId, createSchema, updateIsPaid };

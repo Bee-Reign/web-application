@@ -5,20 +5,19 @@ export default function HomeModules({ modules }) {
   return (
     <>
       {modules.map((module) => (
-        <div
-          key={module.id}
-          className="bg-beereign_grey hover:bg-gray-800 h-28 md:h-32 mx-3 mb-5 group relative overflow-hidden rounded-lg shadow-md"
-        >
+        <div key={module.id}>
           <Link href={module.path}>
-            <a>
-              <div className="flex justify-between items-center h-full w-full">
-                <ViewGridIcon
-                  className="w-20 text-beereign_ligth"
-                  aria-hidden="true"
-                />
-                <span className="text-beereign_yellow text-right font-light font-sans text-2xl mr-2">
-                  {module.name}
-                </span>
+            <a className="cursor-default">
+              <div className="bg-white shadow-md shadow-gray-300 rounded-2xl p-4 hover:transition-transform hover:scale-105">
+                <div className="flex justify-between items-center h-full w-full">
+                  <div className="inline-flex flex-shrink-0 justify-center items-center w-12 h-12 text-white bg-gradient-to-br from-beereign_yellow to-beereign_silver rounded-lg shadow-md shadow-gray-300">
+                    <ViewGridIcon className="w-5" />
+                  </div>
+
+                  <span className="flex flex-1 justify-end items-center ml-5 w-0 text-base font-bold text-gray-900">
+                    {module.name}
+                  </span>
+                </div>
               </div>
             </a>
           </Link>

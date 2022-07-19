@@ -1,4 +1,4 @@
-const Joi = require("joi");
+import Joi from "joi";
 
 const id = Joi.number().integer().positive().max(32767);
 const name = Joi.string().max(50);
@@ -32,8 +32,4 @@ const updateWarehouseSchema = Joi.object({
   city: city.required(),
 }).options({ abortEarly: false });
 
-module.exports = {
-  getSchema,
-  newWarehouseSchema,
-  updateWarehouseSchema,
-};
+export { getSchema, newWarehouseSchema, updateWarehouseSchema };

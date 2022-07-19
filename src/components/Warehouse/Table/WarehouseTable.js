@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { PencilAltIcon, TrashIcon } from "@heroicons/react/outline";
-import Link from "next/link";
 
 import Loading from "@components/Animation/Loading";
 import capitalize from "@utils/capitalize";
@@ -8,30 +7,32 @@ import YesNoModal from "@components/Modal/YesNoModal";
 import { disableWarehouse } from "@service/api/warehouse";
 import { toast } from "react-toastify";
 import { logError } from "@utils/logError";
+import EditWarehouseModal from "@components/Warehouse/Modal/EditWarehouseModal";
 
 export default function WarehouseTable({
   warehouses = [],
-  onDelete,
+  onChange,
   refresh,
   loading,
 }) {
   const [showYesNoModal, setYesNoModal] = useState(false);
-  const [id, setID] = useState(null);
+  const [warehouse, setWarehouse] = useState(null);
+  const [showEditModal, setShowEditModal] = useState(false);
   if (loading == true) {
     return <Loading />;
   } else if (warehouses.length === 0) {
     return (
-      <h3 className="text-center font-mono text-2xl">
+      <h3 className="text-center bg-white text-gray-500">
         no se encontró ningún registro
       </h3>
     );
   }
 
   const handleDelete = async () => {
-    if (id) {
-      disableWarehouse(id)
+    if (warehouse) {
+      disableWarehouse(warehouse?.id)
         .then((res) => {
-          onDelete(!refresh);
+          onChange(!refresh);
           toast.info("Bodega Eliminada");
         })
         .catch((err) => {
@@ -49,59 +50,76 @@ export default function WarehouseTable({
         onShowModalChange={(showModal) => setYesNoModal(showModal)}
         onYes={() => handleDelete()}
       />
-      <table className="min-w-full border text-center">
-        <thead className="border-b">
+      <EditWarehouseModal
+        showModal={showEditModal}
+        onShowModalChange={(showModal) => setShowEditModal(showModal)}
+        warehouse={warehouse}
+        onEdit={(refresh) => onChange(refresh)}
+        refresh={refresh}
+      />
+      <table className="min-w-full divide-y divide-gray-200 table-fixed">
+        <thead className="bg-white">
           <tr>
-            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
-              ID
-            </th>
-            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
+            <th
+              scope="col"
+              className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+            >
               Nombre
             </th>
-            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
+            <th
+              scope="col"
+              className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+            >
+              ID
+            </th>
+            <th
+              scope="col"
+              className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+            >
               Ciudad
             </th>
-            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
-              Acciones
-            </th>
+            <th
+              scope="col"
+              className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+            ></th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="bg-white divide-y divide-gray-200">
           {warehouses.map((warehouse) => (
-            <tr key={`Warehouse-item-${warehouse.id}`} className="border-b">
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 border-r">
-                {warehouse.id}
-              </td>
-              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
+            <tr
+              key={`warehouse-item-${warehouse.id}`}
+              className="hover:bg-gray-100"
+            >
+              <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                 {capitalize(warehouse.name)}
               </td>
-              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
+              <td className="p-4 text-sm font-mono text-gray-500 whitespace-nowrap lg:p-5">
+                #{warehouse.id}
+              </td>
+              <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                 {capitalize(warehouse.city)}
               </td>
-              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
+              <td className="p-4 space-x-2 whitespace-nowrap lg:p-5">
                 <div className="flex justify-center">
-                  <Link href={`/warehouse/edit/${warehouse.id}`}>
-                    <a>
-                      <PencilAltIcon className="w-9 bg-gray-200 rounded-lg text-beereign_grey xl:hidden" />
-                      <button
-                        type="button"
-                        className="hidden xl:inline-block px-6 py-2.5 bg-gray-200 text-beereign_grey font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-600 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-700 active:shadow-lg transition duration-150 ease-in-out"
-                      >
-                        Editar
-                      </button>
-                    </a>
-                  </Link>
                   <div
-                    className="ml-4"
+                    onClick={() => {
+                      setWarehouse(warehouse);
+                      setShowEditModal(true);
+                    }}
+                    className="flex items-center mr-3 hover:scale-110 cursor-default transition-transform"
+                  >
+                    <PencilAltIcon className="w-4 mr-1" />
+                    Editar
+                  </div>
+                  <div
                     onClick={() => {
                       setYesNoModal(true);
-                      setID(warehouse.id);
+                      setWarehouse(warehouse);
                     }}
+                    className="flex items-center text-red-500 hover:scale-105 cursor-default transition-transform"
                   >
-                    <TrashIcon className="w-9 bg-gray-200 text-red-500 xl:hidden" />
-                    <div className="hidden xl:inline-block px-6 py-2.5 bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-600 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-700 active:shadow-lg transition duration-150 ease-in-out">
-                      Eliminar
-                    </div>
+                    <TrashIcon className="w-4 mr-1" />
+                    Eliminar
                   </div>
                 </div>
               </td>

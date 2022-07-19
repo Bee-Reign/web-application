@@ -5,7 +5,6 @@ import {
   PrinterIcon,
   TrashIcon,
 } from "@heroicons/react/outline";
-import Link from "next/link";
 
 import capitalize from "@utils/capitalize";
 import YesNoModal from "@components/Modal/YesNoModal";
@@ -13,32 +12,34 @@ import PrintModal from "@components/Modal/PrintModal";
 import { deleteRawMaterialBatch } from "@service/api/rawMaterialBatch";
 import { toast } from "react-toastify";
 import { logError } from "@utils/logError";
+import EditRawMaterialBatchModal from "../Modal/EditRawMaterialBatchModal";
 
 export default function BatchTable({
   rawMaterialBatches = [],
-  onDelete,
+  onChange,
   refresh,
   loading,
 }) {
   const [showYesNoModal, setYesNoModal] = useState(false);
-  const [id, setID] = useState(null);
+  const [batch, setBatch] = useState(null);
   const [printLabel, setPrintLabel] = useState(false);
   const [item, setItem] = useState({});
+  const [showEditModal, setShowEditModal] = useState(false);
   if (loading == true) {
     return <Loading />;
   } else if (rawMaterialBatches.length === 0) {
     return (
-      <h3 className="text-center font-mono text-2xl">
+      <h3 className="text-center bg-white text-gray-500">
         no se encontró ningún registro
       </h3>
     );
   }
 
   const handleDelete = async () => {
-    if (id) {
-      deleteRawMaterialBatch(id)
+    if (batch) {
+      deleteRawMaterialBatch(batch?.id)
         .then((res) => {
-          onDelete(!refresh);
+          onChange(!refresh);
           toast.info("Lote de Materia Prima Eliminada");
         })
         .catch((err) => {
@@ -59,82 +60,121 @@ export default function BatchTable({
         onShowModalChange={(showModal) => setYesNoModal(showModal)}
         onYes={() => handleDelete()}
       />
-      <table className="min-w-full border text-center">
-        <thead className="border-b">
+      <EditRawMaterialBatchModal
+        showModal={showEditModal}
+        onShowModalChange={(showModal) => setShowEditModal(showModal)}
+        batch={batch}
+        onEdit={() => onChange(!refresh)}
+      />
+      <table className="min-w-full divide-y divide-gray-200 table-fixed">
+        <thead className="bg-white">
           <tr>
-            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
-              Lote #
-            </th>
-            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
-              Registrado Por
-            </th>
-            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
-              Materia Prima
-            </th>
-            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
-              Bodega
-            </th>
-            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
+            <th
+              scope="col"
+              className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+            >
               Fecha de entrada
             </th>
-            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
+            <th
+              scope="col"
+              className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+            >
+              Materia Prima
+            </th>
+            <th
+              scope="col"
+              className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+            >
+              Lote
+            </th>
+            <th
+              scope="col"
+              className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+            >
+              Registrado Por
+            </th>
+            <th
+              scope="col"
+              className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+            >
+              Bodega
+            </th>
+            <th
+              scope="col"
+              className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+            >
               Fecha de Expiración
             </th>
-            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
+            <th
+              scope="col"
+              className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+            >
               Cantidad Ingresada
             </th>
-            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
+            <th
+              scope="col"
+              className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+            >
               Costo Unitario
             </th>
-            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
+            <th
+              scope="col"
+              className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+            >
               Valor de Costo
             </th>
-            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
+            <th
+              scope="col"
+              className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+            >
               Disponible
             </th>
-            <th scope="col" className="font-mono text-black px-6 py-4 border-r">
-              Acciones
-            </th>
+            <th
+              scope="col"
+              className="p-4 text-xs font-medium text-left text-gray-500 uppercase lg:p-5"
+            ></th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="bg-white divide-y divide-gray-200">
           {rawMaterialBatches.map((rawMaterialBatch) => (
             <tr
               key={`RawMaterialBatch-item-${rawMaterialBatch.id}`}
-              className="border-b"
+              className="hover:bg-gray-100"
             >
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 border-r">
-                {rawMaterialBatch.id}
+              <td className="p-4 text-sm font-mono text-gray-500 whitespace-nowrap lg:p-5">
+                {rawMaterialBatch.entryDate}
               </td>
-              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
+              <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
+                {capitalize(rawMaterialBatch.rawMaterial.name)}
+              </td>
+              <td className="p-4 text-sm font-mono text-gray-500 whitespace-nowrap lg:p-5">
+                #{rawMaterialBatch.id}
+              </td>
+              <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                 {capitalize(rawMaterialBatch.employee.name)}{" "}
                 {capitalize(rawMaterialBatch.employee.lastName)}
               </td>
-              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
-                {capitalize(rawMaterialBatch.rawMaterial.name)}
-              </td>
-              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
+              <td className="p-4 text-sm font-normal text-gray-500 whitespace-nowrap lg:p-5">
                 {capitalize(rawMaterialBatch.warehouse.name)}
               </td>
-              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
-                {rawMaterialBatch.entryDate}
-              </td>
-              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
+              <td className="p-4 text-sm font-mono text-gray-500 whitespace-nowrap lg:p-5">
                 {rawMaterialBatch.expirationDate}
               </td>
-              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
-                {rawMaterialBatch.quantity} {rawMaterialBatch.measurement}
+              <td className="p-4 text-sm font-mono text-gray-500 whitespace-nowrap lg:p-5">
+                {rawMaterialBatch.quantity}{" "}
+                {rawMaterialBatch.rawMaterial.measurement}
               </td>
-              <td className="font-mono text-gray-900 px-6 py-4 whitespace-nowrap border-r">
+              <td className="p-4 text-sm font-mono text-gray-500 whitespace-nowrap lg:p-5">
                 ${rawMaterialBatch.unitCost}
               </td>
-              <td className="font-mono text-gray-900 px-6 py-4 whitespace-nowrap border-r">
+              <td className="p-4 text-sm font-mono text-gray-500 whitespace-nowrap lg:p-5">
                 ${rawMaterialBatch.totalCost}
               </td>
-              <td className="text-sm text-gray-900 px-6 py-4 whitespace-nowrap border-r">
-                {rawMaterialBatch.stock} {rawMaterialBatch.measurement}
+              <td className="p-4 text-sm font-mono text-gray-500 whitespace-nowrap lg:p-5">
+                {rawMaterialBatch.stock}{" "}
+                {rawMaterialBatch.rawMaterial.measurement}
               </td>
-              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+              <td className="p-4 space-x-2 whitespace-nowrap lg:p-5">
                 <div className="flex justify-center">
                   <div
                     onClick={() => {
@@ -145,36 +185,30 @@ export default function BatchTable({
                       });
                       setPrintLabel(true);
                     }}
+                    className="flex items-center text-blue-500 mr-3 hover:scale-110 cursor-default transition-transform"
                   >
-                    <PrinterIcon className="w-9 bg-transparent text-blue-500 xl:hidden" />
-                    <div className="hidden xl:inline-block px-6 py-2.5 bg-blue-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-600 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-700 active:shadow-lg transition duration-150 ease-in-out">
-                      Imprimir
-                    </div>
+                    <PrinterIcon className="w-4 mr-1" />
+                    Imprimir
                   </div>
-                  <Link
-                    href={`/raw-material-batch/edit/${rawMaterialBatch.id}`}
-                  >
-                    <a className="ml-4">
-                      <PencilAltIcon className="w-9 bg-gray-200 rounded-lg text-beereign_grey xl:hidden" />
-                      <button
-                        type="button"
-                        className="hidden xl:inline-block px-6 py-2.5 bg-gray-200 text-beereign_grey font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-600 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-700 active:shadow-lg transition duration-150 ease-in-out"
-                      >
-                        Editar
-                      </button>
-                    </a>
-                  </Link>
                   <div
-                    className="ml-4"
+                    onClick={() => {
+                      setBatch(rawMaterialBatch);
+                      setShowEditModal(true);
+                    }}
+                    className="flex items-center mr-3 hover:scale-110 cursor-default transition-transform"
+                  >
+                    <PencilAltIcon className="w-4 mr-1" />
+                    Editar
+                  </div>
+                  <div
                     onClick={() => {
                       setYesNoModal(true);
-                      setID(rawMaterialBatch.id);
+                      setBatch(rawMaterialBatch);
                     }}
+                    className="flex items-center text-red-500 hover:scale-105 cursor-default transition-transform"
                   >
-                    <TrashIcon className="w-9 bg-gray-200 text-red-500 xl:hidden" />
-                    <div className="hidden xl:inline-block px-6 py-2.5 bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-600 hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-700 active:shadow-lg transition duration-150 ease-in-out">
-                      Eliminar
-                    </div>
+                    <TrashIcon className="w-4 mr-1" />
+                    Eliminar
                   </div>
                 </div>
               </td>
