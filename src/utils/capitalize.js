@@ -8,7 +8,7 @@ export default function capitalize(str, all = false) {
   //Example jhon doe, return Jhon Doe
   if (all === true) {
     const strArray = str.split(" ");
-    const capitalizedText = "";
+    let capitalizedText = "";
     const conjunctions = ["the", "of", "or", "a", "de", "y", "o"];
     for (var i = 0; i < strArray.length; i++) {
       if (conjunctions.includes(strArray[i])) {

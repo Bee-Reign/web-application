@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { XCircleIcon } from "@heroicons/react/outline";
+import { XCircleIcon } from "@heroicons/react/24/outline";
 import { toast } from "react-toastify";
 
 import { emailSchema } from "@schema/employeeSchema";

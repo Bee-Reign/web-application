@@ -3,12 +3,12 @@ import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import Head from "next/head";
 import {
-  ClipboardListIcon,
+  ClipboardDocumentListIcon,
   ChevronRightIcon,
   HomeIcon,
   TrashIcon,
-} from "@heroicons/react/outline";
-import { SearchIcon } from "@heroicons/react/solid";
+} from "@heroicons/react/24/outline";
+import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { toast } from "react-toastify";
 
 import CheckPermission from "@utils/checkPermission";
@@ -185,7 +185,7 @@ const Output = () => {
                     onKeyPress={handleKeyPress}
                     onChange={(e) => setBatch(e.target.value)}
                   />
-                  <SearchIcon
+                  <MagnifyingGlassIcon
                     className="pl-2 w-12 hover:text-beereign_yellow hover:scale-110"
                     onClick={() => setSearch(true)}
                   />
@@ -195,7 +195,7 @@ const Output = () => {
             <div className="flex items-center w-full sm:justify-end">
               <Link href="/product-output/history">
                 <a className="inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white rounded-lg bg-gradient-to-br from-gray-800 to-gray-600 sm:ml-auto shadow-md shadow-gray-300 hover:scale-105 cursor-default transition-transfor">
-                  <ClipboardListIcon className="w-6 mr-2 -ml-1" />
+                  <ClipboardDocumentListIcon className="w-6 mr-2 -ml-1" />
                   Historial de salida
                 </a>
               </Link>

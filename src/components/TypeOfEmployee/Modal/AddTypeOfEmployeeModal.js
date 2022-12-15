@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from "react";
-import { XIcon } from "@heroicons/react/solid";
+import { XMarkIcon } from "@heroicons/react/20/solid";
 import { toast } from "react-toastify";
 
 import { newSchema } from "@schema/typeOfEmployeeSchema";
@@ -92,7 +92,7 @@ export default function AddTypeOfEmployeeModal({
               onClick={handleClose}
               className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-2xl text-sm p-1.5 ml-auto inline-flex items-center"
             >
-              <XIcon className="w-5" />
+              <XMarkIcon className="w-5" />
             </button>
           </div>
           <div className="p-6 space-y-6">

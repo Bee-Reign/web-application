@@ -1,12 +1,12 @@
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import { useState, useEffect } from "react";
-import { HomeIcon, SearchIcon } from "@heroicons/react/solid";
+import { HomeIcon, MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import {
   ChevronRightIcon,
   TrashIcon,
   PlusIcon,
-} from "@heroicons/react/outline";
+} from "@heroicons/react/24/outline";
 import Link from "next/link";
 
 import CheckPermission from "@utils/checkPermission";
@@ -159,7 +159,7 @@ export default function Index() {
                     product ? capitalize(product.name) : "Esperando scanner..."
                   }
                 />
-                <SearchIcon
+                <MagnifyingGlassIcon
                   className="w-12 text-gray-700 hover:text-beereign_yellow"
                   onClick={() => setSearch(true)}
                 />

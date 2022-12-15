@@ -3,9 +3,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { HomeIcon } from "@heroicons/react/solid";
-import { ChevronRightIcon } from "@heroicons/react/outline";
-import { ClipboardListIcon } from "@heroicons/react/solid";
+import { HomeIcon, ClipboardDocumentListIcon } from "@heroicons/react/20/solid";
+import { ChevronRightIcon } from "@heroicons/react/24/outline";
 
 import CheckPermission from "@utils/checkPermission";
 import { getPacking } from "@service/api/packing";
@@ -80,7 +79,7 @@ export default function Continue() {
             <div>
               <Link href="/packing/history">
                 <a className="inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white rounded-lg bg-gradient-to-br from-gray-800 to-gray-600 sm:ml-auto shadow-md shadow-gray-300 hover:scale-105 cursor-default transition-transfor">
-                  <ClipboardListIcon className="w-6 mr-2 -ml-1" />
+                  <ClipboardDocumentListIcon className="w-6 mr-2 -ml-1" />
                   Historial de envasado
                 </a>
               </Link>

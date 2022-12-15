@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
-import { HomeIcon } from "@heroicons/react/solid";
-import { ChevronRightIcon, PlusIcon } from "@heroicons/react/outline";
+import { HomeIcon } from "@heroicons/react/20/solid";
+import { ChevronRightIcon, PlusIcon } from "@heroicons/react/24/outline";
 import Head from "next/head";
 import Link from "next/link";
 

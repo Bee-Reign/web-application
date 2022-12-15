@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import { useState } from "react";
-import { LockClosedIcon, UserIcon } from "@heroicons/react/outline";
+import { LockClosedIcon, UserIcon } from "@heroicons/react/24/outline";
 
 import useAuth from "@hooks/useAuth";
 import capitalize from "@utils/capitalize";

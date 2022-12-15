@@ -1,5 +1,5 @@
 import Button from "@components/Button";
-import { UploadIcon } from "@heroicons/react/outline";
+import { ArrowUpTrayIcon } from "@heroicons/react/24/outline";
 
 export default function Company() {
   const handleSubmit = async (e) => {
@@ -27,7 +27,7 @@ export default function Company() {
             </label>
             <div className="flex justify-start items-center mt-4 w-full">
               <label className="border border-gray-300 border-dashed hover:border-beereign_yellow">
-                <UploadIcon className="w-10 text-gray-400 hover:scale-110" />
+                <ArrowUpTrayIcon className="w-10 text-gray-400 hover:scale-110" />
                 <input type="file" className="hidden" />
               </label>
             </div>

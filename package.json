@@ -10,8 +10,8 @@
   "author": "bayyand",
   "license": "GPL-3.0",
   "dependencies": {
-    "@heroicons/react": "^1.0.6",
-    "axios": "^0.27.2",
+    "@heroicons/react": "^2.0.13",
+    "axios": "^1.2.1",
     "joi": "^17.6.0",
     "js-cookie": "^3.0.1",
     "jsbarcode-react": "^0.2.5",
@@ -23,7 +23,7 @@
     "react-select": "^5.3.2",
     "react-to-print": "^2.14.7",
     "react-toastify": "^9.0.4",
-    "sharp": "^0.30.4",
+    "sharp": "^0.31.2",
     "tailwind-scrollbar-hide": "^1.1.7"
   },
   "devDependencies": {
@@ -34,7 +34,7 @@
     "tailwindcss": "^3.0.23"
   },
   "engines": {
-    "node": "~16",
-    "npm": "~8"
+    "node": "~18",
+    "npm": "~9"
   }
 }

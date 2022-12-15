@@ -1,9 +1,9 @@
 import { useState } from "react";
 import {
-  PencilAltIcon,
+  PencilSquareIcon,
   PrinterIcon,
   TrashIcon,
-} from "@heroicons/react/outline";
+} from "@heroicons/react/24/outline";
 
 import Loading from "@components/Animation/Loading";
 import capitalize from "@utils/capitalize";
@@ -189,7 +189,7 @@ export default function BatchTable({
                     }}
                     className="flex items-center mr-3 hover:scale-110 cursor-default transition-transform"
                   >
-                    <PencilAltIcon className="w-4 mr-1" />
+                    <PencilSquareIcon className="w-4 mr-1" />
                     Editar
                   </div>
                   <div

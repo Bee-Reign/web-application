@@ -6,7 +6,7 @@ const TabBar = dynamic(() => import("@components/TabBar"));
 import useAuth from "@hooks/useAuth";
 const LoginForm = dynamic(() => import("@components/Auth/LoginForm"));
 import Loading from "@components/Animation/Loading";
-const Aside = dynamic(() => import("@components/Aside"));
+import Aside from "@components/Aside";
 const PasswordReset = dynamic(() => import("@components/Auth/PasswordReset"));
 
 export default function MainLayout(props) {

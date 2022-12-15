@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { PencilAltIcon, TrashIcon } from "@heroicons/react/outline";
+import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 import Loading from "@components/Animation/Loading";
 import capitalize from "@utils/capitalize";
@@ -108,7 +108,7 @@ export default function WarehouseTable({
                     }}
                     className="flex items-center mr-3 hover:scale-110 cursor-default transition-transform"
                   >
-                    <PencilAltIcon className="w-4 mr-1" />
+                    <PencilSquareIcon className="w-4 mr-1" />
                     Editar
                   </div>
                   <div

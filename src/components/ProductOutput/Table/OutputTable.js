@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CashIcon } from "@heroicons/react/outline";
+import { CashIcon } from "@heroicons/react/24/outline";
 
 import Loading from "@components/Animation/Loading";
 import capitalize from "@utils/capitalize";

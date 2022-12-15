@@ -2,8 +2,8 @@ import dynamic from "next/dynamic";
 import Head from "next/head";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { HomeIcon, SearchIcon } from "@heroicons/react/solid";
-import { ChevronRightIcon, TrashIcon } from "@heroicons/react/outline";
+import { HomeIcon, MagnifyingGlassIcon } from "@heroicons/react/20/solid";
+import { ChevronRightIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 import { getRawMaterialBatches } from "@service/api/rawMaterialBatch";
 import { getRawMaterialByCode } from "@service/api/rawMaterial";
@@ -130,7 +130,7 @@ export default function Index() {
                     rawMaterial ? rawMaterial.name : "Esperando scanner..."
                   }
                 />
-                <SearchIcon
+                <MagnifyingGlassIcon
                   className="w-12 text-gray-700 hover:text-beereign_yellow"
                   onClick={() => setSearch(true)}
                 />

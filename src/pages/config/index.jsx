@@ -1,8 +1,8 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import Head from "next/head";
-import { HomeIcon } from "@heroicons/react/solid";
-import { ChevronRightIcon } from "@heroicons/react/outline";
+import { HomeIcon } from "@heroicons/react/20/solid";
+import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import CheckPermission from "@utils/checkPermission";
 const Company = dynamic(() => import("@components/Config/Form/Company"));
 

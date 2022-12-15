@@ -1,5 +1,5 @@
-import { ExclamationCircleIcon } from "@heroicons/react/outline";
-import { XIcon } from "@heroicons/react/solid";
+import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon } from "@heroicons/react/20/solid";
 
 export default function YesNoModal({
   showModal,
@@ -28,12 +28,14 @@ export default function YesNoModal({
               className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-2xl text-sm p-1.5 ml-auto inline-flex items-center"
               data-modal-toggle="popup-modal"
             >
-              <XIcon className="w-6" />
+              <XMarkIcon className="w-6" />
             </button>
           </div>
           <div className="p-6 pt-0 text-center">
             <ExclamationCircleIcon className="mx-auto mb-5 w-20 text-red-700" />
-            <h3 className="mb-6 text-xl font-normal text-gray-500">{message}</h3>
+            <h3 className="mb-6 text-xl font-normal text-gray-500">
+              {message}
+            </h3>
             <button
               type="button"
               onClick={handleYes}

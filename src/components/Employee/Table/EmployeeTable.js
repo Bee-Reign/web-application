@@ -1,9 +1,9 @@
 import { useState } from "react";
 import {
-  PencilAltIcon,
-  BanIcon,
+  PencilSquareIcon,
+  NoSymbolIcon,
   CheckCircleIcon,
-} from "@heroicons/react/outline";
+} from "@heroicons/react/24/outline";
 import { toast } from "react-toastify";
 
 import capitalize from "@utils/capitalize";
@@ -159,7 +159,7 @@ export default function EmployeeTable({
                     }}
                     className="flex items-center mr-3 hover:scale-110 cursor-default transition-transform"
                   >
-                    <PencilAltIcon className="w-4 mr-1" />
+                    <PencilSquareIcon className="w-4 mr-1" />
                     Editar
                   </div>
                   {employee.deleted === false ? (
@@ -170,7 +170,7 @@ export default function EmployeeTable({
                       }}
                       className="flex items-center text-red-500 hover:scale-105 cursor-default transition-transform"
                     >
-                      <BanIcon className="w-4 mr-1" />
+                      <NoSymbolIcon className="w-4 mr-1" />
                       Desactivar
                     </div>
                   ) : (

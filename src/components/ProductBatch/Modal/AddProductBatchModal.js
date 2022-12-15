@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { toast } from "react-toastify";
-import { XIcon, SearchIcon } from "@heroicons/react/solid";
+import { XMarkIcon, MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import AsyncSelect from "react-select/async";
 
 import { manualRegistration } from "@schema/packingSchema";
@@ -140,7 +140,7 @@ export default function AddProductBatchModal({
                 onClick={handleClose}
                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-2xl text-sm p-1.5 ml-auto inline-flex items-center"
               >
-                <XIcon className="w-5" />
+                <XMarkIcon className="w-5" />
               </button>
             </div>
             <div className="p-6 space-y-6">
@@ -162,7 +162,7 @@ export default function AddProductBatchModal({
                           product ? product?.name : "Esperando scanner"
                         }
                       />
-                      <SearchIcon
+                      <MagnifyingGlassIcon
                         className="pl-2 w-12 text-gray-700 mb-3 hover:text-beereign_yellow hover:scale-105 transition-transform"
                         onClick={() => setSearch(true)}
                       />

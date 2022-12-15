@@ -11,7 +11,7 @@ import PrintModal from "@components/Modal/PrintModal";
 import SearchRawMaterial from "@components/RawMaterialBatch/Modal/SearchRawMaterial";
 import { logError } from "@utils/logError";
 import capitalize from "@utils/capitalize";
-import { SearchIcon } from "@heroicons/react/solid";
+import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 
 export default function AddBatch() {
   const formRef = useRef(null);
@@ -147,7 +147,7 @@ export default function AddBatch() {
                   rawMaterial ? rawMaterial.name : "Esperando scanner"
                 }
               />
-              <SearchIcon
+              <MagnifyingGlassIcon
                 className="pl-2 w-12 text-gray-700 mb-3 hover:text-beereign_yellow hover:scale-105 transition-transform"
                 onClick={() => setSearch(true)}
               />

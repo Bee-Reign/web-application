@@ -1,7 +1,11 @@
 import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
-import { ArchiveIcon, CashIcon, HomeIcon } from "@heroicons/react/solid";
-import { ChevronRightIcon, PlusIcon } from "@heroicons/react/outline";
+import {
+  ArchiveBoxIcon,
+  CurrencyDollarIcon,
+  HomeIcon,
+} from "@heroicons/react/20/solid";
+import { ChevronRightIcon, PlusIcon } from "@heroicons/react/24/outline";
 import Head from "next/head";
 import Link from "next/link";
 
@@ -11,7 +15,9 @@ import { logError } from "@utils/logError";
 
 const Pagination = dynamic(() => import("@components/Pagination"));
 const RawMaterialTable = dynamic(() => import("@components/RawMaterial/Table"));
-const AddRawMaterialModal = dynamic(() => import("@components/RawMaterial/Modal/AddRawMaterialModal"));
+const AddRawMaterialModal = dynamic(() =>
+  import("@components/RawMaterial/Modal/AddRawMaterialModal")
+);
 
 export default function Index() {
   const [rawMaterials, setRawMaterials] = useState([]);
@@ -120,11 +126,11 @@ export default function Index() {
           <div className="block items-center mt-3">
             <div className="flex flex-col md:flex-row">
               <div className="flex items-center mb-1 md:mb-0 md:mr-2">
-                <ArchiveIcon className="w-6 text-gray-900" />
+                <ArchiveBoxIcon className="w-6 text-gray-900" />
                 <span className="font-mono font-bold">{total}</span>
               </div>
               <div className="flex items-center">
-                <CashIcon className="w-6 text-green-800" />
+                <CurrencyDollarIcon className="w-6 text-green-800" />
                 <span className="font-mono font-bold">${totalAmount}</span>
               </div>
             </div>

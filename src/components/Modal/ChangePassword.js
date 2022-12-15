@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { toast } from "react-toastify";
-import { XCircleIcon } from "@heroicons/react/outline";
+import { XCircleIcon } from "@heroicons/react/24/outline";
 
 import { passwordResetSchema } from "@schema/employeeSchema";
 import { updatePassword } from "@service/api/employee";

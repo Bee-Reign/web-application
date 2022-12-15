@@ -3,7 +3,7 @@ import {
   ChevronDoubleRightIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
-} from "@heroicons/react/outline";
+} from "@heroicons/react/24/outline";
 
 const Pagination = ({ loading, page, limit, totalPages, onPageChange }) => {
   const firstPage = () => {

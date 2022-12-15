@@ -1,8 +1,8 @@
 import { useRef, useState, useEffect } from "react";
 import AsyncSelect from "react-select/async";
 import { toast } from "react-toastify";
-import { MoonIcon, SearchIcon } from "@heroicons/react/solid";
-import { TrashIcon } from "@heroicons/react/outline";
+import { MoonIcon, MagnifyingGlassIcon } from "@heroicons/react/20/solid";
+import { TrashIcon } from "@heroicons/react/24/outline";
 
 import { createSchema, suspendSchema } from "@schema/packingSchema";
 import { addPacking, suspendPacking } from "@service/api/packing";
@@ -251,7 +251,7 @@ export default function AddPacking() {
                 className="appearance-none block w-full text-gray-900 focus:ring-yellow-100 focus:border-beereign_yellow shadow-sm border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none"
                 placeholder={product ? product?.name : "Esperando scanner"}
               />
-              <SearchIcon
+              <MagnifyingGlassIcon
                 className="pl-2 w-12 text-gray-700 mb-3 hover:text-beereign_yellow hover:scale-105 transition-transform"
                 onClick={() => setSearch(true)}
               />

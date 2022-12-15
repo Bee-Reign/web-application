@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { toast } from "react-toastify";
-import { XIcon } from "@heroicons/react/solid";
+import { XMarkIcon } from "@heroicons/react/20/solid";
 import AsyncSelect from "react-select/async";
 
 import { newWarehouseSchema } from "@schema/warehouseSchema";
@@ -124,7 +124,7 @@ export default function AddWarehouseModal({
               onClick={handleClose}
               className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-2xl text-sm p-1.5 ml-auto inline-flex items-center"
             >
-              <XIcon className="w-5" />
+              <XMarkIcon className="w-5" />
             </button>
           </div>
           <div className="p-6 space-y-6">
@@ -148,9 +148,7 @@ export default function AddWarehouseModal({
               </div>
               <div className="flex flex-wrap -mx-3 mb-3">
                 <div className="w-full md:w-1/3 px-3 mb-5 md:mb-0">
-                  <label
-                    className="block text-xs font-medium text-left text-gray-500 uppercase mb-1"
-                  >
+                  <label className="block text-xs font-medium text-left text-gray-500 uppercase mb-1">
                     País:
                   </label>
                   <div className="relative">
@@ -171,9 +169,7 @@ export default function AddWarehouseModal({
                   </div>
                 </div>
                 <div className="w-full md:w-1/3 px-3 mb-5 md:mb-0">
-                  <label
-                    className="block text-xs font-medium text-left text-gray-500 uppercase mb-1"
-                  >
+                  <label className="block text-xs font-medium text-left text-gray-500 uppercase mb-1">
                     Estado:
                   </label>
                   <div className="relative">
