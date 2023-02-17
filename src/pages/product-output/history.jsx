@@ -1,17 +1,17 @@
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import { useState, useEffect } from "react";
-import { HomeIcon } from "@heroicons/react/20/solid";
+import { HomeIcon } from "@heroicons/react/24/solid";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 
 import CheckPermission from "@utils/checkPermission";
-import { getProductOutputs } from "@service/api/productOutput";
+import { getProductOutputs } from "application/product/output/service";
 import { logError } from "@utils/logError";
 const ProductOutputTable = dynamic(() =>
-  import("@components/ProductOutput/Table/OutputTable")
+  import("application/product/output/components/table")
 );
-const Pagination = dynamic(() => import("@components/Pagination"));
+const Pagination = dynamic(() => import("application/common/pagination/normal"));
 
 export default function History() {
   CheckPermission("/product-output");
@@ -51,21 +51,23 @@ export default function History() {
             <nav className="flex mb-5" aria-label="Breadcrumb">
               <ol className="inline-flex items-center space-x-1 md:space-x-2">
                 <li className="inline-flex items-center">
-                  <Link href="/home">
-                    <a className="inline-flex items-center text-gray-700 hover:text-beereign_yellow cursor-default">
-                      <HomeIcon className="w-5 mr-5" />
-                      Home
-                    </a>
+                  <Link
+                    href="/home"
+                    className="inline-flex items-center text-gray-700 hover:text-beereign_yellow cursor-default"
+                  >
+                    <HomeIcon className="w-5 mr-5" />
+                    Home
                   </Link>
                 </li>
                 <li>
                   <div className="flex items-center">
                     <ChevronRightIcon className="w-4 text-gray-400" />
                     <div className="ml-1 md:ml-2">
-                      <Link href="/product-output">
-                        <a className="inline-flex items-center text-gray-700 hover:text-beereign_yellow cursor-default">
-                          Salida de productos
-                        </a>
+                      <Link
+                        href="/product-output"
+                        className="inline-flex items-center text-gray-700 hover:text-beereign_yellow cursor-default"
+                      >
+                        Salida de productos
                       </Link>
                     </div>
                   </div>

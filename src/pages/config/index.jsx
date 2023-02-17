@@ -1,10 +1,10 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import Head from "next/head";
-import { HomeIcon } from "@heroicons/react/20/solid";
+import { HomeIcon } from "@heroicons/react/24/solid";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import CheckPermission from "@utils/checkPermission";
-const Company = dynamic(() => import("@components/Config/Form/Company"));
+const Company = dynamic(() => import("application/config/company"));
 
 export default function index() {
   CheckPermission("/config");
@@ -19,11 +19,12 @@ export default function index() {
             <nav className="flex mb-5" aria-label="Breadcrumb">
               <ol className="inline-flex items-center space-x-1 md:space-x-2">
                 <li className="inline-flex items-center">
-                  <Link href="/home">
-                    <a className="inline-flex items-center text-gray-700 hover:text-beereign_yellow cursor-default">
-                      <HomeIcon className="w-5 mr-5" />
-                      Home
-                    </a>
+                  <Link
+                    href="/home"
+                    className="inline-flex items-center text-gray-700 hover:text-beereign_yellow cursor-default"
+                  >
+                    <HomeIcon className="w-5 mr-5" />
+                    Home
                   </Link>
                 </li>
                 <li>

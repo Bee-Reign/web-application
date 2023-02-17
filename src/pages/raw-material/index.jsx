@@ -4,22 +4,34 @@ import {
   ArchiveBoxIcon,
   CurrencyDollarIcon,
   HomeIcon,
-} from "@heroicons/react/20/solid";
+} from "@heroicons/react/24/solid";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faBoxesStacked,
+  faBoxesPacking,
+  faMoneyBill,
+  faBoxOpen,
+} from "@fortawesome/free-solid-svg-icons";
 import { ChevronRightIcon, PlusIcon } from "@heroicons/react/24/outline";
 import Head from "next/head";
 import Link from "next/link";
 
-import { getRawMaterials } from "@service/api/rawMaterial";
+import { getRawMaterials } from "@app/rawMaterial/service";
 import useDebounce from "@utils/useDebounce";
 import { logError } from "@utils/logError";
+import CheckPermission from "@utils/checkPermission";
+import AddRawMaterialBatch from "@app/rawMaterial/batch/components/add";
 
-const Pagination = dynamic(() => import("@components/Pagination"));
-const RawMaterialTable = dynamic(() => import("@components/RawMaterial/Table"));
+const Pagination = dynamic(() => import("@app/common/pagination/normal"));
+const RawMaterialTable = dynamic(() =>
+  import("@app/rawMaterial/components/table")
+);
 const AddRawMaterialModal = dynamic(() =>
-  import("@components/RawMaterial/Modal/AddRawMaterialModal")
+  import("@app/rawMaterial/components/addModal")
 );
 
 export default function Index() {
+  CheckPermission("/raw-material");
   const [rawMaterials, setRawMaterials] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0.0);
   const [total, setTotal] = useState(null);
@@ -29,6 +41,7 @@ export default function Index() {
   const [limit, setLimit] = useState(10);
   const [refresh, setRefresh] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showAddBatchModal, setAddBatchModal] = useState(false);
 
   const searchFilter = useDebounce(filter, 500);
 
@@ -62,7 +75,7 @@ export default function Index() {
   return (
     <>
       <Head>
-        <title>Inventario de Materia Prima</title>
+        <title>Inventario de materia prima</title>
       </Head>
       <AddRawMaterialModal
         showModal={showAddModal}
@@ -70,17 +83,22 @@ export default function Index() {
         refresh={refresh}
         onShowModalChange={(showModal) => setShowAddModal(showModal)}
       />
+      <AddRawMaterialBatch
+        showModal={showAddBatchModal}
+        onShowModalChange={(showModal) => setAddBatchModal(showModal)}
+      />
       <section className="block justify-between items-center p-4 mx-4 mb-6 bg-white rounded-2xl shadow-xl shadow-gray-200 lg:p-5 sm:flex">
         <div className="mb-1 w-full">
           <div className="mb-4">
             <nav className="flex mb-5">
               <ol className="inline-flex items-center space-x-1 md:space-x-2">
                 <li className="inline-flex items-center">
-                  <Link href="/home">
-                    <a className="inline-flex items-center text-gray-700 hover:text-beereign_yellow cursor-default">
-                      <HomeIcon className="w-5 mr-5" />
-                      Home
-                    </a>
+                  <Link
+                    href="/home"
+                    className="inline-flex items-center text-gray-700 hover:text-beereign_yellow cursor-default"
+                  >
+                    <HomeIcon className="w-5 mr-5" />
+                    Home
                   </Link>
                 </li>
                 <li>
@@ -111,12 +129,34 @@ export default function Index() {
                 />
               </div>
             </div>
-            <div className="flex items-center w-full sm:justify-end">
-              <div className="hidden pl-2 space-x-1 md:flex"></div>
+            <div className="flex items-start w-full flex-col sm:flex-row sm:items-center">
+              <div className="sm:ml-1 flex items-center">
+                <button
+                  type="button"
+                  onClick={() => setAddBatchModal(true)}
+                  className="mr-1 inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white rounded-lg bg-gradient-to-br from-gray-800 to-gray-600 sm:ml-auto shadow-md shadow-gray-300 hover:scale-105 cursor-default transition-transform"
+                >
+                  <FontAwesomeIcon
+                    className="w-6 mr-2 -ml-1"
+                    icon={faBoxesPacking}
+                  />
+                  Entrada
+                </button>
+                <Link
+                  href="/raw-material/lots"
+                  className="inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white rounded-lg bg-gradient-to-br from-gray-800 to-gray-600 sm:ml-auto shadow-md shadow-gray-300 hover:scale-105 cursor-default transition-transform"
+                >
+                  <FontAwesomeIcon
+                    className="w-6 mr-2 -ml-1"
+                    icon={faBoxesStacked}
+                  />
+                  Lotes
+                </Link>
+              </div>
               <button
                 type="button"
                 onClick={() => setShowAddModal(true)}
-                className="inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white rounded-lg bg-gradient-to-br from-green-800 to-green-600 sm:ml-auto shadow-md shadow-gray-300 hover:scale-105 cursor-default transition-transform"
+                className="mt-2 sm:mt-0 inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white rounded-lg bg-gradient-to-br from-green-800 to-green-600 sm:ml-auto shadow-md shadow-gray-300 hover:scale-105 cursor-default transition-transform"
               >
                 <PlusIcon className="w-6 mr-2 -ml-1" />
                 Agregar materia prima
@@ -126,11 +166,17 @@ export default function Index() {
           <div className="block items-center mt-3">
             <div className="flex flex-col md:flex-row">
               <div className="flex items-center mb-1 md:mb-0 md:mr-2">
-                <ArchiveBoxIcon className="w-6 text-gray-900" />
+                <FontAwesomeIcon
+                  className="w-6 text-gray-900"
+                  icon={faBoxOpen}
+                />
                 <span className="font-mono font-bold">{total}</span>
               </div>
               <div className="flex items-center">
-                <CurrencyDollarIcon className="w-6 text-green-800" />
+                <FontAwesomeIcon
+                  className="w-6 text-green-800"
+                  icon={faMoneyBill}
+                />
                 <span className="font-mono font-bold">${totalAmount}</span>
               </div>
             </div>
@@ -138,18 +184,22 @@ export default function Index() {
         </div>
       </section>
 
-      <section className="flex flex-col my-6 mx-4 rounded-2xl shadow-xl shadow-gray-200">
-        <div className="bg-white rounded-t-2xl">
-          <select
-            value={limit}
-            onChange={(e) => setLimit(e.target.value)}
-            className="mx-3 font-mono form-select box bg-white text-gray-500 focus:outline-none"
-          >
-            <option>10</option>
-            <option>25</option>
-            <option>35</option>
-            <option>50</option>
-          </select>
+      <section className="flex flex-col my-6 mx-4 rounded-2xl shadow-xl shadow-gray-200 bg-white overflow-hidden">
+        <div className="py-5 px-4">
+          <div className="text-sm text-gray-400">
+            <label>
+              <select
+                value={limit}
+                onChange={(e) => setLimit(e.target.value)}
+                className="p-1"
+              >
+                <option value={10}>10</option>
+                <option value={25}>25</option>
+                <option value={35}>50</option>
+              </select>{" "}
+              registros por pagina
+            </label>
+          </div>
         </div>
         <div className="overflow-x-auto rounded-b-2xl">
           <div className="inline-block min-w-full align-middle">
@@ -163,15 +213,14 @@ export default function Index() {
             </div>
           </div>
         </div>
+        <Pagination
+          loading={loading}
+          page={page}
+          limit={limit}
+          totalPages={totalPages}
+          onPageChange={(page) => setPage(page)}
+        />
       </section>
-
-      <Pagination
-        loading={loading}
-        page={page}
-        limit={limit}
-        totalPages={totalPages}
-        onPageChange={(page) => setPage(page)}
-      />
     </>
   );
 }

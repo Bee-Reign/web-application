@@ -1,11 +1,16 @@
+const { fontFamily } = require("tailwindcss/defaultTheme");
+
 module.exports = {
   content: [
     "./src/pages/**/*.{js,jsx}",
     "./src/layouts/**/*.{js,jsx}",
-    "./src/components/**/*.{js,jsx}",
+    "./src/application/**/*.{js,jsx}",
   ],
   theme: {
     extend: {
+      fontFamily: {
+        roboto: ["var(--font-roboto)", ...fontFamily.sans],
+      },
       colors: {
         beereign_bg: "#0F1421",
         beereign_yellow: "#EDD224",
@@ -27,10 +32,13 @@ module.exports = {
       minHeight: {
         tab_height: "calc(100vh - 8rem)",
         xl_height: "calc(100vh - 6rem)",
+        app_height: "calc(100vh - 4rem)",
+        not_found: "calc(100vh - 5rem)",
       },
       maxHeight: {
         tab_height: "calc(100vh - 10rem)",
         xl_height: "calc(100vh - 6rem)",
+        app_height: "calc(100vh - 4rem)",
       },
       maxWidth: {
         header_account: "13rem",

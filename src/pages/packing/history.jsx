@@ -1,15 +1,13 @@
 import { useState, useEffect } from "react";
-import { HomeIcon } from "@heroicons/react/20/solid";
+import { HomeIcon } from "@heroicons/react/24/solid";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import Link from "next/link";
 import CheckPermission from "@utils/checkPermission";
-import { getPackings } from "@service/api/packing";
-const PackingTable = dynamic(() =>
-import("@components/Packing/Table/PackingTable")
-);
-const Pagination = dynamic(() => import("@components/Pagination"));
+import { getPackings } from "@app/packing/service";
+const PackingTable = dynamic(() => import("@app/packing/components/table"));
+const Pagination = dynamic(() => import("@app/common/pagination/normal"));
 
 export default function History() {
   CheckPermission("/packing");
@@ -50,21 +48,23 @@ export default function History() {
             <nav className="flex mb-5" aria-label="Breadcrumb">
               <ol className="inline-flex items-center space-x-1 md:space-x-2">
                 <li className="inline-flex items-center">
-                  <Link href="/home">
-                    <a className="inline-flex items-center text-gray-700 hover:text-beereign_yellow cursor-default">
-                      <HomeIcon className="w-5 mr-5" />
-                      Home
-                    </a>
+                  <Link
+                    href="/home"
+                    className="inline-flex items-center text-gray-700 hover:text-beereign_yellow cursor-default"
+                  >
+                    <HomeIcon className="w-5 mr-5" />
+                    Home
                   </Link>
                 </li>
                 <li>
                   <div className="flex items-center">
                     <ChevronRightIcon className="w-4 text-gray-400" />
                     <div className="ml-1 md:ml-2">
-                      <Link href="/packing">
-                        <a className="inline-flex items-center text-gray-700 hover:text-beereign_yellow cursor-default">
-                          Envasado
-                        </a>
+                      <Link
+                        href="/packing"
+                        className="inline-flex items-center text-gray-700 hover:text-beereign_yellow cursor-default"
+                      >
+                        Envasado
                       </Link>
                     </div>
                   </div>

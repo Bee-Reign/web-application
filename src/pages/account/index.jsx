@@ -6,7 +6,7 @@ import { LockClosedIcon, UserIcon } from "@heroicons/react/24/outline";
 import useAuth from "@hooks/useAuth";
 import capitalize from "@utils/capitalize";
 const ChangePassword = dynamic(() =>
-  import("@components/Modal/ChangePassword")
+  import("application/components/changePassword")
 );
 
 export default function Index(props) {

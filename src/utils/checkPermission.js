@@ -10,7 +10,7 @@ export default function CheckPermission(path) {
   const router = useRouter();
   let allow = false;
   employee.modules.map((module) => {
-    if (module.path === path) {
+    if (`/${module.path}` === path) {
       allow = true;
     }
   });

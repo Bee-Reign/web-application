@@ -1,18 +1,22 @@
 import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
-import { HomeIcon } from "@heroicons/react/20/solid";
+import { HomeIcon } from "@heroicons/react/24/solid";
 import { ChevronRightIcon, PlusIcon } from "@heroicons/react/24/outline";
 import Head from "next/head";
 import Link from "next/link";
 
 import CheckPermission from "@utils/checkPermission";
-import { getEmployees } from "@service/api/employee";
+import { getEmployees } from "application/employee/service";
 import useDebounce from "@utils/useDebounce";
 
-const EmployeeTable = dynamic(() => import("@components/Employee/Table"));
-const Pagination = dynamic(() => import("@components/Pagination"));
+const EmployeeTable = dynamic(() =>
+  import("application/employee/components/table")
+);
+const Pagination = dynamic(() =>
+  import("application/common/pagination/normal")
+);
 const AddEmployeeModal = dynamic(() =>
-  import("@components/Employee/Modal/AddEmployeeModal")
+  import("application/employee/components/addModal")
 );
 
 const Index = () => {
@@ -66,11 +70,12 @@ const Index = () => {
             <nav className="flex mb-5">
               <ol className="inline-flex items-center space-x-1 md:space-x-2">
                 <li className="inline-flex items-center">
-                  <Link href="/home">
-                    <a className="inline-flex items-center text-gray-700 hover:text-beereign_yellow cursor-default">
-                      <HomeIcon className="w-5 mr-5" />
-                      Home
-                    </a>
+                  <Link
+                    href="/home"
+                    className="inline-flex items-center text-gray-700 hover:text-beereign_yellow cursor-default"
+                  >
+                    <HomeIcon className="w-5 mr-5" />
+                    Home
                   </Link>
                 </li>
                 <li>
@@ -116,19 +121,24 @@ const Index = () => {
         </div>
       </section>
 
-      <section className="flex flex-col my-6 mx-4 rounded-2xl shadow-xl shadow-gray-200">
-        <div className="bg-white rounded-t-2xl">
-          <select
-            value={limit}
-            onChange={(e) => setLimit(e.target.value)}
-            className="mx-3 font-mono form-select box bg-white text-gray-500 focus:outline-none"
-          >
-            <option>10</option>
-            <option>25</option>
-            <option>35</option>
-            <option>50</option>
-          </select>
+      <section className="flex flex-col my-6 mx-4 rounded-2xl shadow-xl shadow-gray-200 bg-white overflow-hidden">
+        <div className="py-5 px-4">
+          <div className="text-sm text-gray-400">
+            <label>
+              <select
+                value={limit}
+                onChange={(e) => setLimit(e.target.value)}
+                className="p-1"
+              >
+                <option value={10}>10</option>
+                <option value={25}>25</option>
+                <option value={35}>50</option>
+              </select>{" "}
+              registros por pagina
+            </label>
+          </div>
         </div>
+
         <div className="overflow-x-auto rounded-b-2xl">
           <div className="inline-block min-w-full align-middle">
             <div className="overflow-hidden">
@@ -141,15 +151,15 @@ const Index = () => {
             </div>
           </div>
         </div>
+        
+        <Pagination
+          loading={loading}
+          page={page}
+          limit={limit}
+          totalPages={totalPages}
+          onPageChange={(page) => setPage(page)}
+        />
       </section>
-
-      <Pagination
-        loading={loading}
-        page={page}
-        limit={limit}
-        totalPages={totalPages}
-        onPageChange={(page) => setPage(page)}
-      />
     </>
   );
 };

@@ -1,19 +1,25 @@
 import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
-import { ArchiveBoxIcon, CurrencyDollarIcon, HomeIcon } from "@heroicons/react/20/solid";
+import { HomeIcon } from "@heroicons/react/24/solid";
 import { ChevronRightIcon, PlusIcon } from "@heroicons/react/24/outline";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faBoxesStacked,
+  faMoneyBill,
+  faBoxOpen,
+} from "@fortawesome/free-solid-svg-icons";
 import Head from "next/head";
 import Link from "next/link";
 
 import CheckPermission from "@utils/checkPermission";
-import { getProducts } from "@service/api/product";
+import { getProducts } from "@app/product/service";
 import { logError } from "@utils/logError";
 import useDebounce from "@utils/useDebounce";
 const AddProductModal = dynamic(() =>
-  import("@components/Product/Modal/AddProductModal")
+  import("@app/product/components/addProduct")
 );
-const Pagination = dynamic(() => import("@components/Pagination"));
-const ProductTable = dynamic(() => import("@components/Product/Table"));
+const Pagination = dynamic(() => import("@app/common/pagination/normal"));
+const ProductTable = dynamic(() => import("@app/product/components/table"));
 
 export default function Index() {
   CheckPermission("/product");
@@ -60,7 +66,7 @@ export default function Index() {
   return (
     <>
       <Head>
-        <title>Productos</title>
+        <title>Inventario de productos</title>
       </Head>
       <AddProductModal
         showModal={showAddModal}
@@ -74,11 +80,12 @@ export default function Index() {
             <nav className="flex mb-5">
               <ol className="inline-flex items-center space-x-1 md:space-x-2">
                 <li className="inline-flex items-center">
-                  <Link href="/home">
-                    <a className="inline-flex items-center text-gray-700 hover:text-beereign_yellow cursor-default">
-                      <HomeIcon className="w-5 mr-5" />
-                      Home
-                    </a>
+                  <Link
+                    href="/home"
+                    className="inline-flex items-center text-gray-700 hover:text-beereign_yellow cursor-default"
+                  >
+                    <HomeIcon className="w-5 mr-5" />
+                    Home
                   </Link>
                 </li>
                 <li>
@@ -109,12 +116,23 @@ export default function Index() {
                 />
               </div>
             </div>
-            <div className="flex items-center w-full sm:justify-end">
-              <div className="hidden pl-2 space-x-1 md:flex"></div>
+            <div className="flex items-start w-full flex-col sm:flex-row sm:items-center">
+              <div className="sm:ml-1 flex items-center">
+                <Link
+                  href="/product/lots"
+                  className="inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white rounded-lg bg-gradient-to-br from-gray-800 to-gray-600 sm:ml-auto shadow-md shadow-gray-300 hover:scale-105 cursor-default transition-transform"
+                >
+                  <FontAwesomeIcon
+                    className="w-6 mr-2 -ml-1"
+                    icon={faBoxesStacked}
+                  />
+                  Lotes
+                </Link>
+              </div>
               <button
                 type="button"
                 onClick={() => setShowAddModal(true)}
-                className="inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white rounded-lg bg-gradient-to-br from-green-800 to-green-600 sm:ml-auto shadow-md shadow-gray-300 hover:scale-105 cursor-default transition-transform"
+                className="mt-2 sm:mt-0 inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white rounded-lg bg-gradient-to-br from-green-800 to-green-600 sm:ml-auto shadow-md shadow-gray-300 hover:scale-105 cursor-default transition-transform"
               >
                 <PlusIcon className="w-6 mr-2 -ml-1" />
                 Agregar producto
@@ -124,11 +142,17 @@ export default function Index() {
           <div className="block items-center mt-3">
             <div className="flex flex-col md:flex-row">
               <div className="flex items-center mb-1 md:mb-0 md:mr-2">
-                <ArchiveBoxIcon className="w-6 text-gray-900" />
+                <FontAwesomeIcon
+                  className="w-6 text-gray-900"
+                  icon={faBoxOpen}
+                />
                 <span className="font-mono font-bold">{total}</span>
               </div>
               <div className="flex items-center">
-                <CurrencyDollarIcon className="w-6 text-green-800" />
+                <FontAwesomeIcon
+                  className="w-6 text-green-800"
+                  icon={faMoneyBill}
+                />
                 <span className="font-mono font-bold">${totalAmount}</span>
               </div>
             </div>
@@ -136,20 +160,25 @@ export default function Index() {
         </div>
       </section>
 
-      <section className="flex flex-col my-6 mx-4 rounded-2xl shadow-xl shadow-gray-200">
-        <div className="bg-white rounded-t-2xl">
-          <select
-            value={limit}
-            onChange={(e) => setLimit(e.target.value)}
-            className="mx-3 font-mono form-select box bg-white text-gray-500 focus:outline-none"
-          >
-            <option>10</option>
-            <option>25</option>
-            <option>35</option>
-            <option>50</option>
-          </select>
+      <section className="flex flex-col my-6 mx-4 rounded-2xl shadow-xl shadow-gray-200 bg-white overflow-hidden">
+        <div className="py-5 px-4">
+          <div className="text-sm text-gray-400">
+            <label>
+              <select
+                value={limit}
+                onChange={(e) => setLimit(e.target.value)}
+                className="p-1"
+              >
+                <option value={10}>10</option>
+                <option value={25}>25</option>
+                <option value={35}>50</option>
+              </select>{" "}
+              registros por pagina
+            </label>
+          </div>
         </div>
-        <div className="overflow-x-auto rounded-b-2xl">
+
+        <div className="overflow-x-auto">
           <div className="inline-block min-w-full align-middle">
             <div className="overflow-hidden">
               <ProductTable
@@ -161,15 +190,15 @@ export default function Index() {
             </div>
           </div>
         </div>
-      </section>
 
-      <Pagination
-        loading={loading}
-        page={page}
-        limit={limit}
-        totalPages={totalPages}
-        onPageChange={(page) => setPage(page)}
-      />
+        <Pagination
+          loading={loading}
+          page={page}
+          limit={limit}
+          totalPages={totalPages}
+          onPageChange={(page) => setPage(page)}
+        />
+      </section>
     </>
   );
 }

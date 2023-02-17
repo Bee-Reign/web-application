@@ -2,13 +2,20 @@ import { useState, useEffect, useMemo } from "react";
 import { ToastContainer } from "react-toastify";
 import Cookie from "js-cookie";
 import axios from "axios";
+import { Roboto } from "@next/font/google";
 
-import AuthContext from "context/AuthContext";
-import { employeeProfile } from "@service/api/employee";
+import AuthContext from "@context/authContext";
+import { employeeProfile } from "application/employee/service";
 import { logError } from "@utils/logError";
 import "../styles/globals.css";
 import "react-toastify/dist/ReactToastify.css";
-import MainLayout from "@layouts/MainLayout";
+import MainLayout from "@layouts/WithAuth";
+
+const roboto = Roboto({
+  subsets: ["latin"],
+  weight: ["100", "300", "400", "500", "700", "900"],
+  variable: "--font-roboto",
+});
 
 function MyApp({ Component, pageProps }) {
   const [auth, setAuth] = useState(undefined);
@@ -71,13 +78,16 @@ function MyApp({ Component, pageProps }) {
   );
 
   return (
-    <AuthContext.Provider value={authData}>
-      <MainLayout>
-        <Component {...pageProps} />
-      </MainLayout>
-
-      <ToastContainer />
-    </AuthContext.Provider>
+    <>
+      <AuthContext.Provider value={authData}>
+        <div className={`${roboto.variable}`}>
+          <MainLayout>
+            <Component {...pageProps} />
+          </MainLayout>
+        </div>
+        <ToastContainer />
+      </AuthContext.Provider>
+    </>
   );
 }
 

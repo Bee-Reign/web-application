@@ -2,7 +2,7 @@ const FourOhFour = () => {
   return (
     <div className="mt-6">
       <div className="text-center">
-        <h1 className="text-9xl font-serif">
+        <h1 className="text-9xl">
           <span>4</span>
           <span>0</span>
           <span>4</span>

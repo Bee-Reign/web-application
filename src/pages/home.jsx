@@ -2,7 +2,7 @@ import dynamic from "next/dynamic";
 import Head from "next/head";
 
 import useAuth from "@hooks/useAuth";
-const HomeModules = dynamic(() => import("@components/HomeModules"));
+const HomeModules = dynamic(() => import("application/components/homeModules"));
 
 export default function Home() {
   const {

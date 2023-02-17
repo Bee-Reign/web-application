@@ -8,20 +8,20 @@ import {
   HomeIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
-import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { toast } from "react-toastify";
 
 import CheckPermission from "@utils/checkPermission";
 import capitalize from "@utils/capitalize";
-import { checkId } from "@schema/productBatchSchema";
-import { getProductForOutput } from "@service/api/productBatch";
-import { createSchema } from "@schema/productOutputSchema";
-import { addProductOutput } from "@service/api/productOutput";
+import { checkId } from "application/product/batch/schema";
+import { getProductForOutput } from "application/product/batch/service";
+import { createSchema } from "application/product/output/schema";
+import { addProductOutput } from "application/product/output/service";
 import { logError } from "@utils/logError";
 const SearchProductBatch = dynamic(() =>
-  import("@components/ProductBatch/Modal/SearchProductBatch")
+  import("application/components/searchProductBatch")
 );
-const Button = dynamic(() => import("@components/Button"));
+const Button = dynamic(() => import("application/common/button/normal"));
 
 const Output = () => {
   CheckPermission("/product-output");
@@ -151,11 +151,12 @@ const Output = () => {
             <nav className="flex mb-5">
               <ol className="inline-flex items-center space-x-1 md:space-x-2">
                 <li className="inline-flex items-center">
-                  <Link href="/home">
-                    <a className="inline-flex items-center text-gray-700 hover:text-beereign_yellow cursor-default">
-                      <HomeIcon className="w-5 mr-5" />
-                      Home
-                    </a>
+                  <Link
+                    href="/home"
+                    className="inline-flex items-center text-gray-700 hover:text-beereign_yellow cursor-default"
+                  >
+                    <HomeIcon className="w-5 mr-5" />
+                    Home
                   </Link>
                 </li>
                 <li>
@@ -193,11 +194,12 @@ const Output = () => {
               </div>
             </div>
             <div className="flex items-center w-full sm:justify-end">
-              <Link href="/product-output/history">
-                <a className="inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white rounded-lg bg-gradient-to-br from-gray-800 to-gray-600 sm:ml-auto shadow-md shadow-gray-300 hover:scale-105 cursor-default transition-transfor">
-                  <ClipboardDocumentListIcon className="w-6 mr-2 -ml-1" />
-                  Historial de salida
-                </a>
+              <Link
+                href="/product-output/history"
+                className="inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white rounded-lg bg-gradient-to-br from-gray-800 to-gray-600 sm:ml-auto shadow-md shadow-gray-300 hover:scale-105 cursor-default transition-transfor"
+              >
+                <ClipboardDocumentListIcon className="w-6 mr-2 -ml-1" />
+                Historial de salida
               </Link>
             </div>
           </div>

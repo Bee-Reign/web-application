@@ -3,14 +3,16 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { HomeIcon, ClipboardDocumentListIcon } from "@heroicons/react/20/solid";
+import { HomeIcon, ClipboardDocumentListIcon } from "@heroicons/react/24/solid";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 
 import CheckPermission from "@utils/checkPermission";
-import { getPacking } from "@service/api/packing";
+import { getPacking } from "application/packing/service";
 import { logError } from "@utils/logError";
-import Loading from "@components/Animation/Loading";
-const ContinuePacking = dynamic(() => import("@components/Packing/Form/ContinuePacking"));
+import Loading from "application/common/animation/loading";
+const ContinuePacking = dynamic(() =>
+  import("application/packing/components/continue")
+);
 
 export default function Continue() {
   CheckPermission("/packing");
@@ -54,11 +56,12 @@ export default function Continue() {
             <nav className="flex mb-5" aria-label="Breadcrumb">
               <ol className="inline-flex items-center space-x-1 md:space-x-2">
                 <li className="inline-flex items-center">
-                  <Link href="/home">
-                    <a className="inline-flex items-center text-gray-700 hover:text-beereign_yellow cursor-default">
-                      <HomeIcon className="w-5 mr-5" />
-                      Home
-                    </a>
+                  <Link
+                    href="/home"
+                    className="inline-flex items-center text-gray-700 hover:text-beereign_yellow cursor-default"
+                  >
+                    <HomeIcon className="w-5 mr-5" />
+                    Home
                   </Link>
                 </li>
                 <li>
@@ -77,11 +80,12 @@ export default function Continue() {
           </div>
           <div className="flex justify-center md:justify-end items-center">
             <div>
-              <Link href="/packing/history">
-                <a className="inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white rounded-lg bg-gradient-to-br from-gray-800 to-gray-600 sm:ml-auto shadow-md shadow-gray-300 hover:scale-105 cursor-default transition-transfor">
-                  <ClipboardDocumentListIcon className="w-6 mr-2 -ml-1" />
-                  Historial de envasado
-                </a>
+              <Link
+                href="/packing/history"
+                className="inline-flex items-center py-2 px-3 text-sm font-medium text-center text-white rounded-lg bg-gradient-to-br from-gray-800 to-gray-600 sm:ml-auto shadow-md shadow-gray-300 hover:scale-105 cursor-default transition-transfor"
+              >
+                <ClipboardDocumentListIcon className="w-6 mr-2 -ml-1" />
+                Historial de envasado
               </Link>
             </div>
           </div>
